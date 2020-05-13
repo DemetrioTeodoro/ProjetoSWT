@@ -1,4 +1,4 @@
-package testes;
+package testes.menu;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

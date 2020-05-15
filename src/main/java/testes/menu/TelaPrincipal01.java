@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 public class TelaPrincipal01 extends JFrame {
 
 	private PainelCadastroOS01 painelCadastroOS = null;
+	private PainelCadastroCliente painelCadastroCliente = null;
 	private JPanel contentPane;
 
 	/**
@@ -78,6 +79,15 @@ public class TelaPrincipal01 extends JFrame {
 		menuBar.add(mnClientes);
 		
 		JMenuItem mnitCadCliente = new JMenuItem("Cadastro");
+		mnitCadCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (painelCadastroCliente == null) {
+					painelCadastroCliente = new PainelCadastroCliente();
+					contentPane.add(painelCadastroCliente);
+					validate();
+				}
+			}
+		});
 		mnitCadCliente.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Button-Add-icon.png")));
 		mnitCadCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
 		mnClientes.add(mnitCadCliente);

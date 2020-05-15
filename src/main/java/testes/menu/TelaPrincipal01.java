@@ -1,24 +1,23 @@
 package testes.menu;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.ImageIcon;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.SpringLayout;
-import javax.swing.KeyStroke;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.SpringLayout;
+import javax.swing.border.EmptyBorder;
 
 public class TelaPrincipal01 extends JFrame {
 
-	private PainelCadastroOS painelCadastroOS = null;
+	private PainelCadastroOS01 painelCadastroOS = null;
 	private JPanel contentPane;
 
 	/**
@@ -60,7 +59,7 @@ public class TelaPrincipal01 extends JFrame {
 
 			public void actionPerformed(ActionEvent arg0) {
 				if (painelCadastroOS == null) {
-					painelCadastroOS = new PainelCadastroOS();
+					painelCadastroOS = new PainelCadastroOS01();
 					contentPane.add(painelCadastroOS);
 					validate();
 				}

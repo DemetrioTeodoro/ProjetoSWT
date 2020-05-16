@@ -130,8 +130,6 @@ public class TelaPrincipal01 extends JFrame {
 			esconderPaineis();
 			jPanel.setVisible(true);
 			validate();
-		} else {
-			JOptionPane.showMessageDialog(null, "Tela já está sendo mostrada.");
 		}
 
 	}

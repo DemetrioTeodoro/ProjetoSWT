@@ -20,9 +20,9 @@ import javax.swing.border.EmptyBorder;
 
 public class TelaPrincipal01 extends JFrame {
 
-	private PainelCadastroOS01 painelCadastroOS = null;
-	private PainelCadastroCliente painelCadastroCliente = null;
-	private JPanel contentPane;
+	private JPanel contentPane = new JPanel();
+	private PainelCadastroOS01 painelCadastroOS = new PainelCadastroOS01();
+	private PainelCadastroCliente painelCadastroCliente = new PainelCadastroCliente();
 
 	/**
 	 * Launch the application.
@@ -53,6 +53,8 @@ public class TelaPrincipal01 extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
+		incluirPaineis();
+
 		JMenu mnOS = new JMenu("Ordem de Servi\u00E7o");
 		mnOS.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/icons8-ordem-de-compra-50.png")));
 		menuBar.add(mnOS);
@@ -62,9 +64,6 @@ public class TelaPrincipal01 extends JFrame {
 		mnitCadOs.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				if (painelCadastroOS == null) {
-					painelCadastroOS = new PainelCadastroOS01();
-				}
 				abrir(painelCadastroOS);
 			}
 		});
@@ -83,9 +82,6 @@ public class TelaPrincipal01 extends JFrame {
 		JMenuItem mnitCadCliente = new JMenuItem("Cadastro");
 		mnitCadCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (painelCadastroCliente == null) {
-					painelCadastroCliente = new PainelCadastroCliente();
-				}
 				abrir(painelCadastroCliente);
 			}
 		});
@@ -117,16 +113,20 @@ public class TelaPrincipal01 extends JFrame {
 		JMenu mnAgenda = new JMenu("Agenda");
 		mnAgenda.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/icons8-calendar-50.png")));
 		menuBar.add(mnAgenda);
-		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new SpringLayout());
 	}
-	
+
+	private void incluirPaineis() {
+		contentPane.add(painelCadastroOS);
+		contentPane.add(painelCadastroCliente);
+		esconderPaineis();
+	}
+
 	private void abrir(JPanel jPanel) {
 
 		if (!jPanel.isShowing()) {
-			contentPane.add(jPanel);
 			esconderPaineis();
 			jPanel.setVisible(true);
 			validate();

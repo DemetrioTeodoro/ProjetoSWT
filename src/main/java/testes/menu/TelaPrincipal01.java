@@ -67,11 +67,11 @@ public class TelaPrincipal01 extends JFrame {
 				abrir(painelCadastroOS);
 			}
 		});
-		mnitCadOs.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Button-Add-icon.png")));
+		mnitCadOs.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Button-Add-icon-24px.png")));
 		mnOS.add(mnitCadOs);
 
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Consulta");
-		mntmNewMenuItem_1.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Search-icon.png")));
+		mntmNewMenuItem_1.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Folder-Explorer-icon-24px.png")));
 		mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 		mnOS.add(mntmNewMenuItem_1);
 
@@ -85,12 +85,12 @@ public class TelaPrincipal01 extends JFrame {
 				abrir(painelCadastroCliente);
 			}
 		});
-		mnitCadCliente.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Button-Add-icon.png")));
+		mnitCadCliente.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Button-Add-icon-24px.png")));
 		mnitCadCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
 		mnClientes.add(mnitCadCliente);
 
 		JMenuItem mnitListCliente = new JMenuItem("Consulta");
-		mnitListCliente.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Search-icon.png")));
+		mnitListCliente.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Folder-Explorer-icon-24px.png")));
 		mnitListCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
 		mnClientes.add(mnitListCliente);
 
@@ -100,13 +100,13 @@ public class TelaPrincipal01 extends JFrame {
 		menuBar.add(mnEmpresa);
 
 		JMenuItem mnitCategorias = new JMenuItem("Categorias");
-		mnitCategorias.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/checklist-icon.png")));
+		mnitCategorias.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/list-icon-24px.png")));
 		mnitCategorias.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 		mnEmpresa.add(mnitCategorias);
 
 		JMenuItem mnitProfissionais = new JMenuItem("Profissionais");
 		mnitProfissionais.setIcon(
-				new ImageIcon(TelaPrincipal01.class.getResource("/icones/10512-man-construction-worker-icon.png")));
+				new ImageIcon(TelaPrincipal01.class.getResource("/icones/10512-man-construction-worker-icon-24px.png")));
 		mnitProfissionais.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
 		mnEmpresa.add(mnitProfissionais);
 

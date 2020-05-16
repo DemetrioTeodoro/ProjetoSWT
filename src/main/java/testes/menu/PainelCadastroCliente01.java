@@ -16,9 +16,8 @@ import javax.swing.JFormattedTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class PainelCadastroCliente extends JPanel {
+public class PainelCadastroCliente01 extends JPanel {
 	private JTextField txtNome;
-	private JTextField txtCpf;
 	private JTextField txtRua;
 	private JTextField txtNum;
 	private JTextField txtBairro;
@@ -33,10 +32,11 @@ public class PainelCadastroCliente extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PainelCadastroCliente() {
+	public PainelCadastroCliente01() {
 		
 		this.rdbtCnpj = new JRadioButton();
 		this.rdbtCpf = new JRadioButton();
+		rdbtCpf.setSelected(true);
 		JLabel lblNome = new JLabel("Nome :");
 		
 		txtNome = new JTextField();
@@ -46,7 +46,6 @@ public class PainelCadastroCliente extends JPanel {
 		rdbtCpf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtCnpj.setEnabled(false);
-				txtCpf.setEnabled(true);
 				rdbtCnpj.setSelected(false);
 			}
 		});
@@ -55,7 +54,6 @@ public class PainelCadastroCliente extends JPanel {
 
 		try {
 			maskCpf = new MaskFormatter("###.###.###-##");
-			txtCpf = new JFormattedTextField(maskCpf);
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -64,14 +62,12 @@ public class PainelCadastroCliente extends JPanel {
 		JRadioButton rdbtCnpj = new JRadioButton("CNPJ");
 		rdbtCnpj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				txtCpf.setEnabled(false);
 				txtCnpj.setEnabled(true);
 				rdbtCpf.setSelected(false);
 			}
 		});
 		
 		MaskFormatter maskCnpj;
-
 		try {
 			maskCnpj = new MaskFormatter("##.###.###/####-##");
 			txtCnpj = new JFormattedTextField(maskCnpj);
@@ -111,8 +107,14 @@ public class PainelCadastroCliente extends JPanel {
 		
 		JLabel lblCep = new JLabel("CEP :");
 		
-		txtCep = new JTextField();
-		txtCep.setColumns(10);
+		MaskFormatter maskCep;
+		try {
+			maskCep = new MaskFormatter("#####-###");
+			txtCep = new JFormattedTextField(maskCep);
+			
+		} catch (ParseException e2) {
+			e2.printStackTrace();
+		}
 		
 		JLabel lblNewLabel_4 = new JLabel("CONTATO");
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -129,74 +131,70 @@ public class PainelCadastroCliente extends JPanel {
 		
 		JComboBox cbEstado = new JComboBox();
 		
-		
+		JLabel lblNewLabel = new JLabel("N\u00BA Inscri\u00E7\u00E3o: ");
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(25)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGap(50)
+					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 299, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(111)
+					.addComponent(rdbtCpf)
+					.addGap(18)
+					.addComponent(rdbtCnpj)
+					.addGap(43)
+					.addComponent(lblNewLabel)
+					.addGap(18)
+					.addComponent(txtCnpj, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+					.addGap(4)
+					.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, 674, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(51)
+					.addComponent(lblCidade)
+					.addGap(22)
+					.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, 454, GroupLayout.PREFERRED_SIZE)
+					.addGap(56)
+					.addComponent(lblEstado)
+					.addGap(10)
+					.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblNewLabel_4))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblTel)
+					.addGap(10)
+					.addComponent(txtTel, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+					.addGap(63)
+					.addComponent(lblEmail, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+					.addGap(4)
+					.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 449, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(51)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 299, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(175)
-							.addComponent(rdbtCpf)
-							.addGap(2)
-							.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)
-							.addGap(105)
-							.addComponent(rdbtCnpj)
-							.addGap(6)
-							.addComponent(txtCnpj, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addComponent(lblNewLabel_4))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblTel)
-									.addGap(10)
-									.addComponent(txtTel, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
-									.addGap(63)
-									.addComponent(lblEmail, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtEmail))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblCidade)
-									.addGap(22)
-									.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, 454, GroupLayout.PREFERRED_SIZE)
-									.addGap(56)
-									.addComponent(lblEstado)
-									.addGap(10)
-									.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtNome))
-								.addComponent(lblNewLabel_2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblNum)
-										.addComponent(lblRua, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))
-									.addGap(18)
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-											.addGap(49)
-											.addComponent(lblBairro, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
-											.addGap(70)
-											.addComponent(lblCep)
-											.addGap(10)
-											.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
-										.addComponent(txtRua))))
-							.addGap(44)))
-					.addGap(91))
+							.addComponent(lblRua, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+							.addGap(21)
+							.addComponent(txtRua))
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addComponent(lblNum)
+							.addGap(18)
+							.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+							.addGap(49)
+							.addComponent(lblBairro, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
+							.addGap(70)
+							.addComponent(lblCep)
+							.addGap(10)
+							.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -206,35 +204,38 @@ public class PainelCadastroCliente extends JPanel {
 					.addGap(32)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(rdbtCpf)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(1)
-							.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(rdbtCnpj)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblNewLabel))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(1)
 							.addComponent(txtCnpj, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(29)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(36)
+							.addGap(3)
 							.addComponent(lblNome))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(33)
-							.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(45)
+						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(34)
 					.addComponent(lblNewLabel_2)
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblRua))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(28)
+							.addComponent(lblRua))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(25)
+							.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(11)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(3)
 							.addComponent(lblNum))
 						.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(3)
 							.addComponent(lblBairro))
+						.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(3)
 							.addComponent(lblCep))
@@ -251,18 +252,18 @@ public class PainelCadastroCliente extends JPanel {
 							.addGap(4)
 							.addComponent(lblEstado))
 						.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(30)
+					.addGap(28)
 					.addComponent(lblNewLabel_4)
 					.addGap(12)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(6)
 							.addComponent(lblTel))
 						.addComponent(txtTel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(3)
-							.addComponent(lblEmail))))
+							.addComponent(lblEmail))
+						.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 		);
 		setLayout(groupLayout);
 

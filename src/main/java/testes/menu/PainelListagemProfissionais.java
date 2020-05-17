@@ -1,6 +1,7 @@
 package testes.menu;
 
 import javax.swing.JPanel;
+import javax.swing.text.AbstractDocument.Content;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 public class PainelListagemProfissionais extends JPanel {
 	
 	PainelCadastroProfissional painelCadProf = new PainelCadastroProfissional();
+	
 
 	/**
 	 * Create the panel.
@@ -20,7 +22,7 @@ public class PainelListagemProfissionais extends JPanel {
 		JButton btAdicionar = new JButton("Adicionar");
 		btAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//TODO 
+//				TODO
 				
 			}
 		});

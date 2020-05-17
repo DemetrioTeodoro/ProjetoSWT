@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 
 public class PainelListagemProfissionais extends JPanel {
 	
-	PainelCadastroProfissional painelCadProf = new PainelCadastroProfissional();
+	private TelaCadastroProfissional telaCadastroProfissional = new TelaCadastroProfissional();
 	
 
 	/**
@@ -22,8 +22,9 @@ public class PainelListagemProfissionais extends JPanel {
 		JButton btAdicionar = new JButton("Adicionar");
 		btAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				TODO
-				
+				setVisible(false);
+				telaCadastroProfissional.setVisible(true);
+				telaCadastroProfissional.setLocationRelativeTo(null);
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);

@@ -20,6 +20,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PainelCadastroOS01 extends JPanel {
 
@@ -30,6 +32,7 @@ public class PainelCadastroOS01 extends JPanel {
 	private JTextField txtCep;
 	private JTextField txtBairro;
 	private String[] nomes = { "Thaisa Mom CPF: 12345678910", "Demetrio CPF: 12345678911"};
+	private TelaPDF telaPDF = new TelaPDF();
 
 	/**
 	 * Create the panel.
@@ -119,6 +122,12 @@ public class PainelCadastroOS01 extends JPanel {
 		JComboBox comboBox = new JComboBox();
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				telaPDF.setVisible(true);
+				telaPDF.setLocationRelativeTo(null);
+			}
+		});
 		
 		JLabel lblOrdemDeServio = new JLabel("Ordem de Servi\u00E7o");
 		lblOrdemDeServio.setFont(new Font("Tahoma", Font.PLAIN, 15));

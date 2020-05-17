@@ -23,6 +23,7 @@ public class TelaPrincipal01 extends JFrame {
 	private JPanel contentPane = new JPanel();
 	private PainelCadastroOS01 painelCadastroOS = new PainelCadastroOS01();
 	private PainelCadastroCliente01 painelCadastroCliente = new PainelCadastroCliente01();
+	private PainelListagemProfissionais painelListProf = new PainelListagemProfissionais();
 
 	/**
 	 * Launch the application.
@@ -105,6 +106,11 @@ public class TelaPrincipal01 extends JFrame {
 		mnEmpresa.add(mnitCategorias);
 
 		JMenuItem mnitProfissionais = new JMenuItem("Profissionais");
+		mnitProfissionais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				abrir(painelListProf);
+			}
+		});
 		mnitProfissionais.setIcon(
 				new ImageIcon(TelaPrincipal01.class.getResource("/icones/10512-man-construction-worker-icon-24px.png")));
 		mnitProfissionais.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
@@ -121,6 +127,7 @@ public class TelaPrincipal01 extends JFrame {
 	private void incluirPaineis() {
 		contentPane.add(painelCadastroOS);
 		contentPane.add(painelCadastroCliente);
+		contentPane.add(painelListProf);
 		esconderPaineis();
 	}
 
@@ -137,6 +144,7 @@ public class TelaPrincipal01 extends JFrame {
 	private void esconderPaineis() {
 		painelCadastroCliente.setVisible(false);
 		painelCadastroOS.setVisible(false);
+		painelListProf.setVisible(false);
 	}
 
 }

@@ -137,8 +137,8 @@ public class PainelCadastroOS01 extends JPanel {
 			}
 		});
 		
-		JLabel lblOrdemDeServio = new JLabel("Ordem de Servi\u00E7o");
-		lblOrdemDeServio.setFont(new Font("Tahoma", Font.BOLD, 15));
+		JLabel lblCadastroOrdemDeServio = new JLabel("Cadastro Ordem de Servi\u00E7o");
+		lblCadastroOrdemDeServio.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		JLabel lblEndereo = new JLabel("Endere\u00E7o");
 		lblEndereo.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -165,7 +165,7 @@ public class PainelCadastroOS01 extends JPanel {
 											.addComponent(txtNumeroOs, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(label))
-										.addComponent(lblOrdemDeServio))
+										.addComponent(lblCadastroOrdemDeServio))
 									.addPreferredGap(ComponentPlacement.RELATED, 219, Short.MAX_VALUE))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
@@ -237,7 +237,7 @@ public class PainelCadastroOS01 extends JPanel {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblOrdemDeServio)
+							.addComponent(lblCadastroOrdemDeServio)
 							.addGap(11)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblNumeroOS)

@@ -1,13 +1,12 @@
 package testes.menu;
 
-import javax.swing.JPanel;
-import javax.swing.text.AbstractDocument.Content;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.Container;
-import java.awt.event.ActionEvent;
+import javax.swing.JPanel;
 
 public class PainelListagemProfissionais extends JPanel {
 	
@@ -22,7 +21,6 @@ public class PainelListagemProfissionais extends JPanel {
 		JButton btAdicionar = new JButton("Adicionar");
 		btAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
 				telaCadastroProfissional.setVisible(true);
 				telaCadastroProfissional.setLocationRelativeTo(null);
 			}

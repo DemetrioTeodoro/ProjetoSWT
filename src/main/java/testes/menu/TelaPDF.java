@@ -168,6 +168,5 @@ public class TelaPDF extends JFrame {
 		});
 		btnFechar.setBounds(766, 578, 97, 25);
 		contentPane.add(btnFechar);
-		setUndecorated(true);
 	}
 }

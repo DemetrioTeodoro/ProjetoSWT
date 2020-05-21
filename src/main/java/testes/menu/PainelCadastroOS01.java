@@ -33,8 +33,6 @@ public class PainelCadastroOS01 extends JPanel {
 	private JTextField txtBairro;
 	private String[] nomes = { "Thaisa Mom CPF: 12345678910", "Demetrio CPF: 12345678911"};
 	private TelaPDF telaPDF = new TelaPDF();
-	private JLabel lblCategoria2;
-	private JComboBox cbCategoria2;
 
 	/**
 	 * Create the panel.
@@ -42,12 +40,14 @@ public class PainelCadastroOS01 extends JPanel {
 	public PainelCadastroOS01() {
 
 		JLabel lblNumeroOS = new JLabel("N\u00B0 Odem de Servi\u00E7o:");
+		lblNumeroOS.setBounds(51, 46, 121, 16);
 
 		MaskFormatter formatoOrdemServico;
 
 		try {
 			formatoOrdemServico = new MaskFormatter("######");
 			txtNumeroOs = new JFormattedTextField(formatoOrdemServico);
+			txtNumeroOs.setBounds(177, 43, 85, 22);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,24 +55,33 @@ public class PainelCadastroOS01 extends JPanel {
 
 		String ano = new SimpleDateFormat("/yyyy").format(dataAtual);
 		JLabel label = new JLabel(ano);
+		label.setBounds(267, 46, 33, 16);
 		
 		JLabel lblCliente = new JLabel("Cliente:");
+		lblCliente.setBounds(51, 99, 44, 16);
 		
 		JComboBox cbCliente = new JComboBox(nomes);
+		cbCliente.setBounds(100, 96, 346, 22);
 		
 		JCheckBox chckbxMesmoEnderecoDo = new JCheckBox("Mesmo endere\u00E7o do Cliente");
+		chckbxMesmoEnderecoDo.setBounds(53, 162, 187, 25);
 		
 		JLabel lblRua = new JLabel("Rua:");
+		lblRua.setBounds(53, 267, 27, 16);
 		
 		txtRua = new JTextField();
+		txtRua.setBounds(85, 264, 354, 22);
 		txtRua.setColumns(10);
 		
 		JLabel lblNumero = new JLabel("Numero");
+		lblNumero.setBounds(457, 267, 45, 16);
 		
 		txtNumero = new JTextField();
+		txtNumero.setBounds(507, 264, 76, 22);
 		txtNumero.setColumns(10);
 		
 		JLabel lblCep = new JLabel("Cep:");
+		lblCep.setBounds(53, 218, 27, 16);
 		
 		
 		MaskFormatter formatoCep;
@@ -80,6 +89,7 @@ public class PainelCadastroOS01 extends JPanel {
 		try {
 			formatoCep = new MaskFormatter("#####-###");
 			txtCep = new JFormattedTextField(formatoCep);
+			txtCep.setBounds(85, 215, 137, 22);
 			txtCep.setColumns(10);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -88,48 +98,53 @@ public class PainelCadastroOS01 extends JPanel {
 		
 		
 		JLabel lblBairro = new JLabel("Bairro:");
+		lblBairro.setBounds(240, 218, 39, 16);
 		
 		txtBairro = new JTextField();
+		txtBairro.setBounds(284, 215, 299, 22);
 		txtBairro.setColumns(10);
 		
 		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o:");
+		lblDescricao.setBounds(51, 307, 60, 16);
 		
 		JTextArea txtDescricao = new JTextArea();
+		txtDescricao.setBounds(123, 304, 460, 84);
 		
 		JLabel lblDataInicial = new JLabel("Data Inicial:");
+		lblDataInicial.setBounds(51, 448, 68, 16);
 		
-		JLabel lblDataFinal = new JLabel("Data Final:");
-		
-		JPanel panel = new JPanel();
+		JLabel lblDataPrevistaTermino = new JLabel("Data Prevista Termino:");
+		lblDataPrevistaTermino.setBounds(323, 448, 76, 16);
 		
 		DatePicker datePicker = new DatePicker();
+		datePicker.setBounds(124, 446, 187, 22);
 		
 		DatePicker datePicker_1 = new DatePicker();
+		datePicker_1.setBounds(396, 446, 187, 22);
 		
 		JLabel lblCategoria = new JLabel("Categoria:");
+		lblCategoria.setBounds(51, 511, 60, 16);
 		
 		JComboBox cbCategoria = new JComboBox();
-		
-		lblCategoria2 = new JLabel("Categoria:");
-		lblCategoria2.setEnabled(false);
-		
-		cbCategoria2 = new JComboBox();
-		cbCategoria2.setEnabled(false);
+		cbCategoria.setBounds(123, 508, 188, 22);
 		
 		JButton btnCategoria = new JButton("Categoria");
+		btnCategoria.setBounds(614, 502, 107, 25);
 		btnCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				lblCategoria2.setEnabled(true);
-				cbCategoria2.setEnabled(true);
+	
 			}
 		});
 		btnCategoria.setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/Button-Add-icon.png")));
 		
 		JLabel lblProfissionais = new JLabel("Profissionais:");
+		lblProfissionais.setBounds(315, 508, 76, 16);
 		
 		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(396, 505, 187, 22);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.setBounds(475, 665, 89, 25);
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				telaPDF.setVisible(true);
@@ -138,277 +153,45 @@ public class PainelCadastroOS01 extends JPanel {
 		});
 		
 		JLabel lblCadastroOrdemDeServio = new JLabel("Cadastro Ordem de Servi\u00E7o");
+		lblCadastroOrdemDeServio.setBounds(51, 13, 204, 19);
 		lblCadastroOrdemDeServio.setFont(new Font("Tahoma", Font.BOLD, 15));
 		
 		JLabel lblEndereo = new JLabel("Endere\u00E7o");
-		lblEndereo.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblEndereo.setBounds(53, 136, 56, 15);
+		lblEndereo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JButton btnLimpar = new JButton("Limpar");
-
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(51)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(lblCliente)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(cbCliente, 0, 346, Short.MAX_VALUE))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(lblNumeroOS)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(txtNumeroOs, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(label))
-										.addComponent(lblCadastroOrdemDeServio))
-									.addPreferredGap(ComponentPlacement.RELATED, 219, Short.MAX_VALUE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-											.addGroup(groupLayout.createSequentialGroup()
-												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-													.addGroup(groupLayout.createSequentialGroup()
-														.addComponent(lblCategoria)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(cbCategoria, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-													.addGroup(groupLayout.createSequentialGroup()
-														.addComponent(lblDataInicial)
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(datePicker, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-													.addGroup(groupLayout.createSequentialGroup()
-														.addComponent(lblCategoria2)
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(cbCategoria2, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-													.addGroup(groupLayout.createSequentialGroup()
-														.addGap(18)
-														.addComponent(lblDataFinal)
-														.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-													.addGroup(groupLayout.createSequentialGroup()
-														.addPreferredGap(ComponentPlacement.UNRELATED)
-														.addComponent(btnCategoria))))
-											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-												.addComponent(chckbxMesmoEnderecoDo)
-												.addGroup(groupLayout.createSequentialGroup()
-													.addComponent(lblCep)
-													.addPreferredGap(ComponentPlacement.RELATED)
-													.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
-													.addGap(18)
-													.addComponent(lblBairro)
-													.addPreferredGap(ComponentPlacement.RELATED)
-													.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, 299, GroupLayout.PREFERRED_SIZE))
-												.addComponent(lblEndereo))
-											.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-												.addGroup(groupLayout.createSequentialGroup()
-													.addComponent(lblDescricao)
-													.addPreferredGap(ComponentPlacement.RELATED)
-													.addComponent(txtDescricao))
-												.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-													.addComponent(lblRua)
-													.addPreferredGap(ComponentPlacement.RELATED)
-													.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, 354, GroupLayout.PREFERRED_SIZE)
-													.addGap(18)
-													.addComponent(lblNumero)
-													.addPreferredGap(ComponentPlacement.RELATED)
-													.addComponent(txtNumero, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE))))
-										.addGroup(groupLayout.createSequentialGroup()
-											.addComponent(lblProfissionais)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 187, GroupLayout.PREFERRED_SIZE)))
-									.addPreferredGap(ComponentPlacement.RELATED))))
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addGap(143)
-							.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-							.addGap(249)
-							.addComponent(btnCadastrar)
-							.addPreferredGap(ComponentPlacement.RELATED, 101, Short.MAX_VALUE)))
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 784, GroupLayout.PREFERRED_SIZE)
-					.addGap(76))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblCadastroOrdemDeServio)
-							.addGap(11)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblNumeroOS)
-								.addComponent(txtNumeroOs, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(label))
-							.addGap(31)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblCliente)
-								.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addComponent(lblEndereo)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(chckbxMesmoEnderecoDo)
-							.addGap(28)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblCep)
-								.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblBairro)
-								.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(27)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblRua)
-								.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNumero)
-								.addComponent(txtNumero, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtDescricao, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblDescricao))
-							.addGap(58)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblDataInicial)
-								.addComponent(datePicker, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblDataFinal)
-								.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(40)
-									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblCategoria)
-										.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-									.addGap(18)
-									.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblCategoria2)
-										.addComponent(cbCategoria2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(51)
-									.addComponent(btnCategoria)))
-							.addGap(32)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblProfissionais)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(41)
-							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnCadastrar)
-								.addComponent(btnLimpar))
-							.addGap(77))
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 761, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(124, Short.MAX_VALUE))
-		);
-		panel.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Numero OS:");
-		lblNewLabel.setBounds(190, 67, 71, 16);
-		panel.add(lblNewLabel);
-		
-		JLabel lblNumeroOsDoc = new JLabel("numero");
-		lblNumeroOsDoc.setBounds(272, 67, 56, 16);
-		panel.add(lblNumeroOsDoc);
-		
-		JLabel lblCliente_1 = new JLabel("Cliente:");
-		lblCliente_1.setBounds(190, 96, 56, 16);
-		panel.add(lblCliente_1);
-		
-		JLabel lblNome = new JLabel("nome");
-		lblNome.setBounds(246, 96, 56, 16);
-		panel.add(lblNome);
-		
-		JLabel lblCpf = new JLabel("CPF:");
-		lblCpf.setBounds(342, 96, 56, 16);
-		panel.add(lblCpf);
-		
-		JLabel lblCpfdoc = new JLabel("CpfDoc");
-		lblCpfdoc.setBounds(380, 96, 56, 16);
-		panel.add(lblCpfdoc);
-		
-		JLabel lblCep_1 = new JLabel("Cep:");
-		lblCep_1.setBounds(190, 135, 56, 16);
-		panel.add(lblCep_1);
-		
-		JLabel lblCepdoc = new JLabel("CepDoc");
-		lblCepdoc.setBounds(224, 135, 56, 16);
-		panel.add(lblCepdoc);
-		
-		JLabel lblBairroDoc = new JLabel("Bairro:");
-		lblBairroDoc.setBounds(319, 135, 56, 16);
-		panel.add(lblBairroDoc);
-		
-		JLabel lblBairrodoc = new JLabel("BairroDoc");
-		lblBairrodoc.setBounds(365, 135, 56, 16);
-		panel.add(lblBairrodoc);
-		
-		JLabel lblRua_1 = new JLabel("Rua:");
-		lblRua_1.setBounds(190, 176, 56, 16);
-		panel.add(lblRua_1);
-		
-		JLabel lblNomerua = new JLabel("NomeRua");
-		lblNomerua.setBounds(224, 176, 316, 16);
-		panel.add(lblNomerua);
-		
-		JLabel lblNumeroEndDoc = new JLabel("Numero:");
-		lblNumeroEndDoc.setBounds(190, 216, 56, 16);
-		panel.add(lblNumeroEndDoc);
-		
-		JLabel lblNumeroEndereco = new JLabel("numero endereco");
-		lblNumeroEndereco.setBounds(246, 216, 101, 16);
-		panel.add(lblNumeroEndereco);
-		
-		JLabel lblDescricaoDoc = new JLabel("Descri\u00E7\u00E3o:");
-		lblDescricaoDoc.setBounds(190, 268, 71, 16);
-		panel.add(lblDescricaoDoc);
-		
-		JLabel lblDescricaodoc = new JLabel("descricaoDoc");
-		lblDescricaodoc.setBounds(257, 268, 283, 71);
-		panel.add(lblDescricaodoc);
-		
-		JLabel lblDataInicialDoc = new JLabel("Data Inicial:");
-		lblDataInicialDoc.setBounds(190, 373, 71, 16);
-		panel.add(lblDataInicialDoc);
-		
-		JLabel lblDatainicialDocResul = new JLabel("dataInicialDoc");
-		lblDatainicialDocResul.setBounds(273, 373, 74, 16);
-		panel.add(lblDatainicialDocResul);
-		
-		JLabel lblDataFinalDoc = new JLabel("Data Final:");
-		lblDataFinalDoc.setBounds(380, 373, 71, 16);
-		panel.add(lblDataFinalDoc);
-		
-		JLabel lblDataFinalDocResult = new JLabel("dataFinalDocResult");
-		lblDataFinalDocResult.setBounds(453, 373, 65, 16);
-		panel.add(lblDataFinalDocResult);
-		
-		JLabel lblCategoriaDoc = new JLabel("Categoria:");
-		lblCategoriaDoc.setBounds(190, 426, 71, 16);
-		panel.add(lblCategoriaDoc);
-		
-		JLabel lblCategoriaDocResult = new JLabel("categoriaDocResult");
-		lblCategoriaDocResult.setBounds(257, 426, 109, 16);
-		panel.add(lblCategoriaDocResult);
-		
-		JLabel lblCategoriaDoc2 = new JLabel("Categoria:");
-		lblCategoriaDoc2.setBounds(190, 467, 71, 16);
-		panel.add(lblCategoriaDoc2);
-		
-		JLabel lblCategoriaDocResult2 = new JLabel("categoriaDocResult2");
-		lblCategoriaDocResult2.setBounds(257, 467, 109, 16);
-		panel.add(lblCategoriaDocResult2);
-		
-		JLabel lblProfissional = new JLabel("Profissional:");
-		lblProfissional.setBounds(190, 528, 71, 16);
-		panel.add(lblProfissional);
-		
-		JLabel lblProfissionalDoc = new JLabel("profissionalDoc");
-		lblProfissionalDoc.setBounds(272, 528, 94, 16);
-		panel.add(lblProfissionalDoc);
-		
-		JLabel lblNumeroOs = new JLabel("");
-		lblNumeroOs.setBounds(36, 5, 736, 743);
-		lblNumeroOs.setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/folha-de-papel-branco.jpg")));
-		panel.add(lblNumeroOs);
-		setLayout(groupLayout);
+		btnLimpar.setBounds(143, 665, 83, 25);
+		setLayout(null);
+		add(lblCliente);
+		add(cbCliente);
+		add(lblNumeroOS);
+		add(txtNumeroOs);
+		add(label);
+		add(lblCadastroOrdemDeServio);
+		add(lblCategoria);
+		add(cbCategoria);
+		add(lblDataInicial);
+		add(datePicker);
+		add(lblDataPrevistaTermino);
+		add(datePicker_1);
+		add(btnCategoria);
+		add(chckbxMesmoEnderecoDo);
+		add(lblCep);
+		add(txtCep);
+		add(lblBairro);
+		add(txtBairro);
+		add(lblEndereo);
+		add(lblDescricao);
+		add(txtDescricao);
+		add(lblRua);
+		add(txtRua);
+		add(lblNumero);
+		add(txtNumero);
+		add(lblProfissionais);
+		add(comboBox);
+		add(btnLimpar);
+		add(btnCadastrar);
 
 	}
 }

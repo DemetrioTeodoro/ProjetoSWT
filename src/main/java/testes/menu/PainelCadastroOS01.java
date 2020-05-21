@@ -144,7 +144,7 @@ public class PainelCadastroOS01 extends JPanel {
 		comboBox.setBounds(396, 505, 187, 22);
 		
 		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.setBounds(475, 665, 89, 25);
+		btnCadastrar.setBounds(483, 582, 89, 25);
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				telaPDF.setVisible(true);
@@ -161,7 +161,7 @@ public class PainelCadastroOS01 extends JPanel {
 		lblEndereo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JButton btnLimpar = new JButton("Limpar");
-		btnLimpar.setBounds(143, 665, 83, 25);
+		btnLimpar.setBounds(151, 582, 83, 25);
 		setLayout(null);
 		add(lblCliente);
 		add(cbCliente);

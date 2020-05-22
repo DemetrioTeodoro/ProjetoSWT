@@ -29,16 +29,16 @@ public class PainelListagemProfissionais extends JPanel {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(168)
+					.addGap(172)
 					.addComponent(btAdicionar)
-					.addContainerGap(193, Short.MAX_VALUE))
+					.addContainerGap(201, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(138)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(200, Short.MAX_VALUE)
 					.addComponent(btAdicionar)
-					.addContainerGap(139, Short.MAX_VALUE))
+					.addGap(77))
 		);
 		setLayout(groupLayout);
 		

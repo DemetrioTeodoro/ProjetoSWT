@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 public class PainelListagemProfissionais extends JPanel {
 	
-	private TelaCadastroProfissional telaCadastroProfissional = new TelaCadastroProfissional();
+	private TelaCadEditProfissional telaCadEditProfissional = new TelaCadEditProfissional();
 	
 
 	/**
@@ -21,8 +21,8 @@ public class PainelListagemProfissionais extends JPanel {
 		JButton btAdicionar = new JButton("Adicionar");
 		btAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				telaCadastroProfissional.setVisible(true);
-				telaCadastroProfissional.setLocationRelativeTo(null);
+				telaCadEditProfissional.setVisible(true);
+				telaCadEditProfissional.setLocationRelativeTo(null);
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);

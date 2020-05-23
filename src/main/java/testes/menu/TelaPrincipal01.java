@@ -22,6 +22,7 @@ public class TelaPrincipal01 extends JFrame {
 	private PainelCadastroCliente01 painelCadastroCliente = new PainelCadastroCliente01();
 	private PainelListagemProfissionais painelListProf = new PainelListagemProfissionais();
 	private PainelAgenda painelAgenda = new PainelAgenda();
+	private PainelListagemOS painelListagemOS = new PainelListagemOS();
 
 	/**
 	 * Launch the application.
@@ -69,6 +70,11 @@ public class TelaPrincipal01 extends JFrame {
 		mnOS.add(mnitCadOs);
 
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Consulta");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				abrir(painelListagemOS);
+			}
+		});
 		mntmNewMenuItem_1.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/Folder-Explorer-icon-24px.png")));
 		mntmNewMenuItem_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
 		mnOS.add(mntmNewMenuItem_1);
@@ -135,6 +141,7 @@ public class TelaPrincipal01 extends JFrame {
 		contentPane.add(painelCadastroCliente);
 		contentPane.add(painelListProf);
 		contentPane.add(painelAgenda);
+		contentPane.add(painelListagemOS);
 		esconderPaineis();
 	}
 
@@ -153,5 +160,6 @@ public class TelaPrincipal01 extends JFrame {
 		painelCadastroOS.setVisible(false);
 		painelListProf.setVisible(false);
 		painelAgenda.setVisible(false);
+		painelListagemOS.setVisible(false);
 	}
 }

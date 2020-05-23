@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PainelListagemOS extends JPanel {
 	private JTable tblOrdemServico;
@@ -24,15 +26,15 @@ public class PainelListagemOS extends JPanel {
 
 		JLabel lblCliente = new JLabel("Cliente:");
 
-		JComboBox comboBox = new JComboBox();
+		JComboBox cbCliente = new JComboBox();
 
 		JLabel lblProfissional = new JLabel("Profissional:");
 
-		JComboBox comboBox_1 = new JComboBox();
+		JComboBox cbProfissional = new JComboBox();
 
 		JLabel lblCategoria = new JLabel("Categoria:");
 
-		JComboBox comboBox_2 = new JComboBox();
+		JComboBox cbCategoria = new JComboBox();
 		
 
 		tblOrdemServico = new JTable();
@@ -42,19 +44,24 @@ public class PainelListagemOS extends JPanel {
 		JButton btnConsultar = new JButton("Consultar");
 
 		JButton btnFechar = new JButton("Fechar");
+		btnFechar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(lblListagemDeOrdens,
 						GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup().addGap(50)
 						.addComponent(lblCliente, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE).addGap(86)
+						.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE).addGap(86)
 						.addComponent(lblProfissional).addGap(12)
-						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 						.addGap(62)
 						.addComponent(lblCategoria, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 						.addGap(12)
-						.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
+						.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE,
 						818, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup().addGap(251)
@@ -66,13 +73,13 @@ public class PainelListagemOS extends JPanel {
 						.addGap(36)
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblCliente))
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblProfissional))
-								.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblCategoria))
-								.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE))
 						.addGap(49).addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
 						.addGap(46).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(btnFechar)

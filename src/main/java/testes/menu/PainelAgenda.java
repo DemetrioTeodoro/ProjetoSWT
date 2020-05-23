@@ -36,7 +36,7 @@ public class PainelAgenda extends JPanel {
 		txtInicio.setColumns(10);
 		
 		JButton btCalendarioInicio = new JButton("");
-		btCalendarioInicio.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
+		//btCalendarioInicio.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
 		btCalendarioInicio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -46,7 +46,7 @@ public class PainelAgenda extends JPanel {
 		txtTermino.setColumns(10);
 		
 		JButton btCalendarioTermino = new JButton("");
-		btCalendarioTermino.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
+		//btCalendarioTermino.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
 		
 		JLabel lblNomeProf = new JLabel("Nome Profissional :");
 		

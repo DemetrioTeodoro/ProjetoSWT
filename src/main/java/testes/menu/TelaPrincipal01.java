@@ -21,7 +21,7 @@ public class TelaPrincipal01 extends JFrame {
 	private PainelCadastroOS01 painelCadastroOS = new PainelCadastroOS01();
 	private PainelCadastroCliente01 painelCadastroCliente = new PainelCadastroCliente01();
 	private PainelListagemProfissionais painelListProf = new PainelListagemProfissionais();
-	//private PainelAgenda painelAgenda = new PainelAgenda();
+	private PainelAgenda painelAgenda = new PainelAgenda();
 
 	/**
 	 * Launch the application.
@@ -33,7 +33,6 @@ public class TelaPrincipal01 extends JFrame {
 					TelaPrincipal01 frame = new TelaPrincipal01();
 					frame.setExtendedState(MAXIMIZED_BOTH);
 					frame.setVisible(true);
-					frame.setExtendedState(MAXIMIZED_BOTH);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -118,6 +117,14 @@ public class TelaPrincipal01 extends JFrame {
 		
 		mnAgenda.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/icons8-calendar-50.png")));
 		menuBar.add(mnAgenda);
+		
+		JMenuItem mntmAbrir = new JMenuItem("Abrir");
+		mntmAbrir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				abrir(painelAgenda);
+			}
+		});
+		mnAgenda.add(mntmAbrir);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new SpringLayout());
@@ -127,7 +134,7 @@ public class TelaPrincipal01 extends JFrame {
 		contentPane.add(painelCadastroOS);
 		contentPane.add(painelCadastroCliente);
 		contentPane.add(painelListProf);
-		//contentPane.add(painelAgenda);
+		contentPane.add(painelAgenda);
 		esconderPaineis();
 	}
 
@@ -145,7 +152,6 @@ public class TelaPrincipal01 extends JFrame {
 		painelCadastroCliente.setVisible(false);
 		painelCadastroOS.setVisible(false);
 		painelListProf.setVisible(false);
-		//painelAgenda.setVisible(false);
+		painelAgenda.setVisible(false);
 	}
-
 }

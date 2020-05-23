@@ -156,17 +156,17 @@ public class TelaPDF extends JFrame {
 		label_26.setBounds(36, 125, 736, 743);
 		panel.add(label_26);
 		
-		JButton btnConfirmar = new JButton("Confirmar");
-		btnConfirmar.setBounds(766, 612, 97, 25);
-		contentPane.add(btnConfirmar);
+		JButton btnCriar = new JButton("Criar");
+		btnCriar.setBounds(766, 612, 97, 25);
+		contentPane.add(btnCriar);
 		
-		JButton btnFechar = new JButton("Fechar");
-		btnFechar.addActionListener(new ActionListener() {
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnFechar.setBounds(766, 578, 97, 25);
-		contentPane.add(btnFechar);
+		btnCancelar.setBounds(766, 578, 97, 25);
+		contentPane.add(btnCancelar);
 	}
 }

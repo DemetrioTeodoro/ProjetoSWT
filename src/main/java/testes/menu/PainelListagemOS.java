@@ -32,9 +32,9 @@ public class PainelListagemOS extends JPanel {
 
 		JComboBox cbProfissional = new JComboBox();
 
-		JLabel lblCategoria = new JLabel("Categoria:");
+		JLabel lblDataInicialOS = new JLabel("Data Inicial da OS:");
 
-		JComboBox cbCategoria = new JComboBox();
+		JComboBox cbDataInicialOS = new JComboBox();
 		
 
 		tblOrdemServico = new JTable();
@@ -50,40 +50,60 @@ public class PainelListagemOS extends JPanel {
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(lblListagemDeOrdens,
-						GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup().addGap(50)
-						.addComponent(lblCliente, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE).addGap(86)
-						.addComponent(lblProfissional).addGap(12)
-						.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-						.addGap(62)
-						.addComponent(lblCategoria, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-						.addGap(12)
-						.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE,
-						818, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup().addGap(251)
-						.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE).addGap(304)
-						.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(13)
-						.addComponent(lblListagemDeOrdens, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-						.addGap(36)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblCliente))
-								.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblProfissional))
-								.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblCategoria))
-								.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(49).addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
-						.addGap(46).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(btnFechar)
-								.addComponent(btnConsultar))));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblListagemDeOrdens, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblCliente, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
+					.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+					.addGap(86)
+					.addComponent(lblProfissional)
+					.addGap(12)
+					.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+					.addGap(25)
+					.addComponent(lblDataInicialOS)
+					.addGap(12)
+					.addComponent(cbDataInicialOS, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 818, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(251)
+					.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+					.addGap(304)
+					.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(13)
+							.addComponent(lblListagemDeOrdens, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+							.addGap(36)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(3)
+									.addComponent(lblCliente))
+								.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(3)
+									.addComponent(lblProfissional))
+								.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(cbDataInicialOS, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(68)
+							.addComponent(lblDataInicialOS)))
+					.addGap(49)
+					.addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
+					.addGap(46)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnFechar)
+						.addComponent(btnConsultar)))
+		);
 		setLayout(groupLayout);
 
 	}

@@ -1,20 +1,24 @@
 package testes.menu;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class PainelListagemOS extends JPanel {
+	private TelaEditarOS telaEditarOS = null;
 	private JTable tblOrdemServico;
-	private String[] colunasTabelaOS = { "Número da Ordem", "Nome do Cliente","Cliente Ativo" , "Nome do Profissional", "Categoria"};
+	private String[] colunasTabelaOS = { "Número da Ordem", "Nome do Cliente", "Nome do Profissional", "Categoria" };
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
@@ -24,29 +28,40 @@ public class PainelListagemOS extends JPanel {
 		JLabel lblListagemDeOrdens = new JLabel("Listagem de Ordens de Servi\u00E7o");
 		lblListagemDeOrdens.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		JLabel lblCliente = new JLabel("Cliente:");
+		JLabel lblNomeCliente = new JLabel("Nome do cliente:");
 
-		JComboBox cbCliente = new JComboBox();
-
-		JLabel lblProfissional = new JLabel("Profissional:");
+		JLabel lblCategoria = new JLabel("Categoria:");
 
 		JComboBox cbProfissional = new JComboBox();
 
-		JLabel lblDataInicialOS = new JLabel("Data Inicial da OS:");
+		JLabel lblNumeroOS = new JLabel("N\u00FAmero do OS:");
 
 		JComboBox cbDataInicialOS = new JComboBox();
-		
 
 		tblOrdemServico = new JTable();
 
 		limparTabela();
-	
+
 		JButton btnConsultar = new JButton("Consultar");
 
 		JButton btnFechar = new JButton("Fechar");
 		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
+			}
+		});
+
+		textField = new JTextField();
+		textField.setColumns(10);
+
+		JButton btnEditarOs = new JButton("Editar OS");
+		btnEditarOs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (telaEditarOS == null) {
+					telaEditarOS = new TelaEditarOS();
+					telaEditarOS.setVisible(true);
+					telaEditarOS.setLocationRelativeTo(null);
+				}
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -56,53 +71,59 @@ public class PainelListagemOS extends JPanel {
 					.addGap(50)
 					.addComponent(lblListagemDeOrdens, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(50)
-					.addComponent(lblCliente, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-					.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-					.addGap(86)
-					.addComponent(lblProfissional)
-					.addGap(12)
-					.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-					.addGap(25)
-					.addComponent(lblDataInicialOS)
-					.addGap(12)
-					.addComponent(cbDataInicialOS, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(50)
+					.addGap(59)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNomeCliente)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(11)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblCategoria)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(11)
+							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblNumeroOS, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(10)
+							.addComponent(cbDataInicialOS, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(72)
+							.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
+					.addGap(93)
 					.addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 818, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(251)
+					.addGap(477)
 					.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
-					.addGap(304)
-					.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
+					.addGap(236)
+					.addComponent(btnEditarOs, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(13)
+					.addComponent(lblListagemDeOrdens, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addGap(72)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNomeCliente)
+							.addGap(18)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(27)
+							.addComponent(lblCategoria)
 							.addGap(13)
-							.addComponent(lblListagemDeOrdens, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-							.addGap(36)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(3)
-									.addComponent(lblCliente))
-								.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(3)
-									.addComponent(lblProfissional))
-								.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(cbDataInicialOS, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(30)
+							.addComponent(lblNumeroOS)
+							.addGap(13)
+							.addComponent(cbDataInicialOS, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(33)
+							.addComponent(btnConsultar))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(68)
-							.addComponent(lblDataInicialOS)))
-					.addGap(49)
-					.addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
-					.addGap(46)
+							.addGap(14)
+							.addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)))
+					.addGap(50)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnFechar)
-						.addComponent(btnConsultar)))
+						.addComponent(btnEditarOs)))
 		);
 		setLayout(groupLayout);
 

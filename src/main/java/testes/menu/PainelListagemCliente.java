@@ -1,113 +1,103 @@
 package testes.menu;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 public class PainelListagemCliente extends JPanel {
+	private TelaEditarCliente telaEditarCliente = null;
 	private JTable tblClientes;
-	private String[] colunasTabelaCliente = { "Nome do Cliente", "CPF", "CNPJ", "Cliente Ativo" , "Telefone", "Endereço"};
+	private String[] colunasTabelaCliente = { "Nome do Cliente", "CPF/CNPJ", "Cliente Ativo", "Telefone" };
+	private JTextField textField;
 
 	/**
 	 * Create the panel.
 	 */
 	public PainelListagemCliente() {
-		
+
 		JLabel lblListagemClientes = new JLabel("Listagem de Clientes");
 		lblListagemClientes.setFont(new Font("Tahoma", Font.BOLD, 15));
-		
-		JLabel lblCPF = new JLabel("CPF:");
-		
+
+		JLabel lblCPFCNPJ = new JLabel("CPF/CNPJ:");
+
 		JComboBox cbCPF = new JComboBox();
-		
-		JLabel lblCnpj = new JLabel("CNPJ:");
-		
-		JComboBox cbCNPJ = new JComboBox();
-		
-		JLabel lblEndereco = new JLabel("Endere\u00E7o:");
-		
-		JComboBox cbEndereco = new JComboBox();
-		
+
+		JLabel lblNomeCliente = new JLabel("Nome do cliente:");
+
 		tblClientes = new JTable();
-		
+
 		limparTabela();
-		
+
 		JButton btnConsultar = new JButton("Consultar");
-		
+
 		JButton btnFechar = new JButton("Fechar");
 		btnFechar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
 		});
+
+		JButton btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (telaEditarCliente == null) {
+					telaEditarCliente = new TelaEditarCliente();
+					telaEditarCliente.setVisible(true);
+					telaEditarCliente.setLocationRelativeTo(null);
+				}
+			}
+		});
+
+		textField = new JTextField();
+		textField.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(50)
-					.addComponent(lblListagemClientes, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(50)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblCPF, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(50)
-							.addComponent(cbCPF, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)))
-					.addGap(93)
-					.addComponent(lblCnpj, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-					.addGap(12)
-					.addComponent(cbCNPJ, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
-					.addGap(77)
-					.addComponent(lblEndereco, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-					.addGap(12)
-					.addComponent(cbEndereco, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(50)
-					.addComponent(tblClientes, GroupLayout.PREFERRED_SIZE, 818, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(217)
-					.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
-					.addGap(314)
-					.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(13)
-					.addComponent(lblListagemClientes, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-					.addGap(38)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblCPF))
-						.addComponent(cbCPF, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblCnpj))
-						.addComponent(cbCNPJ, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblEndereco))
-						.addComponent(cbEndereco, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(49)
-					.addComponent(tblClientes, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
-					.addGap(45)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnFechar)
-						.addComponent(btnConsultar)))
-		);
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(lblListagemClientes,
+						GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup().addGap(68)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(lblNomeCliente)
+								.addGroup(groupLayout.createSequentialGroup().addGap(10).addComponent(textField,
+										GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblCPFCNPJ, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup().addGap(10).addComponent(cbCPF,
+										GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup().addGap(70).addComponent(btnConsultar,
+										GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
+						.addGap(66)
+						.addComponent(tblClientes, GroupLayout.PREFERRED_SIZE, 818, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup().addGap(425)
+						.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE).addGap(302)
+						.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(13)
+						.addComponent(lblListagemClientes, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+						.addGap(60)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addGap(58).addComponent(lblNomeCliente)
+										.addGap(13)
+										.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(62).addComponent(lblCPFCNPJ).addGap(13)
+										.addComponent(cbCPF, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(37).addComponent(btnConsultar))
+								.addComponent(tblClientes, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE))
+						.addGap(65).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(btnFechar)
+								.addComponent(btnEditar))));
 		setLayout(groupLayout);
 
 	}
-	
+
 	protected void atualizarTabelaOS() {
 
 		limparTabela();

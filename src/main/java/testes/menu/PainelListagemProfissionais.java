@@ -11,8 +11,11 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.ImageIcon;
 
 public class PainelListagemProfissionais extends JPanel {
 	
@@ -21,6 +24,8 @@ public class PainelListagemProfissionais extends JPanel {
 	private JTextField txtQdeOS;
 	private JTextField txtDataInicio;
 	private JTextField txtDataTermino;
+	private JTable tblProfissionais;
+	private String[] colunasTabelaProfissionais = { " Profissional "," CPF " , " Telefone "," Cidade "," Categoria ", "Qde OS Exec."};
 	
 
 	/**
@@ -50,7 +55,7 @@ public class PainelListagemProfissionais extends JPanel {
 		
 		JLabel lblCidade = new JLabel("Cidade :");
 		
-		JLabel lblQdeOS = new JLabel("Quantidade de Ordem de Servi\u00E7os Finalizadas :");
+		JLabel lblQdeOS = new JLabel("Quantidade de Ordem de Servi\u00E7os Executadas:");
 		
 		JComboBox cbCidade = new JComboBox();
 		
@@ -75,15 +80,19 @@ public class PainelListagemProfissionais extends JPanel {
 			}
 		});
 		
-		JButton btnDataInicio = new JButton("New button");
+		JButton btnDataInicio = new JButton("");
+		btnDataInicio.setIcon(new ImageIcon(PainelListagemProfissionais.class.getResource("/icones/calendar-icon.png")));
 		btnDataInicio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnDataTermino = new JButton("New button");
+		JButton btnDataTermino = new JButton("");
+		btnDataTermino.setIcon(new ImageIcon(PainelListagemProfissionais.class.getResource("/icones/calendar-icon.png")));
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tblProfissionais = new JTable();
+		limparTabela();
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -129,8 +138,9 @@ public class PainelListagemProfissionais extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(116)
 							.addComponent(btnConsultar)))
-					.addGap(60)
-					.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 523, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+					.addComponent(tblProfissionais, GroupLayout.PREFERRED_SIZE, 571, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -186,11 +196,19 @@ public class PainelListagemProfissionais extends JPanel {
 							.addGap(44)
 							.addComponent(btnConsultar))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(1)
-							.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 521, GroupLayout.PREFERRED_SIZE))))
+							.addGap(3)
+							.addComponent(tblProfissionais, GroupLayout.PREFERRED_SIZE, 511, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		setLayout(groupLayout);
 		
 
+	}
+
+
+
+	private void limparTabela() {
+		tblProfissionais.setModel(new DefaultTableModel(new Object[][] { colunasTabelaProfissionais, }, colunasTabelaProfissionais));
+		
 	}
 }

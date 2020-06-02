@@ -14,11 +14,14 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.DefaultTableModel;
 
 public class PainelAgenda extends JPanel {
 	private JTextField txtInicio;
 	private JTextField txtTermino;
-	private JTable table;
+	private JTable tblAgenda;
+	private String[] colunasTabelaAgenda = { " Nº Ordem Serviço ", " Profissional (contato) "," Descrição do Serviço " , " Endereço ", " Cliente(contato) "};
+	
 
 	/**
 	 * Create the panel.
@@ -37,7 +40,6 @@ public class PainelAgenda extends JPanel {
 		
 		JButton btCalendarioInicio = new JButton("");
 		btCalendarioInicio.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
-		//btCalendarioInicio.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
 		btCalendarioInicio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -48,9 +50,8 @@ public class PainelAgenda extends JPanel {
 		
 		JButton btCalendarioTermino = new JButton("");
 		btCalendarioTermino.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
-		//btCalendarioTermino.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
-		
-		JLabel lblNomeProf = new JLabel("Nome Profissional :");
+				
+		JLabel lblNomeProf = new JLabel("Nome Profissional (CPF) :");
 		
 		JComboBox cbProfissional = new JComboBox();
 		
@@ -58,73 +59,89 @@ public class PainelAgenda extends JPanel {
 		
 		JButton btnNewButton = new JButton("Consultar");
 		
-		table = new JTable();
+		tblAgenda = new JTable();
+		tblAgenda.setCellSelectionEnabled(true);
+		
+		limparTabela();
+		
+		JButton btnNewButton_1 = new JButton("Visualizar OS");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(25)
+					.addComponent(lblNewLabel))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(25)
+					.addComponent(lblInicio, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+					.addGap(105)
+					.addComponent(lblTermino, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+					.addGap(324)
+					.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+					.addGap(177)
+					.addComponent(btExportar))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(22)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addComponent(lblNewLabel))
+							.addComponent(txtInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(1)
+							.addComponent(btCalendarioInicio, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+							.addGap(77)
+							.addComponent(txtTermino, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(1)
+							.addComponent(btCalendarioTermino, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblNomeProf, GroupLayout.PREFERRED_SIZE, 218, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addComponent(lblInicio, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addGap(62)
-							.addComponent(lblTermino, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(25)
-							.addComponent(btnNewButton)
-							.addPreferredGap(ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
-							.addComponent(btExportar))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(22)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-									.addComponent(lblNomeProf, GroupLayout.PREFERRED_SIZE, 218, GroupLayout.PREFERRED_SIZE)
-									.addComponent(cbProfissional, 0, 299, Short.MAX_VALUE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(txtInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(1)
-									.addComponent(btCalendarioInicio, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-									.addGap(37)
-									.addComponent(txtTermino, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(1)
-									.addComponent(btCalendarioTermino, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))))
-					.addGap(68)
-					.addComponent(table, GroupLayout.PREFERRED_SIZE, 524, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+							.addGap(129)
+							.addComponent(btnNewButton)))
+					.addGap(6)
+					.addComponent(tblAgenda, GroupLayout.PREFERRED_SIZE, 680, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
+			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(32)
 					.addComponent(lblNewLabel)
-					.addGap(19)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblInicio)
-						.addComponent(lblTermino))
-					.addGap(6)
+					.addGap(15)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btCalendarioInicio, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtTermino, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btCalendarioTermino, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addComponent(lblNomeProf)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(76)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnNewButton)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblInicio))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblTermino))
+						.addComponent(btnNewButton_1)
 						.addComponent(btExportar))
-					.addContainerGap(230, Short.MAX_VALUE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap(69, Short.MAX_VALUE)
-					.addComponent(table, GroupLayout.PREFERRED_SIZE, 419, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addGap(1)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(txtInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btCalendarioInicio, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+								.addComponent(txtTermino, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btCalendarioTermino, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+							.addGap(18)
+							.addComponent(lblNomeProf)
+							.addGap(6)
+							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(64)
+							.addComponent(btnNewButton))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(13)
+							.addComponent(tblAgenda, GroupLayout.PREFERRED_SIZE, 439, GroupLayout.PREFERRED_SIZE))))
 		);
 		setLayout(groupLayout);
 
+	}
+
+
+	private void limparTabela() {
+		tblAgenda.setModel(new DefaultTableModel(new Object[][] { colunasTabelaAgenda, }, colunasTabelaAgenda));
 	}
 }

@@ -19,6 +19,7 @@ public class PainelListagemCliente extends JPanel {
 	private JTable tblClientes;
 	private String[] colunasTabelaCliente = { "Nome do Cliente", "CPF/CNPJ", "Cliente Ativo", "Telefone" };
 	private JTextField textField;
+	private JTextField txtCpfCnpj;
 
 	/**
 	 * Create the panel.
@@ -29,8 +30,6 @@ public class PainelListagemCliente extends JPanel {
 		lblConsultaClientes.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		JLabel lblCPFCNPJ = new JLabel("CPF/CNPJ:");
-
-		JComboBox cbCPF = new JComboBox();
 
 		JLabel lblNomeCliente = new JLabel("Nome do cliente:");
 
@@ -60,40 +59,63 @@ public class PainelListagemCliente extends JPanel {
 
 		textField = new JTextField();
 		textField.setColumns(10);
+		
+		txtCpfCnpj = new JTextField();
+		txtCpfCnpj.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(lblConsultaClientes,
-						GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup().addGap(68)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(lblNomeCliente)
-								.addGroup(groupLayout.createSequentialGroup().addGap(10).addComponent(textField,
-										GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE))
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(50)
+							.addComponent(lblConsultaClientes, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(68)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNomeCliente)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(10)
+									.addComponent(textField, GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE))
 								.addComponent(lblCPFCNPJ, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup().addGap(10).addComponent(cbCPF,
-										GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup().addGap(70).addComponent(btnConsultar,
-										GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
-						.addGap(66)
-						.addComponent(tblClientes, GroupLayout.PREFERRED_SIZE, 818, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup().addGap(425)
-						.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE).addGap(302)
-						.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(13)
-						.addComponent(lblConsultaClientes, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-						.addGap(60)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup().addGap(58).addComponent(lblNomeCliente)
-										.addGap(13)
-										.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(62).addComponent(lblCPFCNPJ).addGap(13)
-										.addComponent(cbCPF, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(37).addComponent(btnConsultar))
-								.addComponent(tblClientes, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE))
-						.addGap(65).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(btnFechar)
-								.addComponent(btnEditar))));
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(10)
+									.addComponent(txtCpfCnpj, GroupLayout.PREFERRED_SIZE, 190, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(70)
+									.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
+							.addGap(66)
+							.addComponent(tblClientes, GroupLayout.PREFERRED_SIZE, 818, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(425)
+							.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+							.addGap(302)
+							.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)))
+					.addGap(34))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(13)
+					.addComponent(lblConsultaClientes, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addGap(60)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNomeCliente)
+							.addGap(13)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(11)
+							.addComponent(lblCPFCNPJ)
+							.addGap(11)
+							.addComponent(txtCpfCnpj, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(106)
+							.addComponent(btnConsultar))
+						.addComponent(tblClientes, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE))
+					.addGap(65)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnEditar)
+						.addComponent(btnFechar)))
+		);
 		setLayout(groupLayout);
 
 	}

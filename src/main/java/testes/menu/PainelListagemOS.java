@@ -25,16 +25,16 @@ public class PainelListagemOS extends JPanel {
 	 */
 	public PainelListagemOS() {
 
-		JLabel lblListagemDeOrdens = new JLabel("Listagem de Ordens de Servi\u00E7o");
-		lblListagemDeOrdens.setFont(new Font("Tahoma", Font.BOLD, 15));
+		JLabel lblConsultaDeOrdens = new JLabel("Consulta de Ordem de Servi\u00E7o");
+		lblConsultaDeOrdens.setFont(new Font("Tahoma", Font.BOLD, 15));
 
-		JLabel lblNomeCliente = new JLabel("Nome do cliente:");
+		JLabel lblNomeCliente = new JLabel("Nome do Cliente:");
 
 		JLabel lblCategoria = new JLabel("Categoria:");
 
 		JComboBox cbProfissional = new JComboBox();
 
-		JLabel lblNumeroOS = new JLabel("N\u00FAmero do OS:");
+		JLabel lblNumeroOS = new JLabel("N\u00FAmero da OS:");
 
 		JComboBox cbDataInicialOS = new JComboBox();
 
@@ -54,7 +54,7 @@ public class PainelListagemOS extends JPanel {
 		textField = new JTextField();
 		textField.setColumns(10);
 
-		JButton btnEditarOs = new JButton("Editar OS");
+		JButton btnEditarOs = new JButton("Visualizar OS");
 		btnEditarOs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (telaEditarOS == null) {
@@ -69,7 +69,7 @@ public class PainelListagemOS extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(50)
-					.addComponent(lblListagemDeOrdens, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblConsultaDeOrdens, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(59)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
@@ -100,7 +100,7 @@ public class PainelListagemOS extends JPanel {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(13)
-					.addComponent(lblListagemDeOrdens, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblConsultaDeOrdens, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
 					.addGap(72)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()

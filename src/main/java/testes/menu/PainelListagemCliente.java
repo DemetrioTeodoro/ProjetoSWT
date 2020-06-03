@@ -25,8 +25,8 @@ public class PainelListagemCliente extends JPanel {
 	 */
 	public PainelListagemCliente() {
 
-		JLabel lblListagemClientes = new JLabel("Listagem de Clientes");
-		lblListagemClientes.setFont(new Font("Tahoma", Font.BOLD, 15));
+		JLabel lblConsultaClientes = new JLabel("Consulta de Clientes");
+		lblConsultaClientes.setFont(new Font("Tahoma", Font.BOLD, 15));
 
 		JLabel lblCPFCNPJ = new JLabel("CPF/CNPJ:");
 
@@ -47,7 +47,7 @@ public class PainelListagemCliente extends JPanel {
 			}
 		});
 
-		JButton btnEditar = new JButton("Editar");
+		JButton btnEditar = new JButton("Visualizar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (telaEditarCliente == null) {
@@ -62,7 +62,7 @@ public class PainelListagemCliente extends JPanel {
 		textField.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(lblListagemClientes,
+				.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(lblConsultaClientes,
 						GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup().addGap(68)
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(lblNomeCliente)
@@ -80,7 +80,7 @@ public class PainelListagemCliente extends JPanel {
 						.addComponent(btnEditar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup().addGap(13)
-						.addComponent(lblListagemClientes, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblConsultaClientes, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
 						.addGap(60)
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup().addGap(58).addComponent(lblNomeCliente)

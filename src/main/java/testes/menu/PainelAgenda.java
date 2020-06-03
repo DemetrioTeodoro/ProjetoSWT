@@ -15,10 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
+import com.github.lgooddatepicker.components.DatePicker;
 
 public class PainelAgenda extends JPanel {
-	private JTextField txtInicio;
-	private JTextField txtTermino;
 	private JTable tblAgenda;
 	private String[] colunasTabelaAgenda = { " Nº Ordem Serviço ", " Profissional (contato) "," Descrição do Serviço " , " Endereço ", " Cliente(contato) "};
 	
@@ -34,22 +33,6 @@ public class PainelAgenda extends JPanel {
 		JLabel lblInicio = new JLabel("Data de In\u00EDcio (*)");
 		
 		JLabel lblTermino = new JLabel("Data de T\u00E9rmino (*)");
-		
-		txtInicio = new JTextField();
-		txtInicio.setColumns(10);
-		
-		JButton btCalendarioInicio = new JButton("");
-		btCalendarioInicio.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
-		btCalendarioInicio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
-		txtTermino = new JTextField();
-		txtTermino.setColumns(10);
-		
-		JButton btCalendarioTermino = new JButton("");
-		btCalendarioTermino.setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
 				
 		JLabel lblNomeProf = new JLabel("Nome Profissional (CPF) :");
 		
@@ -69,6 +52,14 @@ public class PainelAgenda extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
+		
+		DatePicker datePicker = new DatePicker();
+		datePicker.getComponentToggleCalendarButton().setText("");
+		datePicker.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
+		
+		DatePicker datePicker_1 = new DatePicker();
+		datePicker_1.getComponentToggleCalendarButton().setText("");
+		datePicker_1.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelAgenda.class.getResource("/icones/calendar-icon.png")));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -76,31 +67,29 @@ public class PainelAgenda extends JPanel {
 					.addGap(25)
 					.addComponent(lblNewLabel))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(25)
-					.addComponent(lblInicio, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-					.addGap(105)
-					.addComponent(lblTermino, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-					.addGap(324)
+					.addGap(674)
 					.addComponent(btnNewButton_1, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
 					.addGap(177)
 					.addComponent(btExportar))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(22)
+					.addGap(21)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblInicio, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(txtInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(1)
-							.addComponent(btCalendarioInicio, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-							.addGap(77)
-							.addComponent(txtTermino, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(1)
-							.addComponent(btCalendarioTermino, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+							.addGap(4)
+							.addComponent(datePicker, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblTermino, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(lblNomeProf, GroupLayout.PREFERRED_SIZE, 218, GroupLayout.PREFERRED_SIZE)
-						.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 362, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(129)
+							.addGap(4)
+							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 355, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(126)
 							.addComponent(btnNewButton)))
-					.addGap(6)
+					.addGap(12)
 					.addComponent(tblAgenda, GroupLayout.PREFERRED_SIZE, 680, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
@@ -110,31 +99,25 @@ public class PainelAgenda extends JPanel {
 					.addComponent(lblNewLabel)
 					.addGap(15)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblInicio))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblTermino))
 						.addComponent(btnNewButton_1)
 						.addComponent(btExportar))
-					.addGap(1)
+					.addGap(14)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(txtInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btCalendarioInicio, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtTermino, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btCalendarioTermino, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addComponent(lblNomeProf)
+							.addComponent(lblInicio)
 							.addGap(6)
-							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(64)
-							.addComponent(btnNewButton))
-						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(datePicker, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(28)
+							.addComponent(lblTermino)
 							.addGap(13)
-							.addComponent(tblAgenda, GroupLayout.PREFERRED_SIZE, 439, GroupLayout.PREFERRED_SIZE))))
+							.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(24)
+							.addComponent(lblNomeProf)
+							.addGap(13)
+							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(56)
+							.addComponent(btnNewButton))
+						.addComponent(tblAgenda, GroupLayout.PREFERRED_SIZE, 439, GroupLayout.PREFERRED_SIZE)))
 		);
 		setLayout(groupLayout);
 

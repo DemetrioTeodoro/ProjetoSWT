@@ -88,8 +88,12 @@ public class PainelCadastroOS01 extends JPanel {
 		JLabel lblDataPrevistaTermino = new JLabel("Data Prevista Termino:");
 
 		DatePicker datePicker = new DatePicker();
+		datePicker.getComponentToggleCalendarButton().setText("");
+		datePicker.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/calendar-icon.png")));
 
 		DatePicker datePicker_1 = new DatePicker();
+		datePicker_1.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/calendar-icon.png")));
+		datePicker_1.getComponentToggleCalendarButton().setText("");
 
 		JLabel lblCategoria = new JLabel("Categoria:");
 
@@ -107,8 +111,8 @@ public class PainelCadastroOS01 extends JPanel {
 
 		JComboBox comboBox = new JComboBox();
 
-		JButton btnCadastrar = new JButton("Cadastrar");
-		btnCadastrar.addActionListener(new ActionListener() {
+		JButton btnVisualizar = new JButton("Visualizar");
+		btnVisualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				telaPDF.setVisible(true);
 				telaPDF.setLocationRelativeTo(null);
@@ -124,6 +128,9 @@ public class PainelCadastroOS01 extends JPanel {
 		JButton btnLimpar = new JButton("Limpar");
 		
 		JLabel lblGeradorNumero = new JLabel("GeradorNumero");
+		lblGeradorNumero.setEnabled(false);
+		
+		JCheckBox chckbxFinalizada = new JCheckBox("Finalizada");
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -136,7 +143,9 @@ public class PainelCadastroOS01 extends JPanel {
 					.addGap(7)
 					.addComponent(lblGeradorNumero)
 					.addGap(7)
-					.addComponent(label))
+					.addComponent(label)
+					.addGap(227)
+					.addComponent(chckbxFinalizada, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(51)
 					.addComponent(lblCliente)
@@ -178,10 +187,10 @@ public class PainelCadastroOS01 extends JPanel {
 					.addComponent(datePicker, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(12)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblDataPrevistaTermino, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(140)
-							.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblDataPrevistaTermino, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(51)
 					.addComponent(lblCategoria)
@@ -197,19 +206,26 @@ public class PainelCadastroOS01 extends JPanel {
 					.addGap(151)
 					.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 					.addGap(249)
-					.addComponent(btnCadastrar))
+					.addComponent(btnVisualizar))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(13)
 					.addComponent(lblCadastroOrdemDeServio)
-					.addGap(14)
+					.addGap(10)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNumeroOS)
-						.addComponent(lblGeradorNumero)
-						.addComponent(label))
-					.addGap(34)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblNumeroOS))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblGeradorNumero))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(label))
+						.addComponent(chckbxFinalizada))
+					.addGap(29)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(3)
@@ -254,10 +270,10 @@ public class PainelCadastroOS01 extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(2)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGap(2)
-									.addComponent(lblDataPrevistaTermino)))))
+									.addComponent(lblDataPrevistaTermino))
+								.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 					.addGap(37)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -274,7 +290,7 @@ public class PainelCadastroOS01 extends JPanel {
 					.addGap(52)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnLimpar)
-						.addComponent(btnCadastrar)))
+						.addComponent(btnVisualizar)))
 		);
 		setLayout(groupLayout);
 

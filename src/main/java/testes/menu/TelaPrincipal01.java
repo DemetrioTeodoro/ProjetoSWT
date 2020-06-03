@@ -109,8 +109,13 @@ public class TelaPrincipal01 extends JFrame {
 				new ImageIcon(TelaPrincipal01.class.getResource("/icones/icons8-organiza\u00E7\u00E3o-50.png")));
 		menuBar.add(mnEmpresa);
 
-		JMenuItem mnitCategorias = new JMenuItem("Categorias");
-		mnitCategorias.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/list-icon-24px.png")));
+		JMenuItem mnitCategorias = new JMenuItem("Agenda");
+		mnitCategorias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				abrir(painelAgenda);
+			}
+		});
+		mnitCategorias.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/calendar-icon-empresa.png")));
 		mnitCategorias.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 		mnEmpresa.add(mnitCategorias);
 
@@ -124,19 +129,7 @@ public class TelaPrincipal01 extends JFrame {
 				new ImageIcon(TelaPrincipal01.class.getResource("/icones/10512-man-construction-worker-icon-24px.png")));
 		mnitProfissionais.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
 		mnEmpresa.add(mnitProfissionais);
-
-		JMenu mnAgenda = new JMenu("Agenda");
 		
-		mnAgenda.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/icons8-calendar-50.png")));
-		menuBar.add(mnAgenda);
-		
-		JMenuItem mntmAbrir = new JMenuItem("Abrir");
-		mntmAbrir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				abrir(painelAgenda);
-			}
-		});
-		mnAgenda.add(mntmAbrir);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new SpringLayout());

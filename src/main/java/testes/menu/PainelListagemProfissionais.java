@@ -93,13 +93,22 @@ public class PainelListagemProfissionais extends JPanel {
 		tblProfissionais = new JTable();
 		limparTabela();
 		
+		JButton btnVisualizar = new JButton("Visualizar");
+		btnVisualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				telaCadEditProfissional.setVisible(true);
+				telaCadEditProfissional.setLocationRelativeTo(null);
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(27)
 					.addComponent(lblNewLabel)
-					.addGap(566)
+					.addGap(258)
+					.addComponent(btnVisualizar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+					.addGap(211)
 					.addComponent(btAdicionar, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(42)
@@ -138,17 +147,21 @@ public class PainelListagemProfissionais extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(116)
 							.addComponent(btnConsultar)))
-					.addPreferredGap(ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-					.addComponent(tblProfissionais, GroupLayout.PREFERRED_SIZE, 571, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addGap(65)
+					.addComponent(tblProfissionais, GroupLayout.PREFERRED_SIZE, 571, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(25)
+					.addGap(23)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel)
-						.addComponent(btAdicionar))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(2)
+							.addComponent(lblNewLabel))
+						.addComponent(btnVisualizar)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(2)
+							.addComponent(btAdicionar)))
 					.addGap(26)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -196,9 +209,8 @@ public class PainelListagemProfissionais extends JPanel {
 							.addGap(44)
 							.addComponent(btnConsultar))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(tblProfissionais, GroupLayout.PREFERRED_SIZE, 511, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+							.addGap(4)
+							.addComponent(tblProfissionais, GroupLayout.PREFERRED_SIZE, 511, GroupLayout.PREFERRED_SIZE))))
 		);
 		setLayout(groupLayout);
 		

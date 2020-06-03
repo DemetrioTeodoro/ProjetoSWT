@@ -156,7 +156,7 @@ public class TelaPDF extends JFrame {
 		label_26.setBounds(36, 125, 736, 743);
 		panel.add(label_26);
 		
-		JButton btnCriar = new JButton("Criar");
+		JButton btnCriar = new JButton("Cadastrar");
 		btnCriar.setBounds(766, 612, 97, 25);
 		contentPane.add(btnCriar);
 		

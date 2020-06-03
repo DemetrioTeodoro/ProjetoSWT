@@ -60,21 +60,21 @@ public class TelaEditarOS extends JFrame {
 		contentPane.add(lblNumOrdemServico);
 
 		JLabel lblGeradorNumero = new JLabel("GeradorNumero");
-		lblGeradorNumero.setEnabled(false);
 		lblGeradorNumero.setBounds(198, 64, 91, 16);
+		lblGeradorNumero.setEnabled(false);
 		contentPane.add(lblGeradorNumero);
 
 		JLabel lblAno = new JLabel("/2020");
 		lblAno.setBounds(296, 64, 33, 16);
 		contentPane.add(lblAno);
 
-		JCheckBox chckbxFinalizada = new JCheckBox("Finalizada");
-		chckbxFinalizada.setBounds(556, 60, 113, 25);
+		JCheckBox chckbxFinalizada = new JCheckBox("Servi\u00E7o Finalizado");
+		chckbxFinalizada.setBounds(526, 60, 143, 25);
 		contentPane.add(chckbxFinalizada);
 
 		JLabel lblEdicaoDaOrdem = new JLabel("Edi\u00E7\u00E3o da Ordem de Servi\u00E7o");
-		lblEdicaoDaOrdem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblEdicaoDaOrdem.setBounds(33, 13, 217, 16);
+		lblEdicaoDaOrdem.setFont(new Font("Tahoma", Font.BOLD, 15));
 		contentPane.add(lblEdicaoDaOrdem);
 
 		JLabel lblCliente = new JLabel("Cliente:");
@@ -86,8 +86,8 @@ public class TelaEditarOS extends JFrame {
 		contentPane.add(cbCliente);
 
 		JLabel lblEndereco = new JLabel("Endere\u00E7o");
-		lblEndereco.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblEndereco.setBounds(72, 145, 56, 15);
+		lblEndereco.setFont(new Font("Tahoma", Font.BOLD, 12));
 		contentPane.add(lblEndereco);
 
 		JCheckBox chckbxMesmoEnderecoDo = new JCheckBox("Mesmo endere\u00E7o do Cliente");
@@ -99,8 +99,8 @@ public class TelaEditarOS extends JFrame {
 		try {
 			formatoCep = new MaskFormatter("#####-###");
 			txtCep = new JFormattedTextField(formatoCep);
+			txtCep.setBounds(143, 224, 98, 22);
 			txtCep.setColumns(10);
-			txtCep.setBounds(104, 224, 137, 22);
 			contentPane.add(txtCep);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -112,12 +112,12 @@ public class TelaEditarOS extends JFrame {
 		contentPane.add(lblCEP);
 
 		txtBairro = new JTextField();
+		txtBairro.setBounds(325, 224, 344, 22);
 		txtBairro.setColumns(10);
-		txtBairro.setBounds(303, 224, 366, 22);
 		contentPane.add(txtBairro);
 
 		JLabel lblBairro = new JLabel("Bairro:");
-		lblBairro.setBounds(259, 227, 39, 16);
+		lblBairro.setBounds(276, 227, 39, 16);
 		contentPane.add(lblBairro);
 
 		JLabel lblRua = new JLabel("Rua:");
@@ -125,25 +125,25 @@ public class TelaEditarOS extends JFrame {
 		contentPane.add(lblRua);
 
 		txtRua = new JTextField();
+		txtRua.setBounds(143, 276, 346, 22);
 		txtRua.setColumns(10);
-		txtRua.setBounds(104, 276, 354, 22);
 		contentPane.add(txtRua);
 
 		JLabel lblNumero = new JLabel("N\u00FAmero");
-		lblNumero.setBounds(476, 279, 45, 16);
+		lblNumero.setBounds(499, 279, 45, 16);
 		contentPane.add(lblNumero);
 
 		txtNumero = new JTextField();
+		txtNumero.setBounds(554, 276, 115, 22);
 		txtNumero.setColumns(10);
-		txtNumero.setBounds(526, 276, 143, 22);
 		contentPane.add(txtNumero);
 
 		JTextArea txtArea = new JTextArea();
-		txtArea.setBounds(142, 316, 527, 84);
+		txtArea.setBounds(143, 316, 526, 84);
 		contentPane.add(txtArea);
 
 		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o:");
-		lblDescricao.setBounds(70, 319, 60, 16);
+		lblDescricao.setBounds(70, 319, 77, 16);
 		contentPane.add(lblDescricao);
 
 		JLabel lblDataInicial = new JLabel("Data Inicial:");
@@ -151,21 +151,21 @@ public class TelaEditarOS extends JFrame {
 		contentPane.add(lblDataInicial);
 
 		DatePicker datePicker = new DatePicker();
+		datePicker.setBounds(143, 417, 187, 22);
 		datePicker.getComponentToggleCalendarButton()
 				.setIcon(new ImageIcon(TelaEditarOS.class.getResource("/icones/calendar-icon.png")));
 		datePicker.getComponentToggleCalendarButton().setText("");
-		datePicker.setBounds(143, 417, 187, 22);
 		contentPane.add(datePicker);
 
 		JLabel lblDataTermino = new JLabel("Data Prevista Termino:");
-		lblDataTermino.setBounds(342, 421, 144, 16);
+		lblDataTermino.setBounds(349, 421, 130, 16);
 		contentPane.add(lblDataTermino);
 
 		DatePicker datePicker_1 = new DatePicker();
+		datePicker_1.setBounds(482, 419, 187, 22);
 		datePicker_1.getComponentToggleCalendarButton()
 				.setIcon(new ImageIcon(TelaEditarOS.class.getResource("/icones/calendar-icon.png")));
 		datePicker_1.getComponentToggleCalendarButton().setText("");
-		datePicker_1.setBounds(482, 419, 187, 22);
 		contentPane.add(datePicker_1);
 
 		JLabel lblCategoria = new JLabel("Categoria:");
@@ -173,15 +173,15 @@ public class TelaEditarOS extends JFrame {
 		contentPane.add(lblCategoria);
 
 		JComboBox cbCategoria = new JComboBox();
-		cbCategoria.setBounds(142, 481, 188, 22);
+		cbCategoria.setBounds(143, 481, 175, 22);
 		contentPane.add(cbCategoria);
 
 		JLabel lblProfissional = new JLabel("Profissionais:");
-		lblProfissional.setBounds(342, 481, 76, 16);
+		lblProfissional.setBounds(328, 481, 90, 16);
 		contentPane.add(lblProfissional);
 
 		JComboBox cbProfissional = new JComboBox();
-		cbProfissional.setBounds(423, 478, 187, 22);
+		cbProfissional.setBounds(430, 477, 187, 22);
 		contentPane.add(cbProfissional);
 
 		JButton btnLimpar = new JButton("Limpar");
@@ -193,8 +193,8 @@ public class TelaEditarOS extends JFrame {
 		contentPane.add(btnConfirmarEdicao);
 
 		JButton button_1 = new JButton("");
-		button_1.setIcon(new ImageIcon(TelaEditarOS.class.getResource("/icones/Button-Add-icon.png")));
 		button_1.setBounds(620, 477, 49, 25);
+		button_1.setIcon(new ImageIcon(TelaEditarOS.class.getResource("/icones/Button-Add-icon.png")));
 		contentPane.add(button_1);
 	}
 }

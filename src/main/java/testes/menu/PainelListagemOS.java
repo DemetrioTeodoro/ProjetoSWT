@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -11,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 
 public class PainelListagemOS extends JPanel {
 	private TelaEditarOS telaEditarOS = null;
@@ -57,44 +57,45 @@ public class PainelListagemOS extends JPanel {
 		JButton btnEditarOs = new JButton("Visualizar OS");
 		btnEditarOs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (telaEditarOS == null) {
 					telaEditarOS = new TelaEditarOS();
 					telaEditarOS.setVisible(true);
 					telaEditarOS.setLocationRelativeTo(null);
-				}
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(50)
-					.addComponent(lblConsultaDeOrdens, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(59)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNomeCliente)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(11)
-							.addComponent(textField, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblCategoria)
+							.addGap(50)
+							.addComponent(lblConsultaDeOrdens, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(11)
-							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblNumeroOS, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+							.addGap(59)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNomeCliente)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(11)
+									.addComponent(textField, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblCategoria)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(11)
+									.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblNumeroOS, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(10)
+									.addComponent(cbDataInicialOS, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(72)
+									.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
+							.addGap(93)
+							.addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 818, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addComponent(cbDataInicialOS, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(72)
-							.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)))
-					.addGap(93)
-					.addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 818, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(477)
-					.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
-					.addGap(236)
-					.addComponent(btnEditarOs, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
+							.addGap(477)
+							.addComponent(btnFechar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+							.addGap(236)
+							.addComponent(btnEditarOs, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)))
+					.addGap(134))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -122,8 +123,8 @@ public class PainelListagemOS extends JPanel {
 							.addComponent(tblOrdemServico, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)))
 					.addGap(50)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnFechar)
-						.addComponent(btnEditarOs)))
+						.addComponent(btnEditarOs)
+						.addComponent(btnFechar)))
 		);
 		setLayout(groupLayout);
 

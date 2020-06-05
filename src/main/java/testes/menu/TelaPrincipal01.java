@@ -110,12 +110,12 @@ public class TelaPrincipal01 extends JFrame {
 		menuBar.add(mnEmpresa);
 
 		JMenuItem mnitCategorias = new JMenuItem("Agenda");
+		mnitCategorias.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/calendar-icon-empresa.png")));
 		mnitCategorias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				abrir(painelAgenda);
 			}
 		});
-		mnitCategorias.setIcon(new ImageIcon(TelaPrincipal01.class.getResource("/icones/calendar-icon-empresa.png")));
 		mnitCategorias.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 		mnEmpresa.add(mnitCategorias);
 

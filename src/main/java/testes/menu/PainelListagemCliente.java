@@ -49,11 +49,9 @@ public class PainelListagemCliente extends JPanel {
 		JButton btnEditar = new JButton("Visualizar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (telaEditarCliente == null) {
 					telaEditarCliente = new TelaEditarCliente();
 					telaEditarCliente.setVisible(true);
 					telaEditarCliente.setLocationRelativeTo(null);
-				}
 			}
 		});
 

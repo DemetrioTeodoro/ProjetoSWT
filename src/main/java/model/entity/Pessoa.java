@@ -3,7 +3,6 @@ package model.entity;
 import java.time.LocalDate;
 
 public abstract class Pessoa {
-
 	private Integer id;
 	private String nome;
 	private String inscricao;
@@ -17,15 +16,7 @@ public abstract class Pessoa {
 		super();
 
 	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
+	
 	public String getNome() {
 		return nome;
 	}

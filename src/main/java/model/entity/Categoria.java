@@ -1,13 +1,29 @@
 package model.entity;
 
 public class Categoria {
+	
+	private int id;
 
 	private String nome;
 
 	public Categoria() {
-		super();
-
+		
 	}
+	
+	public Categoria(String nome) {
+		super();
+		this.nome = nome;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 
 	public String getNome() {
 		return nome;

@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 import model.entity.Endereco;
 
 public class EnderecoDAO implements BaseDAO<Endereco> {
@@ -15,14 +14,19 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 	public Endereco salvar(Endereco endereco) {
 		Connection conexao = Banco.getConnection();
 
-		String sql = " INSERT INTO ENDERECO (CEP, ESTADO, CIDADE, RUA, BAIRRO, NUMERO) " + " VALUES ( "
-				+ endereco.getCep() + ", " + endereco.getEstado() + "," + endereco.getCidade() + ", "
-				+ endereco.getRua() + "," + endereco.getBairro() + "," + endereco.getNumero() + ")";
+		String sql = " INSERT INTO ENDERECO (CEP, ESTADO, CIDADE, RUA, BAIRRO, NUMERO) "
+				+ " VALUES ( ?, ?, ?, ?, ?, ?)";
 
-		PreparedStatement statement = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 		try {
-			statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
-			ResultSet resultado = statement.getGeneratedKeys();
+			stmt.setString(1, endereco.getCep());
+			stmt.setString(2, endereco.getEstado());
+			stmt.setString(3, endereco.getCidade());
+			stmt.setString(4, endereco.getRua());
+			stmt.setString(5, endereco.getBairro());
+			stmt.setString(6, endereco.getNumero());
+			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			ResultSet resultado = stmt.getGeneratedKeys();
 
 			if (resultado.next()) {
 				endereco.setId(resultado.getInt(1));
@@ -49,7 +53,7 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 			stmt.setInt(7, endereco.getId());
 
 			registrosAlterados = stmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			System.out.println("Erro ao atualizar endereço.");
 			System.out.println("Erro: " + e.getMessage());

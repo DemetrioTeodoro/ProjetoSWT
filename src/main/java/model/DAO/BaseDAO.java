@@ -6,12 +6,12 @@ public interface BaseDAO<T> {
 
 	public T salvar(T entity);
 
-	public T atualizar(T entity);
+	public boolean atualizar(T entity);
 
-	public boolean deletar(T entity);
+	public boolean excluir(int id);
 
-	public T listarPorId(T entity);
+	public T consultarPorId(int id);
 
-	public ArrayList<T> listarTodos(T entity);
+	public ArrayList<T> listarTodos();
 
 }

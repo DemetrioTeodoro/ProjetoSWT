@@ -11,12 +11,12 @@ public class OrdemServico {
 	private String descricao;
 	private LocalDate dataInicio;
 	private LocalDate dataPrevistaFim;
-	private boolean servicoFinalizado;
+	private LocalDate dataTermino;
 	private ArrayList<Categoria>categorias;
 	private ArrayList<Profissional> profissionais;
 		
 	public OrdemServico(String numeroOS, Cliente cliente, Endereco endereco, String descricao, LocalDate dataInicio,
-			LocalDate dataPrevistaFim, boolean servicoFinalizado, ArrayList<Categoria> categorias,
+			LocalDate dataPrevistaFim, LocalDate dataTermino, ArrayList<Categoria> categorias,
 			ArrayList<Profissional> profissionais) {
 		super();
 		this.numeroOS = numeroOS;
@@ -25,7 +25,7 @@ public class OrdemServico {
 		this.descricao = descricao;
 		this.dataInicio = dataInicio;
 		this.dataPrevistaFim = dataPrevistaFim;
-		this.servicoFinalizado = servicoFinalizado;
+		this.dataTermino = dataTermino;
 		this.categorias = categorias;
 		this.profissionais = profissionais;
 	}
@@ -72,12 +72,15 @@ public class OrdemServico {
 	public void setDataPrevistaFim(LocalDate dataPrevistaFim) {
 		this.dataPrevistaFim = dataPrevistaFim;
 	}
-	public boolean isServicoFinalizado() {
-		return servicoFinalizado;
+	
+	public LocalDate getDataTermino() {
+		return dataTermino;
 	}
-	public void setServicoFinalizado(boolean servicoFinalizado) {
-		this.servicoFinalizado = servicoFinalizado;
+
+	public void setDataTermino(LocalDate dataTermino) {
+		this.dataTermino = dataTermino;
 	}
+
 	public ArrayList<Categoria> getCategorias() {
 		return categorias;
 	}
@@ -95,7 +98,7 @@ public class OrdemServico {
 	public String toString() {
 		return "OrdemServico [numeroOS=" + numeroOS + ", cliente=" + cliente + ", endereco=" + endereco + ", descricao="
 				+ descricao + ", dataInicio=" + dataInicio + ", dataPrevistaFim=" + dataPrevistaFim
-				+ ", servicoFinalizado=" + servicoFinalizado + ", categorias=" + categorias + ", profissionais="
+				+  ", categorias=" + categorias + ", profissionais="
 				+ profissionais + "]";
 	}
 	

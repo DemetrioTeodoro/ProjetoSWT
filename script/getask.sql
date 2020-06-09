@@ -16,7 +16,7 @@ create table cliente (
   id_endereco int(11) not null,
   nome varchar(255) not null,
   inscricao varchar(45) not null unique,
-  ecpf boolean not null,
+  cpf boolean not null,
   ativo boolean not null,
   data_cadastro date not null,
   telefone int(14) not null,

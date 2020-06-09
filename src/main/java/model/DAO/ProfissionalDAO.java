@@ -4,23 +4,24 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-
+import model.entity.Categoria;
 import model.entity.Endereco;
 import model.entity.Profissional;
 
-public class ProfissionalDAO implements BaseDAO<Profissional>{
+
+public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 	public Profissional salvar(Profissional profissional) {
-		//Primeiro salvar o endereço para gerar o idEndereco
+
 		EnderecoDAO endDAO = new EnderecoDAO();
 		Endereco endereco = endDAO.salvar(profissional.getEndereco());
-		
+
 		Connection conexao = Banco.getConnection();
-		String sql = " INSERT INTO PROFISSIONAL (nome, cpf, telefone, email, data_cadastro, ativo, id_endereco) " + " VALUES (?,?,?,?,?,?,?) ";
-		
+		String sql = " INSERT INTO PROFISSIONAL (nome, cpf, telefone, email, data_cadastro, ativo, id_endereco) "
+				+ " VALUES (?,?,?,?,?,?,?) ";
+
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		try {
 			stmt.setString(1, profissional.getNome());
@@ -33,39 +34,173 @@ public class ProfissionalDAO implements BaseDAO<Profissional>{
 			stmt.execute();
 
 			ResultSet rs = stmt.getGeneratedKeys();
-		
+
 			if (rs.next()) {
 				profissional.setId(rs.getInt(1));
 			}
+
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar profissional. Causa: " + e.getMessage());
 		}
+
+		vincularProfissionalCategoria(profissional.getId(), profissional.getCategorias());
+
 		return profissional;
 	}
-	
-	private void salvarEndereco(Endereco endereco) {
-		// TODO Auto-generated method stub
-		
+
+	private void vincularProfissionalCategoria(int idProfissional, ArrayList<Categoria> categorias) {
+
+		for (int i = 0; i < categorias.size(); i++) {
+
+			Connection conexao = Banco.getConnection();
+			String sql = "INSERT INTO  PROFISSIONAL_CATEGORIA (id_categoria, id_profissional)" + "VALUES (?,?)";
+
+			PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			try {
+				stmt.setInt(1, idProfissional);
+				stmt.setInt(2, categorias.get(i).getId());
+
+			} catch (Exception e) {
+				System.out.println(" Erro ao salvar vinculo profissional x categoria. Causa: " + e.getMessage());
+			}
+
+		}
 	}
 
 	public boolean atualizar(Profissional profissional) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		EnderecoDAO endDAO = new EnderecoDAO();
+		Endereco endereco = null;
 
-	public boolean excluir(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		if (!verficarOSVinculadaEndereco(profissional.getEndereco().getId())) {
+			endDAO.atualizar(profissional.getEndereco());
+		} else {
+			endereco = endDAO.salvar(profissional.getEndereco());
+		}
+
+		Connection conexao = Banco.getConnection();
+		String sql = " UPDATE PROFISSIONAL SET nome=?, cpf=?, telefone=?, email=?, data_cadastro=?, ativo=?, id_endereco=? WHERE id = ?";
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		int registrosAlterados = 0;
+
+		try {
+			stmt.setString(1, profissional.getNome());
+			stmt.setString(2, profissional.getInscricao());
+			stmt.setString(3, profissional.getTelefone());
+			stmt.setString(4, profissional.getEmail());
+			stmt.setDate(5, java.sql.Date.valueOf(profissional.getDataCadastro()));
+			stmt.setBoolean(6, profissional.isAtivo());
+			if (endereco == null) {
+				stmt.setInt(7, profissional.getEndereco().getId());
+			} else {
+				stmt.setInt(7, endereco.getId());
+			}
+
+			registrosAlterados = stmt.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao atualizar dados do proffisional.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return registrosAlterados > 0;
 	}
+	
+ // PASSAR O MÉTODO PARA A OrdemServicoDAO
+	private boolean verficarOSVinculadaEndereco(int idEndereco) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT id FROM ORDEMSERVICO OS " + " WHERE OS.id_endereco = " + idEndereco;
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		boolean enderecoVinculado = false;
+
+		try{
+			ResultSet rs = stmt.executeQuery();
+			enderecoVinculado = rs.next();
+		} catch (SQLException e) {
+			System.out.println("Erro ao verificar se endereço está vinculado a alguma OS. Causa: " + e.getMessage());
+		}
+
+		return enderecoVinculado;
+		}
 
 	public Profissional consultarPorId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM PROFISSIONAL WHERE id = " + id;
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		Profissional profissional = null;
+		
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				profissional = construirResultSet(rs);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissional por id = " + id);
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return profissional;
+	}
+
+	private Profissional construirResultSet(ResultSet rs) {
+		Profissional p = new Profissional();
+		
+		try {
+			p.setId(rs.getInt("id"));
+			p.setNome(rs.getString("nome"));
+			p.setInscricao(rs.getString("cpf"));
+			p.setTelefone(rs.getString("telefone"));
+			p.setEmail(rs.getString("email"));
+			p.setDataCadastro(rs.getDate("data_cadastro").toLocalDate());
+			p.setAtivo(rs.getBoolean("ativo"));
+
+			EnderecoDAO enderecoDAO = new EnderecoDAO();
+			Endereco end = enderecoDAO.consultarPorId(rs.getInt("id_endereco"));
+			p.setEndereco(end);
+			
+			CategoriaDAO categoriaDAO = new CategoriaDAO();
+			ArrayList<Categoria> categorias = categoriaDAO.consultarCategoriasPorIdProfissional(rs.getInt("id"));
+			p.setCategorias(categorias);
+	
+		}catch (Exception e) {
+			System.out.println("Erro ao construir resultSet profissional. Causa:"+ e.getMessage());
+		}
+		return p;
+	
 	}
 
 	public ArrayList<Profissional> listarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM PROFISSIONAL P ";
+
+		/*if (seletor.temFiltro()) {
+			sql = criarFiltros(sql, seletor);
+		}*/
+
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Profissional p = construirResultSet(rs);
+				profissionais.add(p);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissionais.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+		return profissionais;
+	}
+
+	public boolean excluir(int id) {
+		// Profissionais serão apenas desativados
+		return false;
 	}
 
 }

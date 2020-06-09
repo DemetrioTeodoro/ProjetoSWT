@@ -2,7 +2,7 @@ package model.entity;
 
 public class Endereco {
 
-	private Integer id;
+	private int id;
 	private String rua;
 	private String numero;
 	private String bairro;
@@ -10,18 +10,31 @@ public class Endereco {
 	private String estado;
 	private String cep;
 
+	
 	public Endereco() {
 		super();
 
 	}
+		
+	public Endereco(String rua, String numero, String bairro, String cidade, String estado, String cep) {
+		super();
+		this.rua = rua;
+		this.numero = numero;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.cep = cep;
+	}
 
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+
+	public void setId(int id) {
 		this.id = id;
 	}
+
 
 	public String getRua() {
 		return rua;

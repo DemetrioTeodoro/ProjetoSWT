@@ -14,7 +14,7 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 	public Endereco salvar(Endereco endereco) {
 		Connection conexao = Banco.getConnection();
 
-		String sql = " INSERT INTO ENDERECO (CEP, ESTADO, CIDADE, RUA, BAIRRO, NUMERO) "
+		String sql = " INSERT INTO ENDERECO (cep, estado, cidade, rua, bairro, numero) "
 				+ " VALUES ( ?, ?, ?, ?, ?, ?)";
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
@@ -39,7 +39,7 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 
 	public boolean atualizar(Endereco endereco) {
 		Connection conexao = Banco.getConnection();
-		String sql = " UPDATE ENDERECO SET CEP=?, ESTADO=?, CIDADE=?, RUA=?, BAIRRO=?, NUMERO=? WHERE ID = ?";
+		String sql = " UPDATE ENDERECO SET cep=?, estado=?, cidade=?, rua=?, bairro=?, numero=? WHERE id = ?";
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 		int registrosAlterados = 0;
 
@@ -63,7 +63,7 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 	}
 
 	public boolean excluir(int id) {
-		String sql = " DELETE FROM endereco WHERE id = ?";
+		String sql = " DELETE FROM ENDERECO WHERE id = ?";
 
 		Connection conexao = Banco.getConnection();
 		PreparedStatement preparedStatement = Banco.getPreparedStatement(conexao, sql);
@@ -80,7 +80,7 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 	}
 
 	public Endereco consultarPorId(int id) {
-		String sql = " SELECT * FROM endereco WHERE id = ?";
+		String sql = " SELECT * FROM ENDERECO WHERE id = ?";
 
 		Connection conexao = Banco.getConnection();
 		PreparedStatement preparedStatement = Banco.getPreparedStatement(conexao, sql);
@@ -115,7 +115,7 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 	}
 
 	public ArrayList<Endereco> listarTodos() {
-		String sql = " SELECT * FROM endereco ";
+		String sql = " SELECT * FROM ENDERECO ";
 
 		Connection conexao = Banco.getConnection();
 		PreparedStatement preparedStatement = Banco.getPreparedStatement(conexao, sql);

@@ -11,7 +11,7 @@ import model.entity.Categoria;
 public class CategoriaDAO {
 	
 	public ArrayList<Categoria> listarTodos() {
-		String sql = " SELECT * FROM categoria ";
+		String sql = " SELECT * FROM CATEGORIA ";
 
 		Connection conexao = Banco.getConnection();
 		PreparedStatement preparedStatement = Banco.getPreparedStatement(conexao, sql);

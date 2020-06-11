@@ -1,6 +1,7 @@
 package model.DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +10,6 @@ import java.util.ArrayList;
 import model.entity.Categoria;
 import model.entity.Endereco;
 import model.entity.Profissional;
-
 
 public class ProfissionalDAO implements BaseDAO<Profissional> {
 
@@ -28,7 +28,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			stmt.setString(2, profissional.getInscricao());
 			stmt.setString(3, profissional.getTelefone());
 			stmt.setString(4, profissional.getEmail());
-			stmt.setDate(5, java.sql.Date.valueOf(profissional.getDataCadastro()));
+			stmt.setDate(5, Date.valueOf(profissional.getDataCadastro()));
 			stmt.setBoolean(6, profissional.isAtivo());
 			stmt.setInt(7, endereco.getId());
 			stmt.execute();
@@ -88,7 +88,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			stmt.setString(2, profissional.getInscricao());
 			stmt.setString(3, profissional.getTelefone());
 			stmt.setString(4, profissional.getEmail());
-			stmt.setDate(5, java.sql.Date.valueOf(profissional.getDataCadastro()));
+			stmt.setDate(5, Date.valueOf(profissional.getDataCadastro()));
 			stmt.setBoolean(6, profissional.isAtivo());
 			if (endereco == null) {
 				stmt.setInt(7, profissional.getEndereco().getId());
@@ -105,8 +105,8 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		return registrosAlterados > 0;
 	}
-	
- // PASSAR O MÉTODO PARA A OrdemServicoDAO
+
+	// PASSAR O MÉTODO PARA A OrdemServicoDAO
 	private boolean verficarOSVinculadaEndereco(int idEndereco) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT id FROM ORDEMSERVICO OS " + " WHERE OS.id_endereco = " + idEndereco;
@@ -114,7 +114,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		boolean enderecoVinculado = false;
 
-		try{
+		try {
 			ResultSet rs = stmt.executeQuery();
 			enderecoVinculado = rs.next();
 		} catch (SQLException e) {
@@ -122,7 +122,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		}
 
 		return enderecoVinculado;
-		}
+	}
 
 	public Profissional consultarPorId(int id) {
 		Connection conexao = Banco.getConnection();
@@ -130,7 +130,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
 		Profissional profissional = null;
-		
+
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 
@@ -148,7 +148,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 	private Profissional construirResultSet(ResultSet rs) {
 		Profissional p = new Profissional();
-		
+
 		try {
 			p.setId(rs.getInt("id"));
 			p.setNome(rs.getString("nome"));
@@ -161,25 +161,25 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			EnderecoDAO enderecoDAO = new EnderecoDAO();
 			Endereco end = enderecoDAO.consultarPorId(rs.getInt("id_endereco"));
 			p.setEndereco(end);
-			
+
 			CategoriaDAO categoriaDAO = new CategoriaDAO();
 			ArrayList<Categoria> categorias = categoriaDAO.consultarCategoriasPorIdProfissional(rs.getInt("id"));
 			p.setCategorias(categorias);
-	
-		}catch (Exception e) {
-			System.out.println("Erro ao construir resultSet profissional. Causa:"+ e.getMessage());
+
+		} catch (Exception e) {
+			System.out.println("Erro ao construir resultSet profissional. Causa:" + e.getMessage());
 		}
 		return p;
-	
+
 	}
 
 	public ArrayList<Profissional> listarTodos() {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT * FROM PROFISSIONAL P ";
 
-		/*if (seletor.temFiltro()) {
-			sql = criarFiltros(sql, seletor);
-		}*/
+		/*
+		 * if (seletor.temFiltro()) { sql = criarFiltros(sql, seletor); }
+		 */
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 

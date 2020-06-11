@@ -10,14 +10,23 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import model.entity.Cliente;
+import model.entity.Endereco;
 
 public class ClienteDAO implements BaseDAO<Cliente> {
 
 	public Cliente salvar(Cliente cliente) {
 		Connection conexao = Banco.getConnection();
 
-		String sql = " INSERT INTO CLIENTE ( nome, inscricao, cpf, ativo, data_cadastro, telefone, email) "
-				+ " VALUES ( ?, ?, ?, ?, ?, ?, ?)";
+		Endereco endereco = null;
+		if (cliente.getEndereco() != null) {
+			EnderecoDAO enderecoDAO = new EnderecoDAO();
+
+			endereco = enderecoDAO.salvar(cliente.getEndereco());
+
+		}
+
+		String sql = " INSERT INTO CLIENTE ( nome, inscricao, cpf, ativo, data_cadastro, telefone, email, id_endereco) "
+				+ " VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 		try {
@@ -28,6 +37,7 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			stmt.setDate(5, Date.valueOf(cliente.getDataCadastro()));
 			stmt.setInt(6, Integer.parseInt(cliente.getTelefone()));
 			stmt.setString(7, cliente.getEmail());
+			stmt.setInt(8, endereco.getId());
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 			ResultSet resultado = stmt.getGeneratedKeys();
 
@@ -42,6 +52,11 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 
 	public boolean atualizar(Cliente cliente) {
 		Connection conexao = Banco.getConnection();
+
+		EnderecoDAO enderecoDAO = new EnderecoDAO();
+
+		boolean enderecoAtualizado = enderecoDAO.atualizar(cliente.getEndereco());
+
 		String sql = " UPDATE CLIENTE SET nome=?, inscricao=?, cpf=?, ativo=?, data_cadastro=?, telefone=? email=? WHERE id = ?";
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 		int registrosAlterados = 0;
@@ -97,18 +112,33 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 				clienteConsultado = construirClienteDoResultSet(conjuntoResultante);
 			}
 		} catch (SQLException ex) {
-			System.out.println(" Erro ao consultar endereço. Id: " + id + " .Causa: " + ex.getMessage());
+			System.out.println(" Erro ao consultar cliente. Id: " + id + " .Causa: " + ex.getMessage());
 		}
 		return clienteConsultado;
 	}
 
 	public ArrayList<Cliente> listarTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		String sql = " SELECT * FROM CLIENTE ";
+
+		Connection conexao = Banco.getConnection();
+		PreparedStatement preparedStatement = Banco.getPreparedStatement(conexao, sql);
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		try {
+			ResultSet conjuntoResultante = preparedStatement.executeQuery();
+			while (conjuntoResultante.next()) {
+				Cliente cliente = construirClienteDoResultSet(conjuntoResultante);
+				clientes.add(cliente);
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(" Erro ao consultar todos os cliente. Causa: " + ex.getMessage());
+		}
+		return clientes;
 	}
 
 	private Cliente construirClienteDoResultSet(ResultSet conjuntoResultante) {
 		Cliente cliente = new Cliente();
+		EnderecoDAO enderecoDAO = new EnderecoDAO();
 		try {
 			cliente.setId(conjuntoResultante.getInt("id"));
 			cliente.setNome(conjuntoResultante.getString("nome"));
@@ -118,6 +148,7 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			cliente.setDataCadastro(LocalDate.parse((CharSequence) conjuntoResultante.getDate("data_cadastro")));
 			cliente.setTelefone(conjuntoResultante.getString("telefone"));
 			cliente.setEmail(conjuntoResultante.getString("email"));
+			cliente.setEndereco(enderecoDAO.consultarPorId(cliente.getEndereco().getId()));
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao construir cliente a partir do ResultSet. Causa: " + ex.getMessage());
 		}

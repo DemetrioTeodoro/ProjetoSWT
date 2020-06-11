@@ -2,56 +2,57 @@ Drop database if exists getask;
 create database getask;
 use getask;
 create table endereco (
-  idendereco int(11) not null auto_increment,
-  cep varchar(255) not null,
-  estado varchar(255) not null,
-  cidade varchar(255) not null,
-  bairro varchar(255) not null,
-  numero varchar(255) not null,
-  rua varchar(255) not null,
-  primary key(idendereco)
+  id int(11) not null auto_increment,
+  cep varchar(9) not null,
+  estado varchar(2) not null,
+  cidade varchar(100) not null,
+  bairro varchar(100) not null,
+  numero varchar(45) not null,
+  rua varchar(150) not null,
+  primary key(id)
 );
 create table cliente (
-  idcliente int(11) not null auto_increment,
+  id int(11) not null auto_increment,
   id_endereco int(11) not null,
-  nome varchar(255) not null,
-  inscricao varchar(45) not null unique,
-  cpf boolean not null,
+  nome varchar(100) not null,
+  inscricao varchar(18) not null unique,
+  ecpf boolean not null,
   ativo boolean not null,
   data_cadastro date not null,
   telefone int(14) not null,
-  email varchar(10) not null,
-  primary key(idcliente),
-  foreign key (id_endereco) references endereco (idendereco)
+  email varchar(100) not null,
+  primary key(id),
+  foreign key (id_endereco) references endereco (id)
 );
 create table profissional (
-  idprofissional int(11) not null auto_increment,
+  id int(11) not null auto_increment,
   id_endereco int(11) not null,
-  nome varchar(255) not null,
+  nome varchar(100) not null,
   cpf int(14) not null unique,
   telefone int(14) not null,
   email varchar(10) not null,
   data_cadastro date not null,
   ativo boolean not null,
-  primary key(idprofissional),
-  foreign key (id_endereco) references endereco (idendereco)
+  primary key(id),
+  foreign key (id_endereco) references endereco (id)
  );
 create table categoria (
-  idcategoria int(11) not null auto_increment,
-  nome varchar(255) not null,
-  primary key(idcategoria)
+  id int(11) not null auto_increment,
+  nome varchar(45) not null,
+  primary key(id)
   );
   create table profissional_categoria (
-   idprofissional_categorias  int(11) not null auto_increment,
+   id  int(11) not null auto_increment,
    id_categoria int(11) not null,
    id_profissional int(11) not null,
-   primary key(idprofissional_categorias),
-   foreign key (id_categoria) references  categoria (idcategoria),
-   foreign key (id_profissional) references  profissional (idprofissional)
+   primary key(id),
+   foreign key (id_categoria) references  categoria (id),
+   foreign key (id_profissional) references  profissional (id)
    );  
 create table ordem_servico (
-  idordem_servico int(11) not null auto_increment,
+  id int(11) not null auto_increment,
   id_cliente int(11) not null,
+  id_endereco int(11) not null,
   numero_os varchar(45) not null,
   descricao varchar(255),
   data_cadastro date not null,
@@ -59,23 +60,24 @@ create table ordem_servico (
   data_termino_previsto date not null,
   data_termino date ,
   primary key(idordem_servico),
-  foreign key(id_cliente) references cliente (idcliente)
+  foreign key(id_cliente) references cliente (id),
+  foreign key(id_endereco) references endereco (id)
  );
 create table ordem_servico_categoria(
-	idordem_servico_categoria  int(11) not null auto_increment,
+	id  int(11) not null auto_increment,
     id_ordem_servico int(11) not null ,
     id_categoria int(11) not null,
-	primary key(idordem_servico_categoria),
-    foreign key (id_ordem_servico) references  ordem_servico (idordem_servico),
-    foreign key (id_categoria) references  categoria (idcategoria)
+	primary key(id),
+    foreign key (id_ordem_servico) references  ordem_servico (id),
+    foreign key (id_categoria) references  categoria (id)
 );
 create table ordem_servico_profissional(
-	idordem_servico_profissional int(11) not null auto_increment,
+	id int(11) not null auto_increment,
 	id_ordem_servico int(11) not null ,
 	id_profissional int(11) not null,
-	primary key(idordem_servico_profissional),
-	foreign key (id_ordem_servico) references  ordem_servico (idordem_servico),
-	foreign key (id_profissional) references  profissional (idprofissional)
+	primary key(id),
+	foreign key (id_ordem_servico) references  ordem_servico (id),
+	foreign key (id_profissional) references  profissional (id)
 );
     
     

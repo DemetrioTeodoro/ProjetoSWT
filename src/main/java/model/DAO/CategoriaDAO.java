@@ -27,7 +27,7 @@ public class CategoriaDAO {
 				categorias.add(c);
 			}
 		} catch (SQLException ex) {
-			System.out.println(" Erro ao consultar endereços. Causa: " + ex.getMessage());
+			System.out.println(" Erro ao consultar categorias. Causa: " + ex.getMessage());
 		}
 		return categorias;
 	}
@@ -35,7 +35,7 @@ public class CategoriaDAO {
 	public ArrayList<Categoria> consultarCategoriasPorIdProfissional(int idProfissional) {
 		String sql = " SELECT * FROM CATEGORIA AS C "+
 	                 " INNER JOIN PROFISSIONAL_CATEGORIA AS PC "+
-				     " ON C.idcategoria = PC.idcategoria "+
+				     " ON C.idcategoria = PC.id_categoria "+
 	                 " WHERE PC.id_profissional = ?";
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);

@@ -16,7 +16,7 @@ import model.entity.Profissional;
 
 public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 
-	@Override
+
 	public OrdemServico salvar(OrdemServico ordemServico) {
 		Connection conexao = Banco.getConnection();
 

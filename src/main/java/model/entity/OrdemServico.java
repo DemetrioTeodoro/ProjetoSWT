@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class OrdemServico {
-	private Integer id;
+	private int id;
 	private String numeroOS;
 	private Cliente cliente;
 	private Endereco endereco;
@@ -30,10 +30,10 @@ public class OrdemServico {
 		this.profissionais = profissionais;
 	}
 	
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getNumeroOS() {

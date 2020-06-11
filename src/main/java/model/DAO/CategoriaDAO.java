@@ -71,5 +71,10 @@ public class CategoriaDAO {
 		
 		return c;
 	}
+
+	public ArrayList<Categoria> consultarCategoriasPorOrdemServico(int int1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

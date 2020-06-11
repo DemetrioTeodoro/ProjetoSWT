@@ -17,15 +17,19 @@ import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
 
-import control.CategoriaControl;
+import controller.CategoriaController;
+import controller.ProfissionalController;
 import model.BO.CategoriaBO;
 import model.entity.Categoria;
+import model.entity.Profissional;
 import testes.menu.Estados;
 
 import javax.swing.JCheckBox;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaCadEditProfissional extends JFrame {
 
@@ -133,7 +137,7 @@ public class TelaCadEditProfissional extends JFrame {
 
 		JLabel lblCategoria = new JLabel("Categoria :");
 
-		CategoriaControl catControl = new CategoriaControl();
+		CategoriaController catControl = new CategoriaController();
 		
 		JComboBox cbCategoria = new JComboBox(catControl.listarCategorias().toArray());
 
@@ -144,6 +148,12 @@ public class TelaCadEditProfissional extends JFrame {
 		textField_7.setColumns(10);
 
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProfissionalController control = new ProfissionalController();
+				control.salvar(profissional);
+			}
+		});
 
 		JButton btnLimpar = new JButton("Limpar");
 		contentPane.setLayout(null);

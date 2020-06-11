@@ -199,8 +199,27 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 	}
 
 	public boolean excluir(int id) {
-		// Profissionais serão apenas desativados
+		// Profissionais serão apenas desativados no Cadastro ou Edição.
 		return false;
+	}
+
+	public boolean cpfJaUtilizado(String cpf) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM PROFISSIONAL P "+
+					 " WHERE P.cpf = "+ cpf; 	
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		
+		boolean cpfUsado = false;
+		
+		try {
+			ResultSet rs = stmt.executeQuery();
+			cpfUsado = rs.next();
+			
+		} catch (Exception e) {
+			System.out.println("Erro ao verificar se o cpf já está sendo utilizado.Causa:"+ e.getMessage());
+		}
+		
+		return cpfUsado;
 	}
 
 }

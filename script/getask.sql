@@ -19,7 +19,7 @@ create table cliente (
   ecpf boolean not null,
   ativo boolean not null,
   data_cadastro date not null,
-  telefone int(14) not null,
+  telefone varchar(14) not null,
   email varchar(100) not null,
   primary key(id),
   foreign key (id_endereco) references endereco (id)
@@ -28,8 +28,8 @@ create table profissional (
   id int(11) not null auto_increment,
   id_endereco int(11) not null,
   nome varchar(100) not null,
-  cpf int(14) not null unique,
-  telefone int(14) not null,
+  cpf varchar(14) not null unique,
+  telefone varchar(14) not null,
   email varchar(10) not null,
   data_cadastro date not null,
   ativo boolean not null,
@@ -59,7 +59,7 @@ create table ordem_servico (
   data_inicio date not null,
   data_termino_previsto date not null,
   data_termino date ,
-  primary key(idordem_servico),
+  primary key(id),
   foreign key(id_cliente) references cliente (id),
   foreign key(id_endereco) references endereco (id)
  );

@@ -190,10 +190,10 @@ public class PainelCadastroOS01 extends JPanel {
 				endereco.setRua(rua);
 				endereco.setNumero(numero);
 				
-				telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categorias, profissionais, endereco);
+				/*telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categorias, profissionais, endereco);
 				
 				telaPDF.setVisible(true);
-				telaPDF.setLocationRelativeTo(null);
+				telaPDF.setLocationRelativeTo(null);*/
 			}
 		});
 

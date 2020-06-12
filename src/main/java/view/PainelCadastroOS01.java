@@ -133,12 +133,22 @@ public class PainelCadastroOS01 extends JPanel {
 
 			public void actionPerformed(ActionEvent arg0) {
 				String numeroOS = lblGeradorNumero.getText();
+				ArrayList<Cliente> clientes = null;
 				Cliente cliente = new Cliente();
 				cliente.setNome("Arnaldo dos Testes");
 				cliente.setAtivo(false);
 				cliente.setEmail("fafdadfsdfas");
 				cliente.setEhCpf(false);
 				cliente.setId(1);
+				
+				Cliente cliente2 = new Cliente();
+				cliente2.setNome("Arnaldo 2222dos Testes");
+				cliente2.setAtivo(false);
+				cliente2.setEmail("fafdadfsdfas");
+				cliente2.setEhCpf(false);
+				cliente2.setId(1);
+				clientes.add(cliente);
+				clientes.add(cliente2);
 				
 				
 				//cliente = (Cliente) cbCliente.getSelectedItem();
@@ -155,11 +165,21 @@ public class PainelCadastroOS01 extends JPanel {
 				}
 				LocalDate dataInicial = dateInicial.getDate();
 				LocalDate dataPrevistaFinal = datePrevistaFinal.getDate();
+				ArrayList<Categoria> categorias = null;
 				Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
+				categorias.add(categoria);
 				Profissional profissional = new Profissional();
+				ArrayList<Profissional> profissionais = null;
 				profissional.setNome("Godofredo Vagner");
 				profissional.setAtivo(true);
 				profissional.setId(1);
+				Profissional profissional2 = new Profissional();
+				profissional2.setNome("Godofredo222 Vagner");
+				profissional2.setAtivo(true);
+				profissional2.setId(2);
+				profissionais.add(profissional);
+				profissionais.add(profissional2);
+				System.out.println(profissionais);
 				//Profissional profissional = (Profissional) cbProfissional.getSelectedItem();
 				
 				//TODO Validação
@@ -170,7 +190,7 @@ public class PainelCadastroOS01 extends JPanel {
 				endereco.setRua(rua);
 				endereco.setNumero(numero);
 				
-				telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categoria, profissional,endereco);
+				telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categorias, profissionais, endereco);
 				
 				telaPDF.setVisible(true);
 				telaPDF.setLocationRelativeTo(null);

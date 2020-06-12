@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,9 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.OrdemServicoController;
 import model.entity.Categoria;
 import model.entity.Cliente;
 import model.entity.Endereco;
+import model.entity.OrdemServico;
 import model.entity.Profissional;
 
 public class TelaPDF extends JFrame {
@@ -31,10 +34,11 @@ public class TelaPDF extends JFrame {
 	private JLabel lblCategoriaDoc;
 	private JLabel lblCategoriaDoc2;
 	private JLabel lblProfissionalDoc;
-	private Categoria categorias;
-	private Profissional profissionais;
-	private Cliente clientes;
+	private ArrayList<Categoria> categoriasTela;
+	private ArrayList<Profissional> profissionaisTela;
+	private Cliente clienteTela;
 	private JLabel lblNomeRua;
+	private OrdemServicoController ordemServicoController = new OrdemServicoController();
 
 	/**
 	 * Launch the application.
@@ -179,26 +183,40 @@ public class TelaPDF extends JFrame {
 
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
+			private String descricao;
+
 			public void actionPerformed(ActionEvent arg0) {
 				String numeroOS = lblNumeroOSDoc.getText();
-				int idCliente = clientes.getId();
 				String cep = lblCepDoc.getText();
 				String bairro = lblBairroDoc.getText();
 				String rua = lblNomeRua.getText();
 				String numero = lblNumeroEndDoc.getText();
 				if (lblDescricaoDoc.getText() != null) {
-					String descricao = lblDescricaoDoc.getText();
+					descricao = lblDescricaoDoc.getText();
 				}
 				LocalDate dataInicial = LocalDate.parse(lblDataInicialDoc.getText());
 				LocalDate dataPrevistaFinal = LocalDate.parse(lblDataFinalDoc.getText());
-				int idCategoria = categorias.getId();
-				int idProfissioanl = profissionais.getId();
-				
+				/*
+				 * int idCategoria = categorias.getId(); int idProfissioanl =
+				 * profissionais.getId();
+				 */
+
 				Endereco endereco = new Endereco();
 				endereco.setCep(cep);
 				endereco.setBairro(bairro);
 				endereco.setRua(rua);
 				endereco.setNumero(numero);
+
+				OrdemServico ordemServico = new OrdemServico();
+				ordemServico.setCategorias(categoriasTela);
+				ordemServico.setCliente(clienteTela);
+				ordemServico.setEndereco(endereco);
+				ordemServico.setProfissionais(profissionaisTela);
+				ordemServico.setDataInicio(dataInicial);
+				ordemServico.setDataPrevistaFim(dataPrevistaFinal);
+				ordemServico.setDescricao(descricao);
+
+				ordemServico = ordemServicoController.cadastrarOS(ordemServico);
 			}
 		});
 		btnCadastrar.setBounds(766, 612, 97, 25);
@@ -214,13 +232,13 @@ public class TelaPDF extends JFrame {
 		contentPane.add(btnCancelar);
 	}
 
-	public void getDados(String numeroOS, Cliente cliente, String descricao, LocalDate dataInicial,
-			LocalDate dataPrevistaFinal, Categoria categoria, Profissional profissional, Endereco endereco) {
-		
-		categorias = categoria;
-		profissionais = profissional;
-		clientes = cliente;
-		
+	public void getDados(String numeroOS, Cliente clientes, String descricao, LocalDate dataInicial,
+			LocalDate dataPrevistaFinal, ArrayList<Categoria> categorias, ArrayList<Profissional> profissionais,
+			Endereco endereco) {
+		categoriasTela = categorias;
+		profissionaisTela = profissionais;
+		clienteTela = clientes;
+
 		lblDescricaoDoc.setText(descricao);
 		lblBairroDoc.setText(endereco.getBairro());
 		lblDataInicialDoc.setText(dataInicial.toString());
@@ -228,7 +246,29 @@ public class TelaPDF extends JFrame {
 		lblCepDoc.setText(endereco.getCep());
 		lblNomeRua.setText(endereco.getRua());
 		lblNumeroEndDoc.setText(endereco.getNumero());
-		lblCategoriaDoc.setText(categoria.getNome());
-		lblProfissionalDoc.setText(profissional.getNome());
+		for (int i = 0; i < profissionais.size(); i++) {
+			lblProfissionalDoc.setText(profissionais.toString());
+			
+		}
+		lblCategoriaDoc.setText(categorias.toString());
 	}
+
+	/*
+	 * public void getDados(String numeroOS, Cliente cliente, String descricao,
+	 * LocalDate dataInicial, LocalDate dataPrevistaFinal, Categoria categoria,
+	 * Profissional profissional, Endereco endereco) {
+	 * 
+	 * categoriasTela = categorias; profissionais = profissionais; clientes =
+	 * cliente;
+	 * 
+	 * lblDescricaoDoc.setText(descricao);
+	 * lblBairroDoc.setText(endereco.getBairro());
+	 * lblDataInicialDoc.setText(dataInicial.toString());
+	 * lblDataFinalDoc.setText(dataPrevistaFinal.toString());
+	 * lblCepDoc.setText(endereco.getCep()); lblNomeRua.setText(endereco.getRua());
+	 * lblNumeroEndDoc.setText(endereco.getNumero());
+	 * lblCategoriaDoc.setText(categoria.getNome());
+	 * lblProfissionalDoc.setText(profissional.getNome()); }
+	 */
+
 }

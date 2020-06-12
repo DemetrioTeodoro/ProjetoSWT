@@ -23,11 +23,17 @@ import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
 
+import model.entity.Categoria;
+import model.entity.Cliente;
 import model.entity.Endereco;
-
-import javax.swing.LayoutStyle.ComponentPlacement;
+import model.entity.Profissional;
 
 public class PainelCadastroOS01 extends JPanel {
+	private String cep;
+	private String bairro;
+	private String rua;
+	private String numero;
+	private String descricao;
 	private Date dataAtual = new Date();
 	private JTextField txtRua;
 	private JTextField txtNumero;
@@ -118,15 +124,10 @@ public class PainelCadastroOS01 extends JPanel {
 
 		JButton btnVisualizar = new JButton("Visualizar");
 		btnVisualizar.addActionListener(new ActionListener() {
-			private String cep;
-			private String bairro;
-			private String rua;
-			private String numero;
-			private String descricao;
 
 			public void actionPerformed(ActionEvent arg0) {
 				String numeroOS = lblGeradorNumero.getText();
-				int idCliente = cbCliente.getSelectedIndex();
+				Cliente idCliente = (Cliente) cbCliente.getSelectedItem();
 				if (chckbxMesmoEnderecoDo.isSelected()) {
 					//TODO
 				} else {
@@ -140,8 +141,8 @@ public class PainelCadastroOS01 extends JPanel {
 				}
 				LocalDate dataInicial = dateInicial.getDate();
 				LocalDate dataPrevistaFinal = datePrevistaFinal.getDate();
-				int idCategoria = cbCategoria.getSelectedIndex();
-				int idProfissioanl = cbProfissional.getSelectedIndex();
+				Categoria idCategoria = (Categoria) cbCategoria.getSelectedItem();
+				Profissional idProfissioanl = (Profissional) cbProfissional.getSelectedItem();
 				
 				//TODO Validação
 				

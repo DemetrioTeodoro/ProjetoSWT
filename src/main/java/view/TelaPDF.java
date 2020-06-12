@@ -12,7 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import model.entity.Categoria;
+import model.entity.Cliente;
 import model.entity.Endereco;
+import model.entity.Profissional;
 
 public class TelaPDF extends JFrame {
 
@@ -170,9 +173,34 @@ public class TelaPDF extends JFrame {
 		lblDocPDF.setBounds(36, 125, 736, 743);
 		panel.add(lblDocPDF);
 
-		JButton btnCriar = new JButton("Cadastrar");
-		btnCriar.setBounds(766, 612, 97, 25);
-		contentPane.add(btnCriar);
+		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String numeroOS = lblNumeroOSDoc.getText();
+				String idCliente = lblCategoriaDoc.getText();
+				String cep = lblCepDoc.getText();
+				String bairro = lblBairroDoc.getText();
+				String rua = lblNomeRua.getText();
+				String numero = lblNumeroEndDoc.getText();
+				if (lblDescricaoDoc.getText() != null) {
+					String descricao = lblDescricaoDoc.getText();
+				}
+				LocalDate dataInicial = LocalDate.parse(lblDataInicialDoc.getText());
+				LocalDate dataPrevistaFinal = LocalDate.parse(lblDataFinalDoc.getText());
+				/*String idCategoria = cbCategoria.getSelectedIndex();
+				String idProfissioanl = cbProfissional.getSelectedIndex();*/
+				
+				//TODO Validação
+				
+				Endereco endereco = new Endereco();
+				endereco.setCep(cep);
+				endereco.setBairro(bairro);
+				endereco.setRua(rua);
+				endereco.setNumero(numero);
+			}
+		});
+		btnCadastrar.setBounds(766, 612, 97, 25);
+		contentPane.add(btnCadastrar);
 
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -184,8 +212,8 @@ public class TelaPDF extends JFrame {
 		contentPane.add(btnCancelar);
 	}
 
-	public void getDados(String numeroOS, int idCliente, String descricao, LocalDate dataInicial,
-			LocalDate dataPrevistaFinal, int idCategoria, int idProfissioanl, Endereco endereco) {
+	public void getDados(String numeroOS, Cliente idCliente, String descricao, LocalDate dataInicial,
+			LocalDate dataPrevistaFinal, Categoria idCategoria, Profissional idProfissioanl, Endereco endereco) {
 		
 		lblDescricaoDoc.setText(descricao);
 		lblBairroDoc.setText(endereco.getBairro());
@@ -193,5 +221,7 @@ public class TelaPDF extends JFrame {
 		lblDataFinalDoc.setText(dataPrevistaFinal.toString());
 		lblCepDoc.setText(endereco.getCep());
 		lblNumeroEndDoc.setText(endereco.getNumero());
+		lblCategoriaDoc.setText(idCategoria.getNome());
+		lblProfissionalDoc.setText(idProfissioanl.getNome());
 	}
 }

@@ -19,11 +19,10 @@ import javax.swing.text.MaskFormatter;
 
 import controller.CategoriaController;
 import controller.ProfissionalController;
+import helpers.Estados;
 import model.BO.CategoriaBO;
 import model.entity.Categoria;
 import model.entity.Profissional;
-
-import testes.menu.Estados;
 
 import javax.swing.JCheckBox;
 import javax.swing.GroupLayout;

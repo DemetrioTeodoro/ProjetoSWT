@@ -19,7 +19,7 @@ import javax.swing.ImageIcon;
 
 public class PainelListagemProfissionais extends JPanel {
 	
-	private TelaCadEditProfissional telaCadEditProfissional = new TelaCadEditProfissional();
+	private TelaCadEditProfissionalx telaCadEditProfissional = new TelaCadEditProfissionalx();
 	private JTextField txtNome;
 	private JTextField txtQdeOS;
 	private JTextField txtDataInicio;

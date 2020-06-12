@@ -35,8 +35,9 @@ public class ProfissionalController {
 		p.setEmail(email);
 		p.setInscricao(cpf);
 		p.setEndereco(e);
-
-		profBO.salvar(p);
+		
+		
+		msg = profBO.salvar(p);
 
 		return msg;
 	}

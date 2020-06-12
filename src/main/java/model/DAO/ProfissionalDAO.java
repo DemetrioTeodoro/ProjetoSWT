@@ -38,12 +38,11 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			if (rs.next()) {
 				profissional.setId(rs.getInt(1));
 			}
+			vincularProfissionalCategoria(profissional.getId(), profissional.getCategorias());
 
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar profissional. Causa: " + e.getMessage());
 		}
-
-		vincularProfissionalCategoria(profissional.getId(), profissional.getCategorias());
 
 		return profissional;
 	}
@@ -53,15 +52,20 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		for (int i = 0; i < categorias.size(); i++) {
 
 			Connection conexao = Banco.getConnection();
-			String sql = "INSERT INTO  PROFISSIONAL_CATEGORIA (id_categoria, id_profissional)" + "VALUES (?,?)";
+			String sql = "INSERT INTO  PROFISSIONAL_CATEGORIA (id_profissional, id_categoria)" + "VALUES (?,?)";
 
 			PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			try {
 				stmt.setInt(1, idProfissional);
 				stmt.setInt(2, categorias.get(i).getId());
+				stmt.execute();
 
 			} catch (Exception e) {
 				System.out.println(" Erro ao salvar vinculo profissional x categoria. Causa: " + e.getMessage());
+
+			} finally {
+				Banco.closeStatement(stmt);
+				Banco.closeConnection(conexao);
 			}
 
 		}
@@ -205,20 +209,19 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 	public boolean cpfJaUtilizado(String cpf) {
 		Connection conexao = Banco.getConnection();
-		String sql = " SELECT * FROM PROFISSIONAL P "+
-					 " WHERE P.cpf = '"+ cpf+"'"; 	
+		String sql = " SELECT * FROM PROFISSIONAL P " + " WHERE P.cpf = '" + cpf + "'";
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
-		
+
 		boolean cpfUsado = false;
-		
+
 		try {
 			ResultSet rs = stmt.executeQuery();
 			cpfUsado = rs.next();
-			
+
 		} catch (Exception e) {
-			System.out.println("Erro ao verificar se o cpf já está sendo utilizado.Causa:"+ e.getMessage());
+			System.out.println("Erro ao verificar se o cpf já está sendo utilizado.Causa:" + e.getMessage());
 		}
-		
+
 		return cpfUsado;
 	}
 

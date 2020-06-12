@@ -66,7 +66,6 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		return ordemServico;
 	}
 
-	@Override
 	public boolean atualizar(OrdemServico ordemServico) {
 		String sql = " UPDATE ORDEM_SERVICO SET numero=?, descricao=?, data_cadastro=?, data_inicio=?, data_termino_previsto=?, data_termino=?, id_cliente=?, id_endereco=? "
 				+ " WHERE id=?";
@@ -119,7 +118,6 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		return registrosAlterados > 0;
 	}
 
-	@Override
 	public boolean excluir(int id) {
 
 		String sql = " DELETE FROM ORDEM_SERVICO WHERE id = ?";
@@ -138,7 +136,6 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		return excluiu;
 	}
 
-	@Override
 	public OrdemServico consultarPorId(int id) {
 		String sql = " SELECT * FROM ORDEM_SERVICO WHERE id = " + id;
 
@@ -162,7 +159,6 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		return ordemServico;
 	}
 
-	@Override
 	public ArrayList<OrdemServico> listarTodos() {
 
 		String sql = " SELECT * FROM ORDEM_SERVICO ";

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.swing.GroupLayout;
@@ -21,6 +22,9 @@ import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
+
+import model.entity.Endereco;
+
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class PainelCadastroOS01 extends JPanel {
@@ -32,6 +36,7 @@ public class PainelCadastroOS01 extends JPanel {
 	private JTextArea txtDescricao;
 	private String[] nomes = { "Thaisa Mom CPF: 12345678910", "Demetrio CPF: 12345678911" };
 	private TelaPDF telaPDF = new TelaPDF();
+	private JLabel lblGeradorNumero;
 
 	/**
 	 * Create the panel.
@@ -87,13 +92,13 @@ public class PainelCadastroOS01 extends JPanel {
 
 		JLabel lblDataPrevistaTermino = new JLabel("Data Prevista Termino:");
 
-		DatePicker datePicker = new DatePicker();
-		datePicker.getComponentToggleCalendarButton().setText("");
-		datePicker.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/calendar-icon.png")));
+		DatePicker dateInicial = new DatePicker();
+		dateInicial.getComponentToggleCalendarButton().setText("");
+		dateInicial.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/calendar-icon.png")));
 
-		DatePicker datePicker_1 = new DatePicker();
-		datePicker_1.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/calendar-icon.png")));
-		datePicker_1.getComponentToggleCalendarButton().setText("");
+		DatePicker datePrevistaFinal = new DatePicker();
+		datePrevistaFinal.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/calendar-icon.png")));
+		datePrevistaFinal.getComponentToggleCalendarButton().setText("");
 
 		JLabel lblCategoria = new JLabel("Categoria:");
 
@@ -102,18 +107,52 @@ public class PainelCadastroOS01 extends JPanel {
 		JButton btnAdd = new JButton("");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
 			}
 		});
 		btnAdd.setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/Button-Add-icon.png")));
 
 		JLabel lblProfissionais = new JLabel("Profissionais:");
 
-		JComboBox comboBox = new JComboBox();
+		JComboBox cbProfissional = new JComboBox();
 
 		JButton btnVisualizar = new JButton("Visualizar");
 		btnVisualizar.addActionListener(new ActionListener() {
+			private String cep;
+			private String bairro;
+			private String rua;
+			private String numero;
+			private String descricao;
+
 			public void actionPerformed(ActionEvent arg0) {
+				String numeroOS = lblGeradorNumero.getText();
+				int idCliente = cbCliente.getSelectedIndex();
+				if (chckbxMesmoEnderecoDo.isSelected()) {
+					//TODO
+				} else {
+					cep = txtCep.getText();
+					bairro = txtBairro.getText();
+					rua = txtRua.getText();
+					numero = txtNumero.getText();
+				}
+				if (txtDescricao.getText() != null) {
+					descricao = txtDescricao.getText();
+				}
+				LocalDate dataInicial = dateInicial.getDate();
+				LocalDate dataPrevistaFinal = datePrevistaFinal.getDate();
+				int idCategoria = cbCategoria.getSelectedIndex();
+				int idProfissioanl = cbProfissional.getSelectedIndex();
+				
+				//TODO Validação
+				
+				Endereco endereco = new Endereco();
+				endereco.setCep(cep);
+				endereco.setBairro(bairro);
+				endereco.setRua(rua);
+				endereco.setNumero(numero);
+				
+				telaPDF.getDados(numeroOS, idCliente, descricao, dataInicial, dataPrevistaFinal, idCategoria, idProfissioanl,endereco);
+				
 				telaPDF.setVisible(true);
 				telaPDF.setLocationRelativeTo(null);
 			}
@@ -127,7 +166,7 @@ public class PainelCadastroOS01 extends JPanel {
 
 		JButton btnLimpar = new JButton("Limpar");
 		
-		JLabel lblGeradorNumero = new JLabel("GeradorNumero");
+		lblGeradorNumero = new JLabel("GeradorNumero");
 		lblGeradorNumero.setEnabled(false);
 		
 		JCheckBox chckbxFinalizada = new JCheckBox("Finalizada");
@@ -184,13 +223,13 @@ public class PainelCadastroOS01 extends JPanel {
 					.addGap(51)
 					.addComponent(lblDataInicial)
 					.addGap(5)
-					.addComponent(datePicker, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(dateInicial, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(12)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblDataPrevistaTermino, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(140)
-							.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+							.addComponent(datePrevistaFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(51)
 					.addComponent(lblCategoria)
@@ -199,7 +238,7 @@ public class PainelCadastroOS01 extends JPanel {
 					.addGap(4)
 					.addComponent(lblProfissionais)
 					.addGap(5)
-					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 187, GroupLayout.PREFERRED_SIZE)
+					.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 187, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(btnAdd))
 				.addGroup(groupLayout.createSequentialGroup()
@@ -266,14 +305,14 @@ public class PainelCadastroOS01 extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(2)
 							.addComponent(lblDataInicial))
-						.addComponent(datePicker, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(dateInicial, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(2)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGap(2)
 									.addComponent(lblDataPrevistaTermino))
-								.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(datePrevistaFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 					.addGap(37)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -285,7 +324,7 @@ public class PainelCadastroOS01 extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(3)
 							.addComponent(lblProfissionais))
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnAdd))
 					.addGap(52)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)

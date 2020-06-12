@@ -25,9 +25,11 @@ import javax.swing.text.MaskFormatter;
 import com.github.lgooddatepicker.components.DatePicker;
 
 import controller.CategoriaController;
+import controller.OrdemServicoController;
 import model.entity.Categoria;
 import model.entity.Cliente;
 import model.entity.Endereco;
+import model.entity.OrdemServico;
 import model.entity.Profissional;
 
 public class PainelCadastroOS01 extends JPanel {
@@ -45,6 +47,7 @@ public class PainelCadastroOS01 extends JPanel {
 	private String[] nomes = { "Thaisa Mom CPF: 12345678910", "Demetrio CPF: 12345678911" };
 	private TelaPDF telaPDF = new TelaPDF();
 	private JLabel lblGeradorNumero;
+	private OrdemServicoController ordemServicoController = new OrdemServicoController();
 	private CategoriaController categoriaController = new CategoriaController();
 	private ArrayList<Categoria> categorias;
 	private JComboBox cbCategoria;
@@ -133,55 +136,30 @@ public class PainelCadastroOS01 extends JPanel {
 
 			public void actionPerformed(ActionEvent arg0) {
 				String numeroOS = lblGeradorNumero.getText();
-				ArrayList<Cliente> clientes = null;
 				Cliente cliente = new Cliente();
-				cliente.setNome("Arnaldo dos Testes");
-				cliente.setAtivo(false);
-				cliente.setEmail("fafdadfsdfas");
-				cliente.setEhCpf(false);
-				cliente.setId(1);
-				
-				Cliente cliente2 = new Cliente();
-				cliente2.setNome("Arnaldo 2222dos Testes");
-				cliente2.setAtivo(false);
-				cliente2.setEmail("fafdadfsdfas");
-				cliente2.setEhCpf(false);
-				cliente2.setId(1);
-				clientes.add(cliente);
-				clientes.add(cliente2);
-				
 				
 				//cliente = (Cliente) cbCliente.getSelectedItem();
-				if (chckbxMesmoEnderecoDo.isSelected()) {
+				
+				/*if (chckbxMesmoEnderecoDo.isSelected()) {
 					//TODO
 				} else {
 					cep = txtCep.getText();
 					bairro = txtBairro.getText();
 					rua = txtRua.getText();
 					numero = txtNumero.getText();
-				}
-				if (txtDescricao.getText() != null) {
+				}*/
+		
 					descricao = txtDescricao.getText();
-				}
+				
 				LocalDate dataInicial = dateInicial.getDate();
 				LocalDate dataPrevistaFinal = datePrevistaFinal.getDate();
-				ArrayList<Categoria> categorias = null;
+				String cep = txtCep.getText();
+				String bairro = txtBairro.getText();
+				String rua = txtRua.getText();
+				String numero = txtNumero.getText();
 				Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
-				categorias.add(categoria);
-				Profissional profissional = new Profissional();
-				ArrayList<Profissional> profissionais = null;
-				profissional.setNome("Godofredo Vagner");
-				profissional.setAtivo(true);
-				profissional.setId(1);
-				Profissional profissional2 = new Profissional();
-				profissional2.setNome("Godofredo222 Vagner");
-				profissional2.setAtivo(true);
-				profissional2.setId(2);
-				profissionais.add(profissional);
-				profissionais.add(profissional2);
-				System.out.println(profissionais);
-				//Profissional profissional = (Profissional) cbProfissional.getSelectedItem();
-				
+				Profissional profissional = (Profissional) cbProfissional.getSelectedItem();
+				ArrayList<Profissional> pros = new ArrayList<Profissional>();
 				//TODO Validação
 				
 				Endereco endereco = new Endereco();
@@ -189,8 +167,59 @@ public class PainelCadastroOS01 extends JPanel {
 				endereco.setBairro(bairro);
 				endereco.setRua(rua);
 				endereco.setNumero(numero);
+				endereco.setEstado("SC");
+				endereco.setCidade("Floripa");
+				Profissional p = new Profissional();
+				p.setNome("Arnaldo dos testes");
+				p.setInscricao("12121451352");
+				p.setTelefone("995874526");
+				p.setEmail("testes@gmail.com");
+				p.setDataCadastro(dataInicial);
+				p.setCategorias(categorias);
+				p.setDataCadastro(dataInicial);
+				p.setEndereco(endereco);
+				p.setAtivo(true);
 				
-				/*telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categorias, profissionais, endereco);
+				System.out.println(p);
+				cliente.setNome("Arnaldo dos Testes");
+				cliente.setInscricao("5228");
+				cliente.setEhCpf(true);
+				cliente.setAtivo(true);
+				cliente.isAtivo();
+				cliente.isEhCpf();
+				cliente.setDataCadastro(dateInicial.getDate());
+				cliente.setTelefone("665894455");
+				cliente.setEmail("testando@gmail.com");
+				cliente.setEndereco(endereco);
+				System.out.println(cliente);
+				
+				Profissional p2 = new Profissional();
+				p2.setNome("Arnaldo dos testes2");
+				p2.setInscricao("2222222222");
+				p2.setTelefone("995874524");
+				p2.setEmail("testes@gmail.com");
+				p2.setDataCadastro(dataInicial);
+				p2.setCategorias(categorias);
+				p2.setDataCadastro(dataInicial);
+				p2.setEndereco(endereco);
+				p2.setAtivo(true);
+				pros.add(p);
+				pros.add(p2);
+				
+				OrdemServico os = new OrdemServico();
+				os.setNumeroOS("1");
+				os.setCategorias(categorias);
+				os.setCliente(cliente);
+				os.setDataInicio(dateInicial.getDate());
+				os.setDataPrevistaFim(dateInicial.getDate());
+				os.setDescricao(descricao);
+				os.setEndereco(endereco);
+				os.setProfissionais(pros);
+				os.setDataTermino(dateInicial.getDate());
+				System.out.println(os);
+				String msg= ordemServicoController.cadastrarOS(os);
+				System.out.println(msg);
+				/*telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categoria, profissional,endereco);
 				
 				telaPDF.setVisible(true);
 				telaPDF.setLocationRelativeTo(null);*/

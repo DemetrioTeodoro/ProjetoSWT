@@ -216,7 +216,7 @@ public class TelaPDF extends JFrame {
 				ordemServico.setDataPrevistaFim(dataPrevistaFinal);
 				ordemServico.setDescricao(descricao);
 
-				ordemServico = ordemServicoController.cadastrarOS(ordemServico);
+				//ordemServico = ordemServicoController.cadastrarOS(ordemServico);
 			}
 		});
 		btnCadastrar.setBounds(766, 612, 97, 25);

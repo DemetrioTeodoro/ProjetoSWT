@@ -6,9 +6,10 @@ import model.entity.OrdemServico;
 public class OrdemServicoController {
 
 	private OrdemServicoBO ordemServicoBO;
-
-	public OrdemServico cadastrarOS(OrdemServico ordemServico) {
-		return ordemServicoBO.cadastrarOS(ordemServico);
+String msg = "Cadastrado";
+	public String cadastrarOS(OrdemServico ordemServico) {
+		ordemServicoBO.cadastrarOS(ordemServico);
+		return msg;
 	}
 
 }

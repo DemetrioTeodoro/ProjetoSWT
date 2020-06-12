@@ -7,32 +7,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+
 import model.entity.Endereco;
 
 public class EnderecoDAO implements BaseDAO<Endereco> {
 
 	public Endereco salvar(Endereco endereco) {
-		Connection conexao = Banco.getConnection();
-
-		String sql = " INSERT INTO ENDERECO (cep, estado, cidade, rua, bairro, numero) "
+		Connection conexao = Banco.getConnection(); 
+		String sql = " INSERT INTO ENDERECO (rua, numero, bairro, cidade, estado, cep ) "
 				+ " VALUES ( ?, ?, ?, ?, ?, ?)";
 
-		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		try {
-			stmt.setString(1, endereco.getCep());
-			stmt.setString(2, endereco.getEstado());
-			stmt.setString(3, endereco.getCidade());
-			stmt.setString(4, endereco.getRua());
-			stmt.setString(5, endereco.getBairro());
-			stmt.setString(6, endereco.getNumero());
-			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, endereco.getRua());
+			stmt.setString(2, endereco.getNumero());
+			stmt.setString(3, endereco.getBairro());
+			stmt.setString(4, endereco.getCidade());
+			stmt.setString(5, endereco.getEstado());
+			stmt.setString(6, endereco.getCep());
+			stmt.execute();
+			
 			ResultSet resultado = stmt.getGeneratedKeys();
 
 			if (resultado.next()) {
 				endereco.setId(resultado.getInt(1));
 			}
+		
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar endereço. Causa: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 		return endereco;
 	}

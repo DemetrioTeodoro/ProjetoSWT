@@ -9,7 +9,6 @@ public class Estados {
 	public ArrayList<String> consultarEstados() {
 		
 		estados =new ArrayList<String>();
-		estados.add("");
 		estados.add("AC");
 		estados.add("AL");
 		estados.add("AP");

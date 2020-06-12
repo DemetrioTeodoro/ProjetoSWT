@@ -13,10 +13,7 @@ public abstract class Pessoa {
 	private boolean ativo;
 	private Endereco endereco;
 
-	public Pessoa() {
-		super();
-
-	}
+		
 		
 	public int getId() {
 		return id;

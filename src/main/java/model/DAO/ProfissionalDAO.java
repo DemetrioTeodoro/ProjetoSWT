@@ -206,7 +206,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 	public boolean cpfJaUtilizado(String cpf) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT * FROM PROFISSIONAL P "+
-					 " WHERE P.cpf = "+ cpf; 	
+					 " WHERE P.cpf = '"+ cpf+"'"; 	
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 		
 		boolean cpfUsado = false;

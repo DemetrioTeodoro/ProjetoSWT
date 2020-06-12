@@ -10,6 +10,10 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
+
+import controller.ClienteController;
+import helpers.Estados;
+
 import javax.swing.JRadioButton;
 import java.awt.Font;
 import java.text.ParseException;
@@ -32,7 +36,7 @@ public class PainelCadastroCliente01 extends JPanel {
 	private JTextField txtCep;
 	private JTextField txtTel;
 	private JTextField txtEmail;
-	private JFormattedTextField txtNInscricao;
+	private JFormattedTextField txtInscricao;
 	private MaskFormatter cnpjMask;
 	private MaskFormatter cpfMask;
 	private MaskFormatter cepMask;
@@ -45,7 +49,7 @@ public class PainelCadastroCliente01 extends JPanel {
 
 		JLabel lblNewLabel = new JLabel("N\u00FAmero de Inscri\u00E7\u00E3o: ");
 
-		txtNInscricao = new JFormattedTextField();
+		txtInscricao = new JFormattedTextField();
 
 		try {
 			cnpjMask = new MaskFormatter("##.###.###/####-##");
@@ -60,19 +64,19 @@ public class PainelCadastroCliente01 extends JPanel {
 
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-					txtNInscricao.setValue(null);
-					txtNInscricao.setFormatterFactory(new DefaultFormatterFactory(cpfMask));
+					txtInscricao.setValue(null);
+					txtInscricao.setFormatterFactory(new DefaultFormatterFactory(cpfMask));
 				}
 			}
 		});
 
-		JRadioButton rdbtCnpj = new JRadioButton("CNPJ");
+		final JRadioButton rdbtCnpj = new JRadioButton("CNPJ");
 
 		rdbtCnpj.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-					txtNInscricao.setValue(null);
-					txtNInscricao.setFormatterFactory(new DefaultFormatterFactory(cnpjMask));
+					txtInscricao.setValue(null);
+					txtInscricao.setFormatterFactory(new DefaultFormatterFactory(cnpjMask));
 				}
 			}
 		});
@@ -80,6 +84,9 @@ public class PainelCadastroCliente01 extends JPanel {
 		ButtonGroup radioGroup = new ButtonGroup();
 		radioGroup.add(rdbtCpf);
 		radioGroup.add(rdbtCnpj);
+
+		final JRadioButton rdbAtivo = new JRadioButton("Ativo");
+		rdbAtivo.setSelected(true);
 
 		JLabel lblNome = new JLabel("Nome :");
 
@@ -137,12 +144,20 @@ public class PainelCadastroCliente01 extends JPanel {
 		txtEmail = new JTextField();
 		txtEmail.setColumns(10);
 
-		JComboBox cbEstado = new JComboBox(); //Estados irão vir direto do banco.
+		Estados listEstados = new Estados();
+
+		final JComboBox<String> cbEstado = new JComboBox(listEstados.consultarEstados().toArray());
 
 		JButton btSalvar = new JButton("Salvar");
 		btSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				ClienteController control = new ClienteController();
+				ClienteController control = new ClienteController();
+				String mensagem = control.salvar(txtInscricao.getText(), txtNome.getText(), rdbtCnpj.isSelected(),
+						rdbtCnpj.isSelected(), rdbAtivo.isSelected(), txtTel.getText(), txtEmail.getText(),
+						txtCep.getText(), txtRua.getText(), txtNum.getText(), txtBairro.getText(), txtCidade.getText(),
+						(String) cbEstado.getSelectedItem());
+				JOptionPane.showMessageDialog(null, mensagem);
+				limparCampos();
 			}
 		});
 
@@ -163,22 +178,24 @@ public class PainelCadastroCliente01 extends JPanel {
 										.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 57,
 												GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE))
+										.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE))
 								.addComponent(
 										lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 299, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblNewLabel_4)
 								.addGroup(groupLayout.createSequentialGroup().addComponent(rdbtCpf)
 										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(rdbtCnpj).addGap(18)
 										.addComponent(lblNewLabel).addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(txtNInscricao, GroupLayout.PREFERRED_SIZE, 138,
-												GroupLayout.PREFERRED_SIZE))
+										.addComponent(txtInscricao, GroupLayout.PREFERRED_SIZE, 138,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, 278, Short.MAX_VALUE)
+										.addComponent(rdbAtivo))
 								.addGroup(groupLayout.createSequentialGroup().addComponent(lblTel)
 										.addPreferredGap(ComponentPlacement.RELATED)
 										.addComponent(txtTel, GroupLayout.PREFERRED_SIZE, 113,
 												GroupLayout.PREFERRED_SIZE)
 										.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 												.addGroup(groupLayout.createSequentialGroup().addGap(6).addComponent(
-														btSalvar, GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE))
+														btSalvar, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
 												.addGroup(groupLayout.createSequentialGroup()
 														.addPreferredGap(ComponentPlacement.RELATED)
 														.addComponent(lblEmail)))
@@ -219,60 +236,65 @@ public class PainelCadastroCliente01 extends JPanel {
 																GroupLayout.PREFERRED_SIZE))
 												.addComponent(txtRua))))))
 				.addGap(82)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addGap(35).addComponent(lblNewLabel_1).addGap(32)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(rdbtCpf)
-						.addComponent(rdbtCnpj).addComponent(lblNewLabel).addComponent(txtNInscricao,
-								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(32).addComponent(lblNome))
-						.addGroup(groupLayout.createSequentialGroup().addGap(29).addComponent(txtNome,
-								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-				.addGap(34).addComponent(lblNewLabel_2).addGap(25)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblRua))
-				.addPreferredGap(ComponentPlacement.UNRELATED)
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblNum))
-						.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addGap(35).addComponent(lblNewLabel_1).addGap(32)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(rdbtCpf)
+								.addComponent(rdbtCnpj).addComponent(lblNewLabel)
+								.addComponent(txtInscricao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblBairro))
+								.addComponent(rdbAtivo))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addGap(32).addComponent(lblNome))
+								.addGroup(groupLayout.createSequentialGroup().addGap(29).addComponent(txtNome,
+										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)))
+						.addGap(34).addComponent(lblNewLabel_2).addGap(25)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblCep)))
-				.addGap(10)
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(4).addComponent(lblCidade))
-						.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(txtCidade,
-								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(lblRua))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblNum))
+								.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblEstado)))
-				.addGap(40).addComponent(lblNewLabel_4).addGap(12)
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(6).addComponent(lblTel))
-						.addGroup(groupLayout.createSequentialGroup().addGap(3)
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(lblEmail)
-										.addComponent(txtTel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 												GroupLayout.PREFERRED_SIZE)
-										.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE))))
-				.addPreferredGap(ComponentPlacement.RELATED, 56, Short.MAX_VALUE).addGroup(groupLayout
-						.createParallelGroup(Alignment.BASELINE).addComponent(btSalvar).addComponent(btLimpar))
-				.addGap(43)));
+										.addComponent(lblBairro))
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblCep)))
+						.addGap(10)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addGap(4).addComponent(lblCidade))
+								.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(txtCidade,
+										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+										.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblEstado)))
+						.addGap(40).addComponent(lblNewLabel_4).addGap(12)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addGap(6).addComponent(lblTel))
+								.addGroup(groupLayout.createSequentialGroup().addGap(3)
+										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(lblEmail)
+												.addComponent(txtTel, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+						.addPreferredGap(ComponentPlacement.RELATED, 99, Short.MAX_VALUE).addGroup(groupLayout
+								.createParallelGroup(Alignment.BASELINE).addComponent(btSalvar).addComponent(btLimpar))
+						.addGap(43)));
 		setLayout(groupLayout);
 
 	}
 
 	protected void limparCampos() {
-		this.txtNInscricao.setText("");
+		this.txtInscricao.setText("");
 		this.txtNome.setText("");
 		this.txtRua.setText("");
 		this.txtNum.setText("");
@@ -283,7 +305,6 @@ public class PainelCadastroCliente01 extends JPanel {
 		this.txtTel.setText("");
 		this.txtEmail.setText("");
 
-		this.cbEstado.setSelectedIndex(-1);
+//		this.cbEstado.setSelectedIndex(-1);
 	}
-
 }

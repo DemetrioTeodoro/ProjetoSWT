@@ -15,8 +15,7 @@ import model.entity.Endereco;
 public class ClienteDAO implements BaseDAO<Cliente> {
 
 	public Cliente salvar(Cliente cliente) {
-		Connection conexao = Banco.getConnection();
-
+		
 		Endereco endereco = null;
 		if (cliente.getEndereco() != null) {
 			EnderecoDAO enderecoDAO = new EnderecoDAO();
@@ -24,21 +23,23 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			endereco = enderecoDAO.salvar(cliente.getEndereco());
 
 		}
-
-		String sql = " INSERT INTO CLIENTE ( nome, inscricao, cpf, ativo, data_cadastro, telefone, email, id_endereco) "
+		
+		Connection conexao = Banco.getConnection();
+		String sql = " INSERT INTO CLIENTE ( nome, inscricao, ecpf, ativo, data_cadastro, telefone, email, id_endereco) "
 				+ " VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		try {
 			stmt.setString(1, cliente.getNome());
 			stmt.setString(2, cliente.getInscricao());
 			stmt.setBoolean(3, cliente.isEhCpf());
 			stmt.setBoolean(4, cliente.isAtivo());
 			stmt.setDate(5, Date.valueOf(cliente.getDataCadastro()));
-			stmt.setInt(6, Integer.parseInt(cliente.getTelefone()));
+			stmt.setString(6, cliente.getTelefone());
 			stmt.setString(7, cliente.getEmail());
 			stmt.setInt(8, endereco.getId());
-			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.execute();
+			
 			ResultSet resultado = stmt.getGeneratedKeys();
 
 			if (resultado.next()) {
@@ -153,6 +154,25 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			System.out.println(" Erro ao construir cliente a partir do ResultSet. Causa: " + ex.getMessage());
 		}
 		return cliente;
+	}
+	
+	public boolean inscricaoJaUtilizada(String inscricao) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM CLIENTE C " + " WHERE C.inscricao = '" + inscricao + "'";
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		boolean jaUsada = false;
+
+		try {
+			ResultSet rs = stmt.executeQuery();
+			jaUsada = rs.next();
+
+		} catch (Exception e) {
+			System.out.println("Erro ao verificar se a incrição (cpf ou cnpj)"+inscricao+
+					" já está sendo utilizada por cliente. Causa:" + e.getMessage());
+		}
+
+		return jaUsada;
 	}
 
 }

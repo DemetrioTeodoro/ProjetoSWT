@@ -31,6 +31,10 @@ public class TelaPDF extends JFrame {
 	private JLabel lblCategoriaDoc;
 	private JLabel lblCategoriaDoc2;
 	private JLabel lblProfissionalDoc;
+	private Categoria categorias;
+	private Profissional profissionais;
+	private Cliente clientes;
+	private JLabel lblNomeRua;
 
 	/**
 	 * Launch the application.
@@ -77,15 +81,15 @@ public class TelaPDF extends JFrame {
 		panel.add(lblCliente);
 
 		JLabel lblNome = new JLabel("nome");
-		lblNome.setBounds(246, 216, 56, 16);
+		lblNome.setBounds(246, 216, 175, 16);
 		panel.add(lblNome);
 
 		JLabel lblCPF = new JLabel("CPF:");
-		lblCPF.setBounds(342, 216, 56, 16);
+		lblCPF.setBounds(446, 216, 56, 16);
 		panel.add(lblCPF);
 
 		lblCpfDoc = new JLabel("CpfDoc");
-		lblCpfDoc.setBounds(380, 216, 56, 16);
+		lblCpfDoc.setBounds(484, 216, 121, 16);
 		panel.add(lblCpfDoc);
 
 		JLabel lblCep = new JLabel("Cep:");
@@ -93,7 +97,7 @@ public class TelaPDF extends JFrame {
 		panel.add(lblCep);
 
 		lblCepDoc = new JLabel("CepDoc");
-		lblCepDoc.setBounds(224, 255, 56, 16);
+		lblCepDoc.setBounds(224, 255, 83, 16);
 		panel.add(lblCepDoc);
 
 		JLabel lblBairro = new JLabel("Bairro:");
@@ -101,14 +105,14 @@ public class TelaPDF extends JFrame {
 		panel.add(lblBairro);
 
 		lblBairroDoc = new JLabel("BairroDoc");
-		lblBairroDoc.setBounds(365, 255, 56, 16);
+		lblBairroDoc.setBounds(365, 255, 201, 16);
 		panel.add(lblBairroDoc);
 
 		JLabel lblRua = new JLabel("Rua:");
 		lblRua.setBounds(190, 296, 56, 16);
 		panel.add(lblRua);
 
-		JLabel lblNomeRua = new JLabel("NomeRua");
+		lblNomeRua = new JLabel("NomeRua");
 		lblNomeRua.setBounds(224, 296, 316, 16);
 		panel.add(lblNomeRua);
 
@@ -149,7 +153,7 @@ public class TelaPDF extends JFrame {
 		panel.add(lblCategoria);
 
 		lblCategoriaDoc = new JLabel("categoriaDocResult");
-		lblCategoriaDoc.setBounds(257, 546, 109, 16);
+		lblCategoriaDoc.setBounds(257, 546, 261, 16);
 		panel.add(lblCategoriaDoc);
 
 		JLabel lblCategoria2 = new JLabel("Categoria:");
@@ -157,7 +161,7 @@ public class TelaPDF extends JFrame {
 		panel.add(lblCategoria2);
 
 		lblCategoriaDoc2 = new JLabel("categoriaDocResult2");
-		lblCategoriaDoc2.setBounds(257, 587, 109, 16);
+		lblCategoriaDoc2.setBounds(257, 587, 248, 16);
 		panel.add(lblCategoriaDoc2);
 
 		JLabel lblProfissional = new JLabel("Profissional:");
@@ -165,7 +169,7 @@ public class TelaPDF extends JFrame {
 		panel.add(lblProfissional);
 
 		lblProfissionalDoc = new JLabel("profissionalDoc");
-		lblProfissionalDoc.setBounds(272, 648, 94, 16);
+		lblProfissionalDoc.setBounds(272, 648, 246, 16);
 		panel.add(lblProfissionalDoc);
 
 		JLabel lblDocPDF = new JLabel("");
@@ -177,7 +181,7 @@ public class TelaPDF extends JFrame {
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String numeroOS = lblNumeroOSDoc.getText();
-				String idCliente = lblCategoriaDoc.getText();
+				int idCliente = clientes.getId();
 				String cep = lblCepDoc.getText();
 				String bairro = lblBairroDoc.getText();
 				String rua = lblNomeRua.getText();
@@ -187,10 +191,8 @@ public class TelaPDF extends JFrame {
 				}
 				LocalDate dataInicial = LocalDate.parse(lblDataInicialDoc.getText());
 				LocalDate dataPrevistaFinal = LocalDate.parse(lblDataFinalDoc.getText());
-				/*String idCategoria = cbCategoria.getSelectedIndex();
-				String idProfissioanl = cbProfissional.getSelectedIndex();*/
-				
-				//TODO Validação
+				int idCategoria = categorias.getId();
+				int idProfissioanl = profissionais.getId();
 				
 				Endereco endereco = new Endereco();
 				endereco.setCep(cep);
@@ -212,16 +214,21 @@ public class TelaPDF extends JFrame {
 		contentPane.add(btnCancelar);
 	}
 
-	public void getDados(String numeroOS, Cliente idCliente, String descricao, LocalDate dataInicial,
-			LocalDate dataPrevistaFinal, Categoria idCategoria, Profissional idProfissioanl, Endereco endereco) {
+	public void getDados(String numeroOS, Cliente cliente, String descricao, LocalDate dataInicial,
+			LocalDate dataPrevistaFinal, Categoria categoria, Profissional profissional, Endereco endereco) {
+		
+		categorias = categoria;
+		profissionais = profissional;
+		clientes = cliente;
 		
 		lblDescricaoDoc.setText(descricao);
 		lblBairroDoc.setText(endereco.getBairro());
 		lblDataInicialDoc.setText(dataInicial.toString());
 		lblDataFinalDoc.setText(dataPrevistaFinal.toString());
 		lblCepDoc.setText(endereco.getCep());
+		lblNomeRua.setText(endereco.getRua());
 		lblNumeroEndDoc.setText(endereco.getNumero());
-		lblCategoriaDoc.setText(idCategoria.getNome());
-		lblProfissionalDoc.setText(idProfissioanl.getNome());
+		lblCategoriaDoc.setText(categoria.getNome());
+		lblProfissionalDoc.setText(profissional.getNome());
 	}
 }

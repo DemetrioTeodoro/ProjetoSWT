@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.GroupLayout;
@@ -23,6 +24,7 @@ import javax.swing.text.MaskFormatter;
 
 import com.github.lgooddatepicker.components.DatePicker;
 
+import controller.CategoriaController;
 import model.entity.Categoria;
 import model.entity.Cliente;
 import model.entity.Endereco;
@@ -43,6 +45,9 @@ public class PainelCadastroOS01 extends JPanel {
 	private String[] nomes = { "Thaisa Mom CPF: 12345678910", "Demetrio CPF: 12345678911" };
 	private TelaPDF telaPDF = new TelaPDF();
 	private JLabel lblGeradorNumero;
+	private CategoriaController categoriaController = new CategoriaController();
+	private ArrayList<Categoria> categorias;
+	private JComboBox cbCategoria;
 
 	/**
 	 * Create the panel.
@@ -108,7 +113,8 @@ public class PainelCadastroOS01 extends JPanel {
 
 		JLabel lblCategoria = new JLabel("Categoria:");
 
-		JComboBox cbCategoria = new JComboBox();
+		categorias = categoriaController.listarCategorias();
+		cbCategoria = new JComboBox(categorias.toArray());
 
 		JButton btnAdd = new JButton("");
 		btnAdd.addActionListener(new ActionListener() {
@@ -127,7 +133,15 @@ public class PainelCadastroOS01 extends JPanel {
 
 			public void actionPerformed(ActionEvent arg0) {
 				String numeroOS = lblGeradorNumero.getText();
-				Cliente idCliente = (Cliente) cbCliente.getSelectedItem();
+				Cliente cliente = new Cliente();
+				cliente.setNome("Arnaldo dos Testes");
+				cliente.setAtivo(false);
+				cliente.setEmail("fafdadfsdfas");
+				cliente.setEhCpf(false);
+				cliente.setId(1);
+				
+				
+				//cliente = (Cliente) cbCliente.getSelectedItem();
 				if (chckbxMesmoEnderecoDo.isSelected()) {
 					//TODO
 				} else {
@@ -141,8 +155,12 @@ public class PainelCadastroOS01 extends JPanel {
 				}
 				LocalDate dataInicial = dateInicial.getDate();
 				LocalDate dataPrevistaFinal = datePrevistaFinal.getDate();
-				Categoria idCategoria = (Categoria) cbCategoria.getSelectedItem();
-				Profissional idProfissioanl = (Profissional) cbProfissional.getSelectedItem();
+				Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
+				Profissional profissional = new Profissional();
+				profissional.setNome("Godofredo Vagner");
+				profissional.setAtivo(true);
+				profissional.setId(1);
+				//Profissional profissional = (Profissional) cbProfissional.getSelectedItem();
 				
 				//TODO Validação
 				
@@ -152,7 +170,7 @@ public class PainelCadastroOS01 extends JPanel {
 				endereco.setRua(rua);
 				endereco.setNumero(numero);
 				
-				telaPDF.getDados(numeroOS, idCliente, descricao, dataInicial, dataPrevistaFinal, idCategoria, idProfissioanl,endereco);
+				telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categoria, profissional,endereco);
 				
 				telaPDF.setVisible(true);
 				telaPDF.setLocationRelativeTo(null);

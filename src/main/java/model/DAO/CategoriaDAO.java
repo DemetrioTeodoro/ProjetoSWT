@@ -35,7 +35,7 @@ public class CategoriaDAO {
 	public ArrayList<Categoria> consultarCategoriasPorIdProfissional(int idProfissional) {
 		String sql = " SELECT * FROM CATEGORIA AS C "+
 	                 " INNER JOIN PROFISSIONAL_CATEGORIA AS PC "+
-				     " ON C.idcategoria = PC.id_categoria "+
+				     " ON C.id = PC.id_categoria "+
 	                 " WHERE PC.id_profissional = ?";
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);

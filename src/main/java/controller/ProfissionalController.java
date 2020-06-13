@@ -13,15 +13,11 @@ public class ProfissionalController {
 	private ProfissionalBO profBO = new ProfissionalBO();
 
 	public String salvar(String nome, String cpf, boolean ativo, String email, String telefone, String cep, String rua,
-			String numero, String bairro, String cidade, String estado, Categoria categoria) {
+			String numero, String bairro, String cidade, String estado, ArrayList<Categoria> categorias) {
 
 		String msg = "";
 
 		// TODO validações dos campos
-
-		ArrayList<Categoria> categorias = new ArrayList<Categoria>(); // ainda tem que fazer vir uma lista de categorias
-																		// da tela
-		categorias.add(categoria);
 
 		LocalDate dtcadastro = LocalDate.now();
 		Endereco e = new Endereco(rua, numero, bairro, cidade, estado, cep);

@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import model.BO.ClienteBO;
 import model.entity.Cliente;
@@ -40,6 +41,10 @@ public class ClienteController {
 		
 		
 		return msg;
+	}
+
+	public ArrayList<Cliente> listarClientes() {
+		return bo.listarClientes();
 	}
 
 }

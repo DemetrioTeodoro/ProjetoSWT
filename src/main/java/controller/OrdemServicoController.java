@@ -9,6 +9,7 @@ public class OrdemServicoController {
 String msg = "Cadastrado";
 	public String cadastrarOS(OrdemServico ordemServico) {
 		ordemServicoBO.cadastrarOS(ordemServico);
+		System.out.println(ordemServico);
 		return msg;
 	}
 

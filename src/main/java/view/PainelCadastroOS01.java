@@ -25,7 +25,9 @@ import javax.swing.text.MaskFormatter;
 import com.github.lgooddatepicker.components.DatePicker;
 
 import controller.CategoriaController;
+import controller.ClienteController;
 import controller.OrdemServicoController;
+import controller.ProfissionalController;
 import model.entity.Categoria;
 import model.entity.Cliente;
 import model.entity.Endereco;
@@ -44,13 +46,18 @@ public class PainelCadastroOS01 extends JPanel {
 	private JTextField txtCep;
 	private JTextField txtBairro;
 	private JTextArea txtDescricao;
-	private String[] nomes = { "Thaisa Mom CPF: 12345678910", "Demetrio CPF: 12345678911" };
 	private TelaPDF telaPDF = new TelaPDF();
 	private JLabel lblGeradorNumero;
-	private OrdemServicoController ordemServicoController = new OrdemServicoController();
+	private ClienteController clienteController = new ClienteController();
 	private CategoriaController categoriaController = new CategoriaController();
+	private OrdemServicoController ordemServicoController = new OrdemServicoController();
+	private ProfissionalController profissionalController = new ProfissionalController();
+	private ArrayList<Profissional> profissionais;
 	private ArrayList<Categoria> categorias;
+	private ArrayList<Cliente> clientes;
 	private JComboBox cbCategoria;
+	private JComboBox cbCliente;
+	private JComboBox cbProfissional;
 
 	/**
 	 * Create the panel.
@@ -65,8 +72,9 @@ public class PainelCadastroOS01 extends JPanel {
 		JLabel label = new JLabel(ano);
 
 		JLabel lblCliente = new JLabel("Cliente:");
-
-		JComboBox cbCliente = new JComboBox(nomes);
+		
+		clientes = clienteController.listarClientes();
+		cbCliente = new JComboBox(clientes.toArray());
 
 		JCheckBox chckbxMesmoEnderecoDo = new JCheckBox("Mesmo endere\u00E7o do Cliente");
 
@@ -129,16 +137,17 @@ public class PainelCadastroOS01 extends JPanel {
 
 		JLabel lblProfissionais = new JLabel("Profissionais:");
 
-		JComboBox cbProfissional = new JComboBox();
+		profissionais = profissionalController.listarProfissionais();
+		cbProfissional = new JComboBox(profissionais.toArray());
 
 		JButton btnVisualizar = new JButton("Visualizar");
 		btnVisualizar.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				String numeroOS = lblGeradorNumero.getText();
+				//String numeroOS = lblGeradorNumero.getText();
 				Cliente cliente = new Cliente();
 				
-				//cliente = (Cliente) cbCliente.getSelectedItem();
+				cliente = (Cliente) cbCliente.getSelectedItem();
 				
 				/*if (chckbxMesmoEnderecoDo.isSelected()) {
 					//TODO
@@ -161,15 +170,16 @@ public class PainelCadastroOS01 extends JPanel {
 				Profissional profissional = (Profissional) cbProfissional.getSelectedItem();
 				ArrayList<Profissional> pros = new ArrayList<Profissional>();
 				//TODO Validação
-				
+				pros.add(profissional);
 				Endereco endereco = new Endereco();
+				endereco.setId(1);
 				endereco.setCep(cep);
 				endereco.setBairro(bairro);
 				endereco.setRua(rua);
 				endereco.setNumero(numero);
 				endereco.setEstado("SC");
 				endereco.setCidade("Floripa");
-				Profissional p = new Profissional();
+				/*Profissional p = new Profissional();
 				p.setNome("Arnaldo dos testes");
 				p.setInscricao("12121451352");
 				p.setTelefone("995874526");
@@ -179,7 +189,7 @@ public class PainelCadastroOS01 extends JPanel {
 				p.setDataCadastro(dataInicial);
 				p.setEndereco(endereco);
 				p.setAtivo(true);
-				
+				System.out.println(endereco);
 				System.out.println(p);
 				cliente.setNome("Arnaldo dos Testes");
 				cliente.setInscricao("5228");
@@ -190,10 +200,10 @@ public class PainelCadastroOS01 extends JPanel {
 				cliente.setDataCadastro(dateInicial.getDate());
 				cliente.setTelefone("665894455");
 				cliente.setEmail("testando@gmail.com");
-				cliente.setEndereco(endereco);
+				cliente.setEndereco(endereco);*/
 				System.out.println(cliente);
 				
-				Profissional p2 = new Profissional();
+				/*Profissional p2 = new Profissional();
 				p2.setNome("Arnaldo dos testes2");
 				p2.setInscricao("2222222222");
 				p2.setTelefone("995874524");
@@ -204,9 +214,10 @@ public class PainelCadastroOS01 extends JPanel {
 				p2.setEndereco(endereco);
 				p2.setAtivo(true);
 				pros.add(p);
-				pros.add(p2);
-				
+				pros.add(p2);*/
+
 				OrdemServico os = new OrdemServico();
+				//os.setId(1);
 				os.setNumeroOS("1");
 				os.setCategorias(categorias);
 				os.setCliente(cliente);

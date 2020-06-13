@@ -1,5 +1,7 @@
 package model.BO;
 
+import java.util.ArrayList;
+
 import model.DAO.ClienteDAO;
 import model.entity.Cliente;
 
@@ -27,6 +29,10 @@ public class ClienteBO {
 			}
 		}
 		return msg;
+	}
+
+	public ArrayList<Cliente> listarClientes() {
+		return dao.listarTodos();
 	}
 
 }

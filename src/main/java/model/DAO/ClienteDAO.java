@@ -5,8 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import model.entity.Cliente;
@@ -144,12 +142,12 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			cliente.setId(conjuntoResultante.getInt("id"));
 			cliente.setNome(conjuntoResultante.getString("nome"));
 			cliente.setInscricao(conjuntoResultante.getString("inscricao"));
-			cliente.setEhCpf(conjuntoResultante.getBoolean("cpf"));
+			cliente.setEhCpf(conjuntoResultante.getBoolean("ecpf"));
 			cliente.setAtivo(conjuntoResultante.getBoolean("ativo"));
-			cliente.setDataCadastro(LocalDate.parse((CharSequence) conjuntoResultante.getDate("data_cadastro")));
+			cliente.setDataCadastro(conjuntoResultante.getDate("data_cadastro").toLocalDate());
 			cliente.setTelefone(conjuntoResultante.getString("telefone"));
 			cliente.setEmail(conjuntoResultante.getString("email"));
-			cliente.setEndereco(enderecoDAO.consultarPorId(cliente.getEndereco().getId()));
+			cliente.setEndereco(enderecoDAO.consultarPorId(conjuntoResultante.getInt("id_endereco")));
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao construir cliente a partir do ResultSet. Causa: " + ex.getMessage());
 		}

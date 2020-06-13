@@ -38,4 +38,8 @@ public class ProfissionalController {
 		return msg;
 	}
 
+	public ArrayList<Profissional> listarProfissionais() {
+		return profBO.listarProfissionais();
+	}
+
 }

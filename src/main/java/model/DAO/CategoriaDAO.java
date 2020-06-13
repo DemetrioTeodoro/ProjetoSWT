@@ -36,7 +36,7 @@ public class CategoriaDAO {
 		String sql = " SELECT * FROM CATEGORIA AS C "+
 	                 " INNER JOIN PROFISSIONAL_CATEGORIA AS PC "+
 				     " ON C.id = PC.id_categoria "+
-	                 " WHERE PC.id_profissional = ?";
+	                 " WHERE PC.id_profissional = " + idProfissional;
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		

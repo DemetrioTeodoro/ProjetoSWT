@@ -23,7 +23,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		 * Pega data atual para coluna: data_cadastro
 		 */
 		java.util.Date dataNova = new java.util.Date();
-		String dataCadastro = new SimpleDateFormat("dd/MM/yyyy").format(dataNova);
+		String dataCadastro = new SimpleDateFormat("yyy-MM-dd").format(dataNova);
 
 		Endereco endereco = null;
 		if (ordemServico.getEndereco() != null) {

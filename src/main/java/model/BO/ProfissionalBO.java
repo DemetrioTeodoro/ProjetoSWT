@@ -1,5 +1,7 @@
 package model.BO;
 
+import java.util.ArrayList;
+
 import model.DAO.ProfissionalDAO;
 import model.entity.Profissional;
 
@@ -32,6 +34,10 @@ public class ProfissionalBO {
 			}
 		}
 		return msg;
+	}
+
+	public ArrayList<Profissional> listarProfissionais() {
+		return dao.listarTodos();
 	}
 	
 	

@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 public class TelaPrincipal01 extends JFrame {
 
 	private JPanel contentPane = new JPanel();
-	private PainelCadastroOS01 painelCadastroOS = new PainelCadastroOS01();
+	//private PainelCadastroOS01 painelCadastroOS = new PainelCadastroOS01();
 	private PainelCadastroCliente01 painelCadastroCliente = new PainelCadastroCliente01();
 	private PainelListagemProfissionais painelListProf = new PainelListagemProfissionais();
 	private PainelAgenda painelAgenda = new PainelAgenda();

@@ -35,7 +35,7 @@ import model.entity.Endereco;
 import model.entity.OrdemServico;
 import model.entity.Profissional;
 
-public class PainelCadastroOS01 extends JPanel {
+public class PainelCadastroOS001 extends JPanel {
 	private String cep;
 	private String bairro;
 	private String rua;
@@ -63,7 +63,7 @@ public class PainelCadastroOS01 extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PainelCadastroOS01() {
+	public PainelCadastroOS001() {
 
 		JLabel lblNumeroOS = new JLabel("N\u00B0 Odem de Servi\u00E7o:");
 
@@ -117,10 +117,10 @@ public class PainelCadastroOS01 extends JPanel {
 
 		DatePicker dateInicial = new DatePicker();
 		dateInicial.getComponentToggleCalendarButton().setText("");
-		dateInicial.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/calendar-icon.png")));
+		dateInicial.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS001.class.getResource("/icones/calendar-icon.png")));
 
 		DatePicker datePrevistaFinal = new DatePicker();
-		datePrevistaFinal.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/calendar-icon.png")));
+		datePrevistaFinal.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS001.class.getResource("/icones/calendar-icon.png")));
 		datePrevistaFinal.getComponentToggleCalendarButton().setText("");
 
 		JLabel lblCategoria = new JLabel("Categoria:");
@@ -134,7 +134,7 @@ public class PainelCadastroOS01 extends JPanel {
 				
 			}
 		});
-		btnAdd.setIcon(new ImageIcon(PainelCadastroOS01.class.getResource("/icones/Button-Add-icon.png")));
+		btnAdd.setIcon(new ImageIcon(PainelCadastroOS001.class.getResource("/icones/Button-Add-icon.png")));
 
 		JLabel lblProfissionais = new JLabel("Profissionais:");
 

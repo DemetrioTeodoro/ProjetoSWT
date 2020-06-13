@@ -17,6 +17,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -172,7 +173,6 @@ public class PainelCadastroOS01 extends JPanel {
 				//TODO Validação
 				pros.add(profissional);
 				Endereco endereco = new Endereco();
-				endereco.setId(1);
 				endereco.setCep(cep);
 				endereco.setBairro(bairro);
 				endereco.setRua(rua);
@@ -229,7 +229,7 @@ public class PainelCadastroOS01 extends JPanel {
 				os.setDataTermino(dateInicial.getDate());
 				System.out.println(os);
 				String msg= ordemServicoController.cadastrarOS(os);
-				System.out.println(msg);
+				JOptionPane.showMessageDialog(null, msg);
 				/*telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categoria, profissional,endereco);
 				
 				telaPDF.setVisible(true);

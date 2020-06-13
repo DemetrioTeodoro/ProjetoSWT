@@ -3,6 +3,7 @@ package view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -14,11 +15,25 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import controller.CategoriaController;
+import controller.ClienteController;
+import controller.OrdemServicoController;
+import controller.ProfissionalController;
+import model.entity.Categoria;
+import model.entity.Cliente;
+import model.entity.Profissional;
+
 public class PainelListagemOS extends JPanel {
 	private TelaEditarOS telaEditarOS = null;
 	private JTable tblOrdemServico;
 	private String[] colunasTabelaOS = { "Número da Ordem", "Nome do Cliente", "Nome do Profissional", "Categoria" };
 	private JTextField textField;
+	private ClienteController clienteController = new ClienteController();
+	private CategoriaController categoriaController = new CategoriaController();
+	private OrdemServicoController ordemServicoController = new OrdemServicoController();
+	private ArrayList<Categoria> categorias;
+	private ArrayList<Cliente> clientes;
+	private JComboBox cbCategoria;
 
 	/**
 	 * Create the panel.
@@ -32,7 +47,8 @@ public class PainelListagemOS extends JPanel {
 
 		JLabel lblCategoria = new JLabel("Categoria:");
 
-		JComboBox cbProfissional = new JComboBox();
+		categorias = categoriaController.listarCategorias();
+		cbCategoria = new JComboBox(categorias.toArray());
 
 		JLabel lblNumeroOS = new JLabel("N\u00FAmero da OS:");
 
@@ -80,7 +96,7 @@ public class PainelListagemOS extends JPanel {
 								.addComponent(lblCategoria)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGap(11)
-									.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
+									.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE))
 								.addComponent(lblNumeroOS, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGap(10)
@@ -111,7 +127,7 @@ public class PainelListagemOS extends JPanel {
 							.addGap(27)
 							.addComponent(lblCategoria)
 							.addGap(13)
-							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(30)
 							.addComponent(lblNumeroOS)
 							.addGap(13)

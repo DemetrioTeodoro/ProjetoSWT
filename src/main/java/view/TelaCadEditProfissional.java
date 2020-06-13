@@ -21,12 +21,18 @@ import model.entity.Categoria;
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.JList;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.ImageIcon;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class TelaCadEditProfissional extends JFrame {
 
@@ -44,6 +50,8 @@ public class TelaCadEditProfissional extends JFrame {
 	private JComboBox<Categoria> cbCategoria;
 	private JComboBox<String> cbEstado;
 	private JButton btnLimpar;
+	private ArrayList<Categoria> categorias;
+	private JTextArea txtArea;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -66,7 +74,7 @@ public class TelaCadEditProfissional extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		MaskFormatter maskCpf;
 		try {
 			maskCpf = new MaskFormatter("###.###.###-##");
@@ -76,7 +84,7 @@ public class TelaCadEditProfissional extends JFrame {
 			txtCpf.setColumns(10);
 		} catch (ParseException e) {
 			System.out.println("Erro ao tentar formatar CPF.");
-			System.out.println("Causa: "+e.getMessage());
+			System.out.println("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -129,10 +137,11 @@ public class TelaCadEditProfissional extends JFrame {
 		CategoriaController catControl = new CategoriaController();
 
 		final JComboBox<Categoria> cbCategoria = new JComboBox(catControl.listarCategorias().toArray());
-		cbCategoria.setBounds(132, 347, 131, 20);
+		
+		cbCategoria.setBounds(104, 347, 131, 20);
 		cbCategoria.setSelectedIndex(-1);
 		getContentPane().add(cbCategoria);
-		
+
 		MaskFormatter maskCep;
 		try {
 			maskCep = new MaskFormatter("#####-###");
@@ -142,12 +151,12 @@ public class TelaCadEditProfissional extends JFrame {
 			txtCep.setColumns(10);
 		} catch (ParseException e) {
 			System.out.println("Erro ao tentar formatar CEP(máscara).");
-			System.out.println("Causa: "+e.getMessage());
+			System.out.println("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
 
 		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(99, 410, 100, 23);
+		btnSalvar.setBounds(108, 439, 100, 23);
 		getContentPane().add(btnSalvar);
 
 		btnSalvar.addActionListener(new ActionListener() {
@@ -156,97 +165,110 @@ public class TelaCadEditProfissional extends JFrame {
 				String mensagem = control.salvar(txtNome.getText(), txtCpf.getText(), rdbAtivar.isSelected(),
 						txtEmail.getText(), txtTelefone.getText(), txtCep.getText(), txtRua.getText(),
 						txtNumero.getText(), txtBairro.getText(), txtCidade.getText(),
-						(String) cbEstado.getSelectedItem(), (Categoria) cbCategoria.getSelectedItem());
+						(String) cbEstado.getSelectedItem(), categorias);
 				JOptionPane.showMessageDialog(null, mensagem);
-				limpar();
+				//limpar(); 
 			}
 		});
 
 		btnLimpar = new JButton("Limpar");
-		btnLimpar.setBounds(262, 410, 100, 23);
+		btnLimpar.setBounds(271, 439, 100, 23);
 		getContentPane().add(btnLimpar);
 
 		JLabel lblEmail = new JLabel("Email :");
 		lblEmail.setBounds(21, 271, 46, 14);
 		contentPane.add(lblEmail);
 
-		JLabel lblNewLabel = new JLabel("Telefone :");
-		lblNewLabel.setBounds(309, 271, 62, 14);
-		contentPane.add(lblNewLabel);
+		JLabel lblTel = new JLabel("Telefone :");
+		lblTel.setBounds(309, 271, 62, 14);
+		contentPane.add(lblTel);
 
-		JLabel lblNewLabel_1 = new JLabel("Categoria (s) :");
-		lblNewLabel_1.setBounds(21, 350, 100, 14);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblCategoria = new JLabel("Categoria (s) :");
+		lblCategoria.setBounds(21, 350, 100, 14);
+		contentPane.add(lblCategoria);
 
-		JLabel lblNewLabel_2 = new JLabel("Especialidade");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_2.setBounds(21, 314, 145, 14);
-		contentPane.add(lblNewLabel_2);
+		JLabel lblEspecialidade = new JLabel("Especialidade");
+		lblEspecialidade.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblEspecialidade.setBounds(21, 314, 145, 14);
+		contentPane.add(lblEspecialidade);
 
 		JLabel lblContato = new JLabel("Contato");
 		lblContato.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblContato.setBounds(21, 233, 145, 14);
 		contentPane.add(lblContato);
 
-		JLabel lblNewLabel_3 = new JLabel("Cidade :");
-		lblNewLabel_3.setBounds(21, 194, 46, 14);
-		contentPane.add(lblNewLabel_3);
+		JLabel lblCidade = new JLabel("Cidade :");
+		lblCidade.setBounds(21, 194, 46, 14);
+		contentPane.add(lblCidade);
 
-		JLabel lblNewLabel_4 = new JLabel("CEP :");
-		lblNewLabel_4.setBounds(21, 132, 46, 14);
-		contentPane.add(lblNewLabel_4);
+		JLabel lblCep = new JLabel("CEP :");
+		lblCep.setBounds(21, 132, 46, 14);
+		contentPane.add(lblCep);
 
-		JLabel lblNewLabel_5 = new JLabel("Rua :");
-		lblNewLabel_5.setBounds(21, 163, 46, 14);
-		contentPane.add(lblNewLabel_5);
+		JLabel lblRua = new JLabel("Rua :");
+		lblRua.setBounds(21, 163, 46, 14);
+		contentPane.add(lblRua);
 
-		JLabel lblNewLabel_6 = new JLabel("Estado :");
-		lblNewLabel_6.setBounds(345, 194, 46, 14);
-		contentPane.add(lblNewLabel_6);
+		JLabel lblEstado = new JLabel("Estado :");
+		lblEstado.setBounds(345, 194, 46, 14);
+		contentPane.add(lblEstado);
 
-		JLabel lblNewLabel_7 = new JLabel("Bairro :");
-		lblNewLabel_7.setBounds(185, 132, 50, 14);
-		contentPane.add(lblNewLabel_7);
+		JLabel lblBairro = new JLabel("Bairro :");
+		lblBairro.setBounds(185, 132, 50, 14);
+		contentPane.add(lblBairro);
 
-		JLabel lblNewLabel_8 = new JLabel("N\u00FAmero : ");
-		lblNewLabel_8.setBounds(322, 163, 60, 14);
-		contentPane.add(lblNewLabel_8);
+		JLabel lblNumero = new JLabel("N\u00FAmero : ");
+		lblNumero.setBounds(322, 163, 60, 14);
+		contentPane.add(lblNumero);
 
 		JLabel lblEndereo = new JLabel("Endere\u00E7o\r\n");
 		lblEndereo.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblEndereo.setBounds(21, 104, 145, 14);
 		contentPane.add(lblEndereo);
 
-		JLabel lblNewLabel_9 = new JLabel("CPF :");
-		lblNewLabel_9.setBounds(30, 45, 46, 14);
-		contentPane.add(lblNewLabel_9);
+		JLabel lblCpf = new JLabel("CPF :");
+		lblCpf.setBounds(30, 45, 46, 14);
+		contentPane.add(lblCpf);
 
 		JLabel lblNome = new JLabel("Nome :");
 		lblNome.setBounds(15, 76, 46, 14);
 		contentPane.add(lblNome);
-		
+
 		JLabel lblTitulo = new JLabel("Cadastro de Profissional");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblTitulo.setBounds(15, 11, 369, 14);
 		contentPane.add(lblTitulo);
-		
-		JList<Categoria> listCategorias = new JList(catControl.listarCategorias().toArray());
-		listCategorias.setBounds(68, 475, 151, 61);
-		contentPane.add(listCategorias);
-		
-				
-		JTextArea textArea = new JTextArea(10,10);
-		textArea.setEditable(false);
-		textArea.setLineWrap(true);
-		textArea.setBounds(309, 475, 145, 61);
-		contentPane.add(textArea);
-		
-		JScrollBar scrollBar = new JScrollBar(JScrollBar.VERTICAL);
-		scrollBar.setBounds(229, 475, 17, 61);
-		contentPane.add(scrollBar);
-		
-		
-		
+
+		final JTextArea txtArea = new JTextArea();
+		txtArea.setEditable(false);
+		txtArea.setBounds(292, 365, 177, 23);
+		contentPane.add(txtArea);
+
+		JButton btnAddCategoria = new JButton("");
+		categorias = new ArrayList<Categoria>();
+		btnAddCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Categoria categoriaSelecionada = (Categoria) cbCategoria.getSelectedItem();
+
+				if (categorias.contains(categoriaSelecionada)) {
+					JOptionPane.showMessageDialog(null, "Categoria já foi selecionada");
+				} else {
+
+					categorias.add(categoriaSelecionada);
+//					popularTextArea();
+				}
+			}
+			
+		});
+
+		btnAddCategoria
+				.setIcon(new ImageIcon(TelaCadEditProfissional.class.getResource("/icones/Button-Add-icon-24px.png")));
+		btnAddCategoria.setBounds(240, 344, 28, 23);
+		contentPane.add(btnAddCategoria);
+
+		JLabel lblCategoriasSelecionadas = new JLabel("Categoria(s) selecionada(s) :");
+		lblCategoriasSelecionadas.setBounds(292, 350, 178, 14);
+		contentPane.add(lblCategoriasSelecionadas);
 
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -254,6 +276,19 @@ public class TelaCadEditProfissional extends JFrame {
 			}
 		});
 	}
+	
+//	private void popularTextArea() {
+//		String categoriasTexto = "";
+//
+//		for (int i = 0; i < categorias.size(); i++) {
+//			if (i == 0) {
+//				categoriasTexto += categorias.get(i).toString();
+//			} else {
+//				categoriasTexto += ", " + categorias.get(i).toString();
+//			}
+//		}
+//		this.txtArea.setText(categoriasTexto);
+//	}
 
 	private void limpar() {
 		this.txtNome.setText("");

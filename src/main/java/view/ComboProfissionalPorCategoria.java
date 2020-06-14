@@ -52,7 +52,7 @@ public class ComboProfissionalPorCategoria extends JFrame {
 	}
 
 	public void getDados(int idCategoria) {
-		profissionais = profissionalController.listarProfissionaisPorCategoria(idCategoria);
+		profissionais = profissionalController.listarProfissionaisPorCategoria(idCategoria + 1);
 		
 		
 	}

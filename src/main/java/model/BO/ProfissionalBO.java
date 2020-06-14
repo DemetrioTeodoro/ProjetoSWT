@@ -39,6 +39,10 @@ public class ProfissionalBO {
 	public ArrayList<Profissional> listarProfissionais() {
 		return dao.listarTodos();
 	}
+
+	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria) {
+		return dao.verficarProfissionalPorCategoria(idCategoria);
+	}
 	
 	
 	

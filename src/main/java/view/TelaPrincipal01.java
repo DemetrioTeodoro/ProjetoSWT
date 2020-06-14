@@ -22,7 +22,7 @@ public class TelaPrincipal01 extends JFrame {
 	/**
 	 * Novidades
 	 */
-	private PainelCadastroOS2 painelCadastroOS = new PainelCadastroOS2();
+	private PainelCadastroOS painelCadastroOS = new PainelCadastroOS();
 	private PainelCadastroCliente01 painelCadastroCliente = new PainelCadastroCliente01();
 	private PainelListagemProfissionais painelListProf = new PainelListagemProfissionais();
 	private PainelAgenda painelAgenda = new PainelAgenda();

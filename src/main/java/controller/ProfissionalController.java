@@ -42,4 +42,8 @@ public class ProfissionalController {
 		return profBO.listarProfissionais();
 	}
 
+	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria) {
+		return profBO.listarProfissionaisPorCategoria(idCategoria);
+	}
+
 }

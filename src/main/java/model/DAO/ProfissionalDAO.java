@@ -127,6 +127,25 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		return enderecoVinculado;
 	}
+	
+	public ArrayList<Profissional> verficarProfissionalPorCategoria(int idCategoria) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT id FROM PROFISSIONAL_CATEGORIA " + " WHERE id_categoria = " + idCategoria;
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Profissional p = construirResultSet(rs);
+				profissionais.add(p);
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao verificar se profissional está vinculado a alguma Categoria. Causa: " + e.getMessage());
+		}
+
+		return profissionais;
+	}
 
 	public Profissional consultarPorId(int id) {
 		Connection conexao = Banco.getConnection();

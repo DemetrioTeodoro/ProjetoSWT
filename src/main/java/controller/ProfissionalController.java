@@ -17,29 +17,49 @@ public class ProfissionalController {
 
 		String msg = "";
 
-		// TODO validações dos campos
+		if (nome == null || nome.isEmpty()) {
+			msg += " Digite o nome. \n";
+		}
+		if (telefone == null || telefone.isEmpty()) {
+			msg += " Digite o telefone. \n";
+		}
+		if (email == null || email.isEmpty()) {
+			msg += " Digite o email. \n";
+		}
 
-		LocalDate dtcadastro = LocalDate.now();
-		Endereco e = new Endereco(rua, numero, bairro, cidade, estado, cep);
+		ValidarEnderecoController validarEndereco = new ValidarEnderecoController();
+		msg += validarEndereco.validarEndereco(cep, rua, numero, bairro, cidade, estado);
 
-		Profissional p = new Profissional();
-		p.setNome(nome);
-		p.setAtivo(ativo);
-		p.setCategorias(categorias);
-		p.setDataCadastro(dtcadastro);
-		p.setTelefone(telefone);
-		p.setEmail(email);
-		p.setInscricao(cpf);
-		p.setEndereco(e);
-		
-		
-		msg = profBO.salvar(p);
+		if (msg.isEmpty()) {
 
-		return msg;
+			LocalDate dtcadastro = LocalDate.now();
+			Endereco e = new Endereco(rua, numero, bairro, cidade, estado, cep);
+
+			Profissional p = new Profissional();
+			p.setNome(nome);
+			p.setAtivo(ativo);
+			p.setCategorias(categorias);
+			p.setDataCadastro(dtcadastro);
+			p.setTelefone(telefone);
+			p.setEmail(email);
+			p.setInscricao(cpf);
+			p.setEndereco(e);
+
+			msg = profBO.salvar(p);
+
+			return msg;
+
+		} else {
+			return msg;
+		}
 	}
 
 	public ArrayList<Profissional> listarProfissionais() {
 		return profBO.listarProfissionais();
+	}
+
+	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria) {
+		return profBO.listarProfissionaisPorCategoria(idCategoria);
 	}
 
 }

@@ -24,6 +24,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		 */
 		java.util.Date dataNova = new java.util.Date();
 		String dataCadastro = new SimpleDateFormat("yyy-MM-dd").format(dataNova);
+		System.out.println(dataCadastro);
 
 		Endereco endereco = null;
 		if (ordemServico.getEndereco() != null) {
@@ -33,10 +34,10 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 
 		}
 
-		String sql = " INSERT INTO ORDEM_SERVICO ( numero, descricao, data_cadastro, data_inicio, data_termino_previsto, data_termino, id_cliente, id_endereco) "
+		String sql = " INSERT INTO ORDEM_SERVICO ( numero_os, descricao, data_cadastro, data_inicio, data_termino_previsto, data_termino, id_cliente, id_endereco) "
 				+ " VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		try {
 			stmt.setString(1, ordemServico.getNumeroOS());
 			stmt.setString(2, ordemServico.getDescricao());
@@ -50,18 +51,18 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			} else {
 				stmt.setInt(8, endereco.getId());
 			}
-			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
+			stmt.execute();
 			ResultSet resultado = stmt.getGeneratedKeys();
 
 			if (resultado.next()) {
 				ordemServico.setId(resultado.getInt(1));
 			}
+			vincularOrdemServicoProfissionais(ordemServico.getId(), ordemServico.getProfissionais());
+			vincularOrdemServicoCategoria(ordemServico.getId(), ordemServico.getCategorias());
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar ordem de serviço. Causa: " + e.getMessage());
 		}
 
-		vincularOrdemServicoProfissionais(ordemServico.getId(), ordemServico.getProfissionais());
-		vincularOrdemServicoCategoria(ordemServico.getId(), ordemServico.getCategorias());
 
 		return ordemServico;
 	}
@@ -222,10 +223,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			try {
 				stmt.setInt(1, idOrdemServico);
 				stmt.setInt(2, profissionais.get(i).getId());
-
+				stmt.execute();
 			} catch (Exception e) {
-				System.out
-						.println(" Erro ao salvar vinculo Ordem de Serviço com Profissional. Causa: " + e.getMessage());
+				System.out.println(" Erro ao salvar vinculo Ordem de Serviço com Profissional. Causa: " + e.getMessage());
 			}
 
 		}
@@ -243,7 +243,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			try {
 				stmt.setInt(1, idOrdemServico);
 				stmt.setInt(2, categorias.get(i).getId());
-
+				stmt.execute();
 			} catch (Exception e) {
 				System.out.println(" Erro ao salvar vinculo Ordem de Serviço com Categoria. Causa: " + e.getMessage());
 			}

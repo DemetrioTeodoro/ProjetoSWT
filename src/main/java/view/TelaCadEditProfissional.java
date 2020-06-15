@@ -300,7 +300,7 @@ public class TelaCadEditProfissional extends JFrame {
 		this.txtCidade.setText("");
 		this.txtEmail.setText("");
 		this.txtTelefone.setText("");
-		this.rdbAtivar.setSelected(true);
+		//this.rdbAtivar.setSelected(true);
 		this.cbCategoria.setSelectedIndex(-1);
 		this.cbEstado.setSelectedIndex(-1);
 	}

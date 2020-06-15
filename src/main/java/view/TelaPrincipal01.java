@@ -22,7 +22,11 @@ public class TelaPrincipal01 extends JFrame {
 	/**
 	 * Novidades
 	 */
+<<<<<<< HEAD
 	private PainelCadastroOSTha painelCadastroOS = new PainelCadastroOSTha();
+=======
+	private PainelCadastroOS painelCadastroOS = new PainelCadastroOS();
+>>>>>>> branch 'master' of https://github.com/DemetrioProgram/ProjetoSWT.git
 	private PainelCadastroCliente01 painelCadastroCliente = new PainelCadastroCliente01();
 	private PainelListagemProfissionais painelListProf = new PainelListagemProfissionais();
 	private PainelAgenda painelAgenda = new PainelAgenda();

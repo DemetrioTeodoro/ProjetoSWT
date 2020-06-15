@@ -170,10 +170,10 @@ public class TelaCadEditProfissional2 extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProfissionalController control = new ProfissionalController();
-				String mensagem = control.salvar(txtNome.getText(), txtCpf.getText(), rdbDesativar.isSelected(),
+				/*String mensagem = control.salvar(txtNome.getText(), txtCpf.getText(), rdbDesativar.isSelected(),
 				txtEmail.getText(), txtTelefone.getText(), txtCep.getText(), txtRua.getText(), txtNumero.getText(), 
 				txtBairro.getText(), txtCidade.getText(), (String)cbEstado.getSelectedItem(), (Categoria)cbCategoria.getSelectedItem());
-				JOptionPane.showMessageDialog(null, mensagem);
+				JOptionPane.showMessageDialog(null, mensagem);*/
 			}
 		});
 

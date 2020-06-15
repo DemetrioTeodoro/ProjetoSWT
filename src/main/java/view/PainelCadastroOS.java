@@ -118,11 +118,11 @@ public class PainelCadastroOS extends JPanel {
 
 		JLabel lblDataPrevistaTermino = new JLabel("Data Prevista Termino:");
 
-		DatePicker dateInicial = new DatePicker();
+		final DatePicker dateInicial = new DatePicker();
 		dateInicial.getComponentToggleCalendarButton().setText("");
 		dateInicial.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS.class.getResource("/icones/calendar-icon.png")));
 
-		DatePicker datePrevistaFinal = new DatePicker();
+		final DatePicker datePrevistaFinal = new DatePicker();
 		datePrevistaFinal.getComponentToggleCalendarButton().setIcon(new ImageIcon(PainelCadastroOS.class.getResource("/icones/calendar-icon.png")));
 		datePrevistaFinal.getComponentToggleCalendarButton().setText("");
 

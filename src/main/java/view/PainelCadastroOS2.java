@@ -59,6 +59,7 @@ public class PainelCadastroOS2 extends JPanel {
 	private JComboBox cbCategoria;
 	private JComboBox cbCliente;
 	private JComboBox cbProfissional;
+	private final MaskFormatter formatoOrdemServico;
 
 	/**
 	 * Create the panel.
@@ -66,8 +67,6 @@ public class PainelCadastroOS2 extends JPanel {
 	public PainelCadastroOS2() {
 
 		JLabel lblNumeroOS = new JLabel("N\u00B0 Odem de Servi\u00E7o:");
-
-		MaskFormatter formatoOrdemServico;
 
 		String ano = new SimpleDateFormat("/yyyy").format(dataAtual);
 		JLabel label = new JLabel(ano);

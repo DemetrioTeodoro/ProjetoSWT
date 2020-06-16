@@ -3,6 +3,7 @@ package controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import model.BO.BuscarCep;
 import model.BO.ProfissionalBO;
 import model.entity.Categoria;
 import model.entity.Endereco;
@@ -17,14 +18,17 @@ public class ProfissionalController {
 
 		String msg = "";
 
-		if (nome == null || nome.isEmpty()) {
+		if (nome == null || nome.trim().isEmpty()) {
 			msg += " Digite o nome. \n";
 		}
-		if (telefone == null || telefone.isEmpty()) {
+		if (telefone == null || telefone.trim().isEmpty()) {
 			msg += " Digite o telefone. \n";
 		}
-		if (email == null || email.isEmpty()) {
+		if (email == null || email.trim().isEmpty()) {
 			msg += " Digite o email. \n";
+		}
+		if (categorias == null || categorias.size() == 0) {
+			msg += " Selecione uma categoria. \n";
 		}
 
 		ValidarEnderecoController validarEndereco = new ValidarEnderecoController();
@@ -60,6 +64,11 @@ public class ProfissionalController {
 
 	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria) {
 		return profBO.listarProfissionaisPorCategoria(idCategoria);
+	}
+
+	public Endereco buscarEnderecoPorCep(String cep) {
+		BuscarCep buscarCep = new BuscarCep();
+		return buscarCep.buscarCep(cep);
 	}
 
 }

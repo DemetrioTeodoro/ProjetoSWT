@@ -6,22 +6,23 @@ public class ValidarEnderecoController {
 		
 		String msg = "";
 		
-		if (cep == null || cep.isEmpty()) {
+		
+		if (cep == null || cep.trim().isEmpty() || cep.trim().replace("-", "").isEmpty()) {
 			msg += " Digite o cep. \n";
 		}
-		if (rua == null || rua.isEmpty()) {
+		if (rua == null || rua.trim().isEmpty()) {
 			msg += " Digite a rua. \n";
 		}
-		if (numero == null || numero.isEmpty()) {
+		if (numero == null || numero.trim().isEmpty()) {
 			msg += " Digite o número. \n";
 		}
-		if (bairro == null || bairro.isEmpty()) {
+		if (bairro == null || bairro.trim().isEmpty()) {
 			msg += " Digite o bairro. \n";
 		}
-		if (cidade == null || cidade.isEmpty()) {
+		if (cidade == null || cidade.trim().isEmpty()) {
 			msg += " Digite a cidade. \n";
 		}
-		if (estado == null || estado.isEmpty()) {
+		if (estado == null || estado.trim().isEmpty()) {
 			msg += " Digite o estado ";
 		}
 		

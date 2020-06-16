@@ -18,6 +18,8 @@ import controller.CategoriaController;
 import controller.ProfissionalController;
 import helpers.Estados;
 import model.entity.Categoria;
+import model.entity.Endereco;
+
 import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -51,7 +53,9 @@ public class TelaCadEditProfissional extends JFrame {
 	private JComboBox<String> cbEstado;
 	private JButton btnLimpar;
 	private ArrayList<Categoria> categorias;
+	private Endereco endereco = new Endereco();
 	private JTextArea txtArea;
+	private ProfissionalController profissionalController = new ProfissionalController();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -109,7 +113,7 @@ public class TelaCadEditProfissional extends JFrame {
 		txtNumero.setColumns(10);
 
 		txtBairro = new JTextField();
-		txtBairro.setBounds(240, 129, 234, 20);
+		txtBairro.setBounds(348, 129, 126, 20);
 		getContentPane().add(txtBairro);
 		txtBairro.setColumns(10);
 
@@ -214,7 +218,7 @@ public class TelaCadEditProfissional extends JFrame {
 		contentPane.add(lblEstado);
 
 		JLabel lblBairro = new JLabel("Bairro :");
-		lblBairro.setBounds(185, 132, 50, 14);
+		lblBairro.setBounds(296, 133, 50, 14);
 		contentPane.add(lblBairro);
 
 		JLabel lblNumero = new JLabel("N\u00FAmero : ");
@@ -269,6 +273,20 @@ public class TelaCadEditProfissional extends JFrame {
 		JLabel lblCategoriasSelecionadas = new JLabel("Categoria(s) selecionada(s) :");
 		lblCategoriasSelecionadas.setBounds(292, 350, 178, 14);
 		contentPane.add(lblCategoriasSelecionadas);
+		
+		JButton btnBuscarCep = new JButton("Buscar Cep");
+		btnBuscarCep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (txtCep.getText() != null || !txtCep.getText().isEmpty()) {
+					endereco = profissionalController.buscarEnderecoPorCep(txtCep.getText());
+					txtCidade.setText(endereco.getCidade());
+					txtBairro.setText(endereco.getBairro());
+					txtRua.setText(endereco.getRua());
+				}
+			}
+		});
+		btnBuscarCep.setBounds(182, 122, 102, 25);
+		contentPane.add(btnBuscarCep);
 
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -18,6 +18,8 @@ public class ComboProfissionalPorCategoria extends JFrame {
 	private JPanel contentPane;
 	private ProfissionalController profissionalController = new ProfissionalController();
 	private ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+	private JComboBox comboBox;
+	private int idCateg;
 
 	/**
 	 * Launch the application.
@@ -46,13 +48,14 @@ public class ComboProfissionalPorCategoria extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JComboBox comboBox = new JComboBox(profissionais.toArray());
+		profissionais = profissionalController.listarProfissionaisPorCategoria(idCateg);
+		comboBox = new JComboBox(profissionais.toArray());
 		comboBox.setBounds(152, 107, 144, 22);
 		contentPane.add(comboBox);
 	}
 
 	public void getDados(int idCategoria) {
-		profissionais = profissionalController.listarProfissionaisPorCategoria(idCategoria + 1);
+		idCateg = idCategoria;
 		
 		
 	}

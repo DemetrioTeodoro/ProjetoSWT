@@ -13,6 +13,7 @@ import javax.swing.text.MaskFormatter;
 
 import controller.ClienteController;
 import helpers.Estados;
+import model.entity.Endereco;
 
 import javax.swing.JRadioButton;
 import java.awt.Font;
@@ -41,6 +42,8 @@ public class PainelCadastroCliente01 extends JPanel {
 	private MaskFormatter cpfMask;
 	private MaskFormatter cepMask;
 	private JComboBox cbEstado;
+	private Endereco endereco = new Endereco();
+	private ClienteController clienteController = new ClienteController();
 
 	/**
 	 * Create the panel.
@@ -167,128 +170,170 @@ public class PainelCadastroCliente01 extends JPanel {
 				limparCampos();
 			}
 		});
-
+		
+		JButton btnBuscarCep = new JButton("Buscar Cep");
+		btnBuscarCep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (txtCep.getText() != null || !txtCep.getText().isEmpty()) {
+					endereco = clienteController.buscarEnderecoPorCep(txtCep.getText());
+					txtCidade.setText(endereco.getCidade());
+					txtBairro.setText(endereco.getBairro());
+					txtRua.setText(endereco.getRua());
+				}
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup()
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-						.createSequentialGroup().addGap(50)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 57,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(txtNome, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE))
-								.addComponent(
-										lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 299, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_4)
-								.addGroup(groupLayout.createSequentialGroup().addComponent(rdbtCpf)
-										.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(rdbtCnpj).addGap(18)
-										.addComponent(lblNewLabel).addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(txtInscricao, GroupLayout.PREFERRED_SIZE, 138,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED, 278, Short.MAX_VALUE)
-										.addComponent(rdbAtivo))
-								.addGroup(groupLayout.createSequentialGroup().addComponent(lblTel)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(txtTel, GroupLayout.PREFERRED_SIZE, 113,
-												GroupLayout.PREFERRED_SIZE)
-										.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-												.addGroup(groupLayout.createSequentialGroup().addGap(6).addComponent(
-														btSalvar, GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
-												.addGroup(groupLayout.createSequentialGroup()
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(lblEmail)))
-										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-												.addGroup(groupLayout.createSequentialGroup().addGap(134).addComponent(
-														btLimpar, GroupLayout.PREFERRED_SIZE, 105,
-														GroupLayout.PREFERRED_SIZE))
-												.addGroup(groupLayout.createSequentialGroup()
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(txtEmail, 449, 449, 449))))
-								.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 182,
-										GroupLayout.PREFERRED_SIZE)))
-						.addGroup(groupLayout.createSequentialGroup().addGap(51).addGroup(groupLayout
-								.createParallelGroup(Alignment.LEADING, false)
-								.addGroup(groupLayout.createSequentialGroup().addComponent(lblCidade).addGap(22)
-										.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, 454,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(58).addComponent(lblEstado).addGap(18)
-										.addComponent(cbEstado, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED))
-								.addGroup(groupLayout.createSequentialGroup()
-										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-												.addComponent(lblNum).addComponent(lblRua, GroupLayout.PREFERRED_SIZE,
-														41, GroupLayout.PREFERRED_SIZE))
-										.addGap(18)
-										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-												.addGroup(groupLayout.createSequentialGroup()
-														.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, 75,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(49)
-														.addComponent(lblBairro, GroupLayout.PREFERRED_SIZE, 45,
-																GroupLayout.PREFERRED_SIZE)
-														.addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, 281,
-																GroupLayout.PREFERRED_SIZE)
-														.addGap(62).addComponent(lblCep).addGap(18).addComponent(txtCep,
-																GroupLayout.PREFERRED_SIZE, 113,
-																GroupLayout.PREFERRED_SIZE))
-												.addComponent(txtRua))))))
-				.addGap(82)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(35).addComponent(lblNewLabel_1).addGap(32)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(rdbtCpf)
-								.addComponent(rdbtCnpj).addComponent(lblNewLabel)
-								.addComponent(txtInscricao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(rdbAtivo))
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup().addGap(32).addComponent(lblNome))
-								.addGroup(groupLayout.createSequentialGroup().addGap(29).addComponent(txtNome,
-										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)))
-						.addGap(34).addComponent(lblNewLabel_2).addGap(25)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblRua))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblNum))
-								.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblBairro))
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblCep)))
-						.addGap(10)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup().addGap(4).addComponent(lblCidade))
-								.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(txtCidade,
-										GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblEstado)))
-						.addGap(40).addComponent(lblNewLabel_4).addGap(12)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup().addGap(6).addComponent(lblTel))
-								.addGroup(groupLayout.createSequentialGroup().addGap(3)
-										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(lblEmail)
-												.addComponent(txtTel, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-						.addPreferredGap(ComponentPlacement.RELATED, 99, Short.MAX_VALUE).addGroup(groupLayout
-								.createParallelGroup(Alignment.BASELINE).addComponent(btSalvar).addComponent(btLimpar))
-						.addGap(43)));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 299, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(rdbtCpf)
+					.addGap(4)
+					.addComponent(rdbtCnpj)
+					.addGap(18)
+					.addComponent(lblNewLabel)
+					.addGap(5)
+					.addComponent(txtInscricao, GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+					.addGap(392)
+					.addComponent(rdbAtivo))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblNome, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+					.addGap(5)
+					.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, 787, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(51)
+					.addComponent(lblRua, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+					.addGap(31)
+					.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, 679, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(51)
+					.addComponent(lblNum)
+					.addGap(18)
+					.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+					.addGap(49)
+					.addComponent(lblBairro, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+					.addGap(5)
+					.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, 281, GroupLayout.PREFERRED_SIZE)
+					.addGap(62)
+					.addComponent(lblCep)
+					.addGap(18)
+					.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+					.addGap(12)
+					.addComponent(btnBuscarCep))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(51)
+					.addComponent(lblCidade)
+					.addGap(22)
+					.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, 454, GroupLayout.PREFERRED_SIZE)
+					.addGap(58)
+					.addComponent(lblEstado)
+					.addGap(18)
+					.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblNewLabel_4))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(50)
+					.addComponent(lblTel)
+					.addGap(5)
+					.addComponent(txtTel, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+					.addGap(176)
+					.addComponent(lblEmail)
+					.addGap(7)
+					.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 449, GroupLayout.PREFERRED_SIZE))
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(233)
+					.addComponent(btSalvar, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+					.addGap(134)
+					.addComponent(btLimpar, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(35)
+					.addComponent(lblNewLabel_1)
+					.addGap(32)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(rdbtCpf)
+						.addComponent(rdbtCnpj)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblNewLabel))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addComponent(txtInscricao, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(rdbAtivo))
+					.addGap(29)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblNome))
+						.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(34)
+					.addComponent(lblNewLabel_2)
+					.addGap(25)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblRua))
+						.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(12)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblNum))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addComponent(txtNum, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblBairro))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(5)
+							.addComponent(lblCep))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(2)
+							.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnBuscarCep))
+					.addGap(11)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(4)
+							.addComponent(lblCidade))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblEstado))
+						.addComponent(cbEstado, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(40)
+					.addComponent(lblNewLabel_4)
+					.addGap(15)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblTel))
+						.addComponent(txtTel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblEmail))
+						.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(59)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btSalvar)
+						.addComponent(btLimpar)))
+		);
 		setLayout(groupLayout);
 
 	}

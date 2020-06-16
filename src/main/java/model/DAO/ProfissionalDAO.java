@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.entity.Categoria;
@@ -224,6 +225,32 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 	public boolean excluir(int id) {
 		// Profissionais serão apenas desativados no Cadastro ou Edição.
 		return false;
+	}
+	
+	public ArrayList<Profissional> consultarProfissionalPorIdCategoria(int idCategoria) {
+		String sql = " SELECT * FROM PROFISSIONAL AS P "+
+	                 " INNER JOIN PROFISSIONAL_CATEGORIA AS PC "+
+				     " ON P.id = PC.id_categoria "+
+	                 " WHERE PC.id_categoria = " + idCategoria;
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		
+		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+		
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				Profissional profissional = construirResultSet(rs);
+				profissionais.add(profissional);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissionais por idCategoria: " + idCategoria);
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return profissionais;
 	}
 
 	public boolean cpfJaUtilizado(String cpf) {

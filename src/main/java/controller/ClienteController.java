@@ -3,6 +3,7 @@ package controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import model.BO.BuscarCep;
 import model.BO.ClienteBO;
 import model.entity.Cliente;
 import model.entity.Endereco;
@@ -16,16 +17,16 @@ public class ClienteController {
 
 		String msg = "";
 
-		if (inscricao == null || inscricao.isEmpty()) {
+		if (inscricao == null || inscricao.trim().isEmpty()) {
 			msg += " Digite a inscrição. \n";
 		}
-		if (nome == null || nome.isEmpty()) {
+		if (nome == null || nome.trim().isEmpty()) {
 			msg += " Digite o nome. \n";
 		}
-		if (tel == null || tel.isEmpty()) {
+		if (tel == null || tel.trim().isEmpty()) {
 			msg += " Digite o telefone. \n";
 		}
-		if (email == null || email.isEmpty()) {
+		if (email == null || email.trim().isEmpty()) {
 			msg += " Digite o email. \n";
 		}
 
@@ -63,6 +64,11 @@ public class ClienteController {
 
 	public ArrayList<Cliente> listarClientes() {
 		return bo.listarClientes();
+	}
+
+	public Endereco buscarEnderecoPorCep(String cep) {
+		BuscarCep buscarCep = new BuscarCep();
+		return buscarCep.buscarCep(cep);
 	}
 
 }

@@ -35,6 +35,7 @@ import model.entity.Cliente;
 import model.entity.Endereco;
 import model.entity.OrdemServico;
 import model.entity.Profissional;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class PainelCadastroOS extends JPanel {
 	private String cep;
@@ -49,19 +50,20 @@ public class PainelCadastroOS extends JPanel {
 	private JTextField txtBairro;
 	private JTextArea txtDescricao;
 	private TelaPDF telaPDF = new TelaPDF();
-	private JLabel lblGeradorNumero;
 	private ClienteController clienteController = new ClienteController();
 	private CategoriaController categoriaController = new CategoriaController();
 	private OrdemServicoController ordemServicoController = new OrdemServicoController();
 	private ProfissionalController profissionalController = new ProfissionalController();
-	private ArrayList<Profissional> profissionais;
-	private ArrayList<Categoria> categorias;
-	private ArrayList<Cliente> clientes;
+	private ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+	private ArrayList<Categoria> categorias = new ArrayList<Categoria>();
+	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+	private Endereco endereco = new Endereco();
 	private JComboBox cbCategoria;
 	private JComboBox cbCliente;
 	private JComboBox cbProfissional;
 	private JTextField txtCidade;
 	private JComboBox cbEstados;
+	private JTextField txtNumeroOS;
 
 	/**
 	 * Create the panel.
@@ -73,7 +75,7 @@ public class PainelCadastroOS extends JPanel {
 		MaskFormatter formatoOrdemServico;
 
 		String ano = new SimpleDateFormat("/yyyy").format(dataAtual);
-		JLabel label = new JLabel(ano);
+		JLabel lblAno = new JLabel(ano);
 
 		JLabel lblCliente = new JLabel("Cliente:");
 		
@@ -145,6 +147,8 @@ public class PainelCadastroOS extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				ComboProfissionalPorCategoria cbProf = new ComboProfissionalPorCategoria();
 				int idCategoria = cbCategoria.getSelectedIndex();
+				idCategoria += 1;
+				categorias.add((Categoria) cbCategoria.getSelectedItem());
 				cbProf.getDados(idCategoria);
 				cbProf.setVisible(true);
 			}
@@ -158,10 +162,11 @@ public class PainelCadastroOS extends JPanel {
 
 		JButton btnVisualizar = new JButton("Visualizar");
 		btnVisualizar.addActionListener(new ActionListener() {
-			
 
 			public void actionPerformed(ActionEvent arg0) {
-				//String numeroOS = lblGeradorNumero.getText();
+				String ano = lblAno.getText();
+				String numeroOS = txtNumeroOS.getText();
+				numeroOS += ano;
 				Cliente cliente = new Cliente();
 				
 				cliente = (Cliente) cbCliente.getSelectedItem();
@@ -174,77 +179,10 @@ public class PainelCadastroOS extends JPanel {
 					rua = txtRua.getText();
 					numero = txtNumero.getText();
 				}*/
-		
-					descricao = txtDescricao.getText();
 				
-				LocalDate dataInicial = dateInicial.getDate();
-				LocalDate dataPrevistaFinal = datePrevistaFinal.getDate();
-				String cep = txtCep.getText();
-				String bairro = txtBairro.getText();
-				String rua = txtRua.getText();
-				String numero = txtNumero.getText();
-				Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
-				Profissional profissional = (Profissional) cbProfissional.getSelectedItem();
-				ArrayList<Profissional> pros = new ArrayList<Profissional>();
-				//TODO Validação
-				pros.add(profissional);
-				Endereco endereco = new Endereco();
-				endereco.setCep(cep);
-				endereco.setBairro(bairro);
-				endereco.setRua(rua);
-				endereco.setNumero(numero);
-				endereco.setEstado("SC");
-				endereco.setCidade("Floripa");
-				/*Profissional p = new Profissional();
-				p.setNome("Arnaldo dos testes");
-				p.setInscricao("12121451352");
-				p.setTelefone("995874526");
-				p.setEmail("testes@gmail.com");
-				p.setDataCadastro(dataInicial);
-				p.setCategorias(categorias);
-				p.setDataCadastro(dataInicial);
-				p.setEndereco(endereco);
-				p.setAtivo(true);
-				System.out.println(endereco);
-				System.out.println(p);
-				cliente.setNome("Arnaldo dos Testes");
-				cliente.setInscricao("5228");
-				cliente.setEhCpf(true);
-				cliente.setAtivo(true);
-				cliente.isAtivo();
-				cliente.isEhCpf();
-				cliente.setDataCadastro(dateInicial.getDate());
-				cliente.setTelefone("665894455");
-				cliente.setEmail("testando@gmail.com");
-				cliente.setEndereco(endereco);*/
-				System.out.println(cliente);
-				
-				/*Profissional p2 = new Profissional();
-				p2.setNome("Arnaldo dos testes2");
-				p2.setInscricao("2222222222");
-				p2.setTelefone("995874524");
-				p2.setEmail("testes@gmail.com");
-				p2.setDataCadastro(dataInicial);
-				p2.setCategorias(categorias);
-				p2.setDataCadastro(dataInicial);
-				p2.setEndereco(endereco);
-				p2.setAtivo(true);
-				pros.add(p);
-				pros.add(p2);*/
-
-				OrdemServico os = new OrdemServico();
-				//os.setId(1);
-				os.setNumeroOS("1");
-				os.setCategorias(categorias);
-				os.setCliente(cliente);
-				os.setDataInicio(dateInicial.getDate());
-				os.setDataPrevistaFim(dateInicial.getDate());
-				os.setDescricao(descricao);
-				os.setEndereco(endereco);
-				os.setProfissionais(pros);
-				os.setDataTermino(dateInicial.getDate());
-				System.out.println(os);
-				String msg= ordemServicoController.cadastrarOS(os);
+				String msg = ordemServicoController.cadastrarOS( numeroOS, (String) cbEstados.getSelectedItem(), txtCidade.getText(), 
+						txtNumero.getText(), txtRua.getText(), txtBairro.getText(), txtCep.getText(), dateInicial.getDate(),
+						datePrevistaFinal.getDate(), txtDescricao.getText(), cliente, categorias, profissionais);
 				JOptionPane.showMessageDialog(null, msg);
 				/*telaPDF.getDados(numeroOS, cliente, descricao, dataInicial, dataPrevistaFinal, categoria, profissional,endereco);
 				
@@ -261,12 +199,32 @@ public class PainelCadastroOS extends JPanel {
 
 		JButton btnLimpar = new JButton("Limpar");
 		
-		lblGeradorNumero = new JLabel("GeradorNumero");
-		lblGeradorNumero.setEnabled(false);
-		
 		JCheckBox chckbxFinalizada = new JCheckBox("Finalizada");
 		
 		JLabel lblEstado = new JLabel("Estado:");
+		
+		MaskFormatter formatoNumero;
+
+		try {
+			formatoNumero = new MaskFormatter("#####");
+			txtNumeroOS = new JFormattedTextField(formatoNumero);
+			txtNumeroOS.setColumns(10);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JButton btnBurcarCep = new JButton("Burcar Cep");
+		btnBurcarCep.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (txtCep.getText() != null || !txtCep.getText().isEmpty()) {
+					endereco = ordemServicoController.buscarEnderecoPorCep(txtCep.getText());
+					txtCidade.setText(endereco.getCidade());
+					txtBairro.setText(endereco.getBairro());
+					txtRua.setText(endereco.getRua());
+				}
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -276,11 +234,11 @@ public class PainelCadastroOS extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(51)
 					.addComponent(lblNumeroOS)
-					.addGap(7)
-					.addComponent(lblGeradorNumero)
-					.addGap(7)
-					.addComponent(label)
-					.addGap(227)
+					.addGap(12)
+					.addComponent(txtNumeroOS, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+					.addGap(12)
+					.addComponent(lblAno)
+					.addGap(262)
 					.addComponent(chckbxFinalizada, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(51)
@@ -297,19 +255,21 @@ public class PainelCadastroOS extends JPanel {
 					.addGap(53)
 					.addComponent(lblCep)
 					.addGap(5)
-					.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
+					.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
 					.addGap(12)
+					.addComponent(btnBurcarCep, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+					.addGap(5)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(53)
+							.addGap(51)
 							.addComponent(cbEstados, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)))
-					.addGap(18)
+					.addGap(9)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(48)
-							.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)))
+							.addGap(50)
+							.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE))))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(53)
 					.addComponent(lblRua)
@@ -368,10 +328,10 @@ public class PainelCadastroOS extends JPanel {
 							.addComponent(lblNumeroOS))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(4)
-							.addComponent(lblGeradorNumero))
+							.addComponent(txtNumeroOS, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(4)
-							.addComponent(label))
+							.addGap(7)
+							.addComponent(lblAno))
 						.addComponent(chckbxFinalizada))
 					.addGap(29)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
@@ -383,21 +343,30 @@ public class PainelCadastroOS extends JPanel {
 					.addComponent(lblEndereo)
 					.addGap(11)
 					.addComponent(chckbxMesmoEnderecoDo)
-					.addGap(28)
+					.addGap(27)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
+							.addGap(4)
 							.addComponent(lblCep))
-						.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblEstado))
-						.addComponent(cbEstados, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(1)
+							.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnBurcarCep)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblCidade)))
-					.addGap(27)
+							.addGap(1)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(3)
+									.addComponent(lblEstado))
+								.addComponent(cbEstados, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(1)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(3)
+									.addComponent(lblCidade))
+								.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+					.addGap(25)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(3)

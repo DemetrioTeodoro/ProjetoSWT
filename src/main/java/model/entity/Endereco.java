@@ -86,8 +86,11 @@ public class Endereco {
 
 	@Override
 	public String toString() {
-		return "Endereco: " + id + ", " + rua + ", " + numero + ", " + bairro + ", " + cidade + ", " + estado + ", "
-				+ cep;
+		return "Rua= " + rua + ", nº= " + numero + ", bairro= " + bairro + ", cidade= " + cidade + ", estado= "
+				+ estado + ", CEP= " + cep;
 	}
+
+	
+	
 
 }

@@ -13,7 +13,7 @@ import model.entity.Endereco;
 public class ClienteDAO implements BaseDAO<Cliente> {
 
 	public Cliente salvar(Cliente cliente) {
-		
+
 		Endereco endereco = null;
 		if (cliente.getEndereco() != null) {
 			EnderecoDAO enderecoDAO = new EnderecoDAO();
@@ -21,7 +21,7 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			endereco = enderecoDAO.salvar(cliente.getEndereco());
 
 		}
-		
+
 		Connection conexao = Banco.getConnection();
 		String sql = " INSERT INTO CLIENTE ( nome, inscricao, ecpf, ativo, data_cadastro, telefone, email, id_endereco) "
 				+ " VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -37,7 +37,7 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			stmt.setString(7, cliente.getEmail());
 			stmt.setInt(8, endereco.getId());
 			stmt.execute();
-			
+
 			ResultSet resultado = stmt.getGeneratedKeys();
 
 			if (resultado.next()) {
@@ -153,7 +153,7 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 		}
 		return cliente;
 	}
-	
+
 	public boolean inscricaoJaUtilizada(String inscricao) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT * FROM CLIENTE C " + " WHERE C.inscricao = '" + inscricao + "'";
@@ -166,11 +166,18 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			jaUsada = rs.next();
 
 		} catch (Exception e) {
-			System.out.println("Erro ao verificar se a incrição (cpf ou cnpj)"+inscricao+
-					" já está sendo utilizada por cliente. Causa:" + e.getMessage());
+			System.out.println("Erro ao verificar se a incrição (cpf ou cnpj)" + inscricao
+					+ " já está sendo utilizada por cliente. Causa:" + e.getMessage());
 		}
 
 		return jaUsada;
+	}
+
+	public Endereco consultarEndereco(Cliente clienteSelecionado) {
+		Endereco end = new Endereco();
+		EnderecoDAO endDAO = new EnderecoDAO();
+		end = endDAO.consultarPorId(clienteSelecionado.getEndereco().getId());
+		return end;
 	}
 
 }

@@ -14,6 +14,40 @@ public class OrdemServico {
 	private LocalDate dataTermino;
 	private ArrayList<Categoria> categorias;
 	private ArrayList<Profissional> profissionais;
+	private LocalDate dataCadastro;
+
+	public OrdemServico(int id, String numeroOS, Cliente cliente, Endereco endereco, String descricao,
+			LocalDate dataInicio, LocalDate dataPrevistaFim, LocalDate dataTermino, ArrayList<Categoria> categorias,
+			ArrayList<Profissional> profissionais, LocalDate dataCadastro) {
+		super();
+		this.id = id;
+		this.numeroOS = numeroOS;
+		this.cliente = cliente;
+		this.endereco = endereco;
+		this.descricao = descricao;
+		this.dataInicio = dataInicio;
+		this.dataPrevistaFim = dataPrevistaFim;
+		this.dataTermino = dataTermino;
+		this.categorias = categorias;
+		this.profissionais = profissionais;
+		this.dataCadastro = dataCadastro;
+	}
+	
+	public OrdemServico(String numeroOS, Cliente cliente, Endereco endereco, String descricao, LocalDate dataInicio,
+			LocalDate dataPrevistaFim, LocalDate dataTermino, ArrayList<Categoria> categorias,
+			ArrayList<Profissional> profissionais, LocalDate dataCadastro) {
+		super();
+		this.numeroOS = numeroOS;
+		this.cliente = cliente;
+		this.endereco = endereco;
+		this.descricao = descricao;
+		this.dataInicio = dataInicio;
+		this.dataPrevistaFim = dataPrevistaFim;
+		this.dataTermino = dataTermino;
+		this.categorias = categorias;
+		this.profissionais = profissionais;
+		this.dataCadastro = dataCadastro;
+	}
 
 	public OrdemServico() {
 		super();
@@ -98,6 +132,14 @@ public class OrdemServico {
 
 	public void setProfissionais(ArrayList<Profissional> profissionais) {
 		this.profissionais = profissionais;
+	}
+	
+	public LocalDate getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(LocalDate dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
 
 	@Override

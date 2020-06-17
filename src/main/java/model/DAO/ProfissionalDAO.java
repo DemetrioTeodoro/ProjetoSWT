@@ -128,7 +128,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		return enderecoVinculado;
 	}
-	
+
 	public ArrayList<Profissional> verficarProfissionalPorCategoria(int idCategoria) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT id FROM PROFISSIONAL_CATEGORIA " + " WHERE id_categoria = " + idCategoria;
@@ -142,7 +142,8 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 				profissionais.add(p);
 			}
 		} catch (SQLException e) {
-			System.out.println("Erro ao verificar se profissional está vinculado a alguma Categoria. Causa: " + e.getMessage());
+			System.out.println(
+					"Erro ao verificar se profissional está vinculado a alguma Categoria. Causa: " + e.getMessage());
 		}
 
 		return profissionais;
@@ -226,17 +227,17 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		// Profissionais serão apenas desativados no Cadastro ou Edição.
 		return false;
 	}
-	
+
 	public ArrayList<Profissional> consultarProfissionalPorIdCategoria(int idCategoria) {
-		String sql = " SELECT * FROM PROFISSIONAL AS P "+
-	                 " INNER JOIN PROFISSIONAL_CATEGORIA AS PC "+
-				     " ON P.id = PC.id_categoria "+
-	                 " WHERE PC.id_categoria = " + idCategoria;
+
+		String sql = " SELECT * FROM PROFISSIONAL AS P " + " INNER JOIN PROFISSIONAL_CATEGORIA AS PC "
+				+ " ON P.id = PC.id_profissional " + " WHERE PC.id_categoria = " + idCategoria;
+
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
-		
+
 		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
-		
+
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 

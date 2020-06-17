@@ -71,4 +71,9 @@ public class ClienteController {
 		return buscarCep.buscarCep(cep);
 	}
 
+	public Endereco consultarEnderecoCliente(Cliente clienteSelecionado) {
+		
+		return bo.consultarEnderecoCliente(clienteSelecionado);
+	}
+
 }

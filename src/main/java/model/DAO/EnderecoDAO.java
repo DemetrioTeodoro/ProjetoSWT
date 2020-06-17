@@ -7,13 +7,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 import model.entity.Endereco;
 
 public class EnderecoDAO implements BaseDAO<Endereco> {
 
 	public Endereco salvar(Endereco endereco) {
-		Connection conexao = Banco.getConnection(); 
+		Connection conexao = Banco.getConnection();
 		String sql = " INSERT INTO ENDERECO (rua, numero, bairro, cidade, estado, cep ) "
 				+ " VALUES ( ?, ?, ?, ?, ?, ?)";
 
@@ -26,13 +25,13 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 			stmt.setString(5, endereco.getEstado());
 			stmt.setString(6, endereco.getCep());
 			stmt.execute();
-			
+
 			ResultSet resultado = stmt.getGeneratedKeys();
 
 			if (resultado.next()) {
 				endereco.setId(resultado.getInt(1));
 			}
-		
+
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar endereço. Causa: " + e.getMessage());
 		} finally {
@@ -137,5 +136,4 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 		}
 		return enderecos;
 	}
-
 }

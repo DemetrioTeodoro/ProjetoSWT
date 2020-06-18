@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.DAO.ClienteDAO;
 import model.entity.Cliente;
 import model.entity.Endereco;
+import model.seletor.ClienteSeletor;
 
 public class ClienteBO {
 
@@ -39,6 +40,11 @@ public class ClienteBO {
 	public Endereco consultarEnderecoCliente(Cliente clienteSelecionado) {
 		// TODO Auto-generated method stub
 		return dao.consultarEndereco(clienteSelecionado);
+	}
+
+	public ArrayList<Cliente> listarClientes(ClienteSeletor seletor) {
+		
+		return dao.listarPorSeletor(seletor);
 	}
 
 }

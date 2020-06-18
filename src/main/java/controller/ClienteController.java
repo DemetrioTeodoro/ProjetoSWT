@@ -7,6 +7,7 @@ import model.BO.BuscarCep;
 import model.BO.ClienteBO;
 import model.entity.Cliente;
 import model.entity.Endereco;
+import model.seletor.ClienteSeletor;
 
 public class ClienteController {
 
@@ -74,6 +75,11 @@ public class ClienteController {
 	public Endereco consultarEnderecoCliente(Cliente clienteSelecionado) {
 		
 		return bo.consultarEnderecoCliente(clienteSelecionado);
+	}
+
+	public ArrayList<Cliente> listarClientes(ClienteSeletor seletor) {
+		
+		return bo.listarClientes(seletor);
 	}
 
 }

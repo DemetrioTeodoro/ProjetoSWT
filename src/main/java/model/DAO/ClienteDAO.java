@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import model.entity.Cliente;
 import model.entity.Endereco;
+import model.seletor.ClienteSeletor;
 
 public class ClienteDAO implements BaseDAO<Cliente> {
 
@@ -178,6 +179,57 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 		EnderecoDAO endDAO = new EnderecoDAO();
 		end = endDAO.consultarPorId(clienteSelecionado.getEndereco().getId());
 		return end;
+	}
+
+	public ArrayList<Cliente> listarPorSeletor(ClienteSeletor seletor) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM CLIENTE C ";
+
+		if (seletor.temFiltro()) {
+			sql = criarFiltros(sql, seletor);
+		}
+
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		ArrayList<Cliente> clientes = new ArrayList<Cliente>();
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Cliente c = construirClienteDoResultSet(rs);
+				clientes.add(c);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar clientes por seletor.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return clientes;
+	}
+	
+	private String criarFiltros(String sql, ClienteSeletor seletor) {
+
+		boolean primeiro = true;
+		sql += " WHERE ";
+
+		if (seletor.getNome() != null && seletor.getNome().trim().length() > 0) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " C.nome LIKE " + "'%" + seletor.getNome() + "%' ";
+			primeiro = false;
+		}
+
+		if (seletor.getInscricao() != null && seletor.getInscricao().trim().length() > 0) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " C.inscricao LIKE " + "'%" + seletor.getInscricao() + "%' ";
+		}
+
+		return sql;
 	}
 
 }

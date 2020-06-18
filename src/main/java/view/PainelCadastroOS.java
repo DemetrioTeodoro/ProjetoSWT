@@ -71,8 +71,6 @@ public class PainelCadastroOS extends JPanel {
 	private ArrayList<Categoria> categorias = new ArrayList<Categoria>();
 	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	private ArrayList<Profissional> profsxCategoria = new ArrayList<Profissional>();
-	private JTextArea txtAreaCategoria;
-	private JTextArea txtAreaProfissionais;
 
 	/**
 	 * Create the panel.
@@ -191,14 +189,13 @@ public class PainelCadastroOS extends JPanel {
 				Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
 				if (!categoriasSelecionadas.contains(categoria)) {
 					categoriasSelecionadas.add(categoria);
-					txtAreaCategoria.setText(categoriasSelecionadas.toString());
+					
 				}
 				try {
 					profsxCategoria = profissionalController.listarProfissionaisPorCategoria(categoria.getId());
 
 				} catch (Exception e2) {
-					System.out
-							.println("Erro ao trazer dados para o combox profs x categoria. Causa: " + e2.getMessage());
+					System.out.println("Erro ao trazer dados para o combox profs x categoria. Causa: " + e2.getMessage());
 				}
 
 				cbProfissional.addItem("SELECIONE PROFISSIONAL");
@@ -210,14 +207,13 @@ public class PainelCadastroOS extends JPanel {
 
 		JButton btnAdd = new JButton("");
 		btnAdd.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				Profissional profSelecionado = (Profissional) cbProfissional.getSelectedItem();
 				if (profissionaisSelecionados.contains(profSelecionado)) {
 					JOptionPane.showMessageDialog(null, "Profissional já foi selecionado");
 				} else {
 					profissionaisSelecionados.add(profSelecionado);
-					txtAreaProfissionais.setText(profissionaisSelecionados.toString());
+					
 				}
 			}
 		});
@@ -299,37 +295,28 @@ public class PainelCadastroOS extends JPanel {
 				}
 			}
 		});
-		
-		txtAreaCategoria = new JTextArea();
-		
-		txtAreaProfissionais = new JTextArea();
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(51)
-									.addComponent(lblCategoria)
-									.addGap(12)
-									.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
-									.addGap(4)
-									.addComponent(lblProfissionais)
-									.addGap(5)
-									.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 187, GroupLayout.PREFERRED_SIZE)
-									.addGap(18)
-									.addComponent(btnAdd))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(151)
-									.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-									.addGap(249)
-									.addComponent(btnVisualizar)))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(txtAreaProfissionais)
-								.addComponent(txtAreaCategoria, GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)))
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(51)
+								.addComponent(lblCategoria)
+								.addGap(12)
+								.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
+								.addGap(4)
+								.addComponent(lblProfissionais)
+								.addGap(5)
+								.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 187, GroupLayout.PREFERRED_SIZE)
+								.addGap(18)
+								.addComponent(btnAdd))
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGap(151)
+								.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+								.addGap(249)
+								.addComponent(btnVisualizar)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(51)
 							.addComponent(lblCadastroOrdemDeServio))
@@ -401,7 +388,7 @@ public class PainelCadastroOS extends JPanel {
 									.addGap(140)
 									.addComponent(datePrevistaFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addComponent(lblDataPrevistaTermino, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(417, Short.MAX_VALUE))
+					.addContainerGap(51, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -489,27 +476,21 @@ public class PainelCadastroOS extends JPanel {
 					.addGap(37)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(6)
-									.addComponent(lblCategoria))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(3)
-									.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(3)
-									.addComponent(lblProfissionais))
-								.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnAdd))
-							.addGap(52)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnLimpar)
-								.addComponent(btnVisualizar)))
+							.addGap(6)
+							.addComponent(lblCategoria))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(txtAreaCategoria, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtAreaProfissionais, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(104, Short.MAX_VALUE))
+							.addGap(3)
+							.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(3)
+							.addComponent(lblProfissionais))
+						.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAdd))
+					.addGap(52)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnLimpar)
+						.addComponent(btnVisualizar))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 
@@ -525,7 +506,6 @@ public class PainelCadastroOS extends JPanel {
 		this.txtDescricao.setText("");
 		this.cbCategoria.setSelectedIndex(-1);
 		this.cbEstados.setSelectedIndex(-1);
-		this.txtAreaCategoria.setText("");
-		this.txtAreaProfissionais.setText("");
+		
 	}
 }

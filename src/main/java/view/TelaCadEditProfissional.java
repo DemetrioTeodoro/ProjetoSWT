@@ -141,7 +141,7 @@ public class TelaCadEditProfissional extends JFrame {
 		CategoriaController catControl = new CategoriaController();
 
 		final JComboBox<Categoria> cbCategoria = new JComboBox(catControl.listarCategorias().toArray());
-		
+
 		cbCategoria.setBounds(104, 347, 131, 20);
 		cbCategoria.setSelectedIndex(-1);
 		getContentPane().add(cbCategoria);
@@ -158,26 +158,6 @@ public class TelaCadEditProfissional extends JFrame {
 			System.out.println("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
-
-		JButton btnSalvar = new JButton("Salvar");
-		btnSalvar.setBounds(108, 439, 100, 23);
-		getContentPane().add(btnSalvar);
-
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ProfissionalController control = new ProfissionalController();
-				String mensagem = control.salvar(txtNome.getText(), txtCpf.getText(), rdbAtivar.isSelected(),
-						txtEmail.getText(), txtTelefone.getText(), txtCep.getText(), txtRua.getText(),
-						txtNumero.getText(), txtBairro.getText(), txtCidade.getText(),
-						(String) cbEstado.getSelectedItem(), categorias);
-				JOptionPane.showMessageDialog(null, mensagem);
-				//limpar(); 
-			}
-		});
-
-		btnLimpar = new JButton("Limpar");
-		btnLimpar.setBounds(271, 439, 100, 23);
-		getContentPane().add(btnLimpar);
 
 		JLabel lblEmail = new JLabel("Email :");
 		lblEmail.setBounds(21, 271, 46, 14);
@@ -260,10 +240,12 @@ public class TelaCadEditProfissional extends JFrame {
 
 					categorias.add(categoriaSelecionada);
 					txtArea.setText(categorias.toString());
-						
+
 				}
+				categoriaSelecionada = null;
+				cbCategoria.setSelectedIndex(-1);
 			}
-			
+
 		});
 
 		btnAddCategoria
@@ -274,7 +256,33 @@ public class TelaCadEditProfissional extends JFrame {
 		JLabel lblCategoriasSelecionadas = new JLabel("Categoria(s) selecionada(s) :");
 		lblCategoriasSelecionadas.setBounds(292, 350, 178, 14);
 		contentPane.add(lblCategoriasSelecionadas);
-		
+
+		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.setBounds(108, 439, 100, 23);
+		getContentPane().add(btnSalvar);
+
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ProfissionalController control = new ProfissionalController();
+				String mensagem = control.salvar(txtNome.getText(), txtCpf.getText(), rdbAtivar.isSelected(),
+						txtEmail.getText(), txtTelefone.getText(), txtCep.getText(), txtRua.getText(),
+						txtNumero.getText(), txtBairro.getText(), txtCidade.getText(),
+						(String) cbEstado.getSelectedItem(), categorias);
+				JOptionPane.showMessageDialog(null, mensagem);
+				
+			}
+		});
+
+		btnLimpar = new JButton("Limpar");
+		btnLimpar.setBounds(271, 439, 100, 23);
+		getContentPane().add(btnLimpar);
+
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limpar();
+			}
+		});
+
 		JButton btnBuscarCep = new JButton("Buscar Cep");
 		btnBuscarCep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -290,27 +298,10 @@ public class TelaCadEditProfissional extends JFrame {
 		btnBuscarCep.setBounds(182, 122, 102, 25);
 		contentPane.add(btnBuscarCep);
 
-		btnLimpar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				limpar();
-			}
-		});
 	}
-	
-//	private void popularTextArea() {
-//		String categoriasTexto = "";
-//
-//		for (int i = 0; i < categorias.size(); i++) {
-//			if (i == 0) {
-//				categoriasTexto += categorias.get(i).toString();
-//			} else {
-//				categoriasTexto += ", " + categorias.get(i).toString();
-//			}
-//		}
-//		this.txtArea.setText(categoriasTexto);
-//	}
 
 	private void limpar() {
+
 		this.txtNome.setText("");
 		this.txtCpf.setText("");
 		this.txtCep.setText("");
@@ -320,8 +311,6 @@ public class TelaCadEditProfissional extends JFrame {
 		this.txtCidade.setText("");
 		this.txtEmail.setText("");
 		this.txtTelefone.setText("");
-		//this.rdbAtivar.setSelected(true);
-		this.cbCategoria.setSelectedIndex(-1);
-		this.cbEstado.setSelectedIndex(-1);
+
 	}
 }

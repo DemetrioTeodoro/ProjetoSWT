@@ -62,6 +62,7 @@ public class PainelCadastroCliente01 extends JPanel {
 		}
 
 		JRadioButton rdbtCpf = new JRadioButton("CPF");
+		
 
 		rdbtCpf.addItemListener(new ItemListener() {
 
@@ -72,6 +73,8 @@ public class PainelCadastroCliente01 extends JPanel {
 				}
 			}
 		});
+		
+		rdbtCpf.setSelected(true);
 
 		final JRadioButton rdbtCnpj = new JRadioButton("CNPJ");
 
@@ -130,8 +133,7 @@ public class PainelCadastroCliente01 extends JPanel {
 			cepMask = new MaskFormatter("#####-###");
 			txtCep = new JFormattedTextField(cepMask);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Erro ao formatar CEP. Causa: "+e.getMessage());
 		}
 
 		JLabel lblNewLabel_4 = new JLabel("Contato");
@@ -150,6 +152,7 @@ public class PainelCadastroCliente01 extends JPanel {
 		Estados listEstados = new Estados();
 
 		final JComboBox<String> cbEstado = new JComboBox(listEstados.consultarEstados().toArray());
+		cbEstado.setSelectedIndex(-1);
 
 		JButton btSalvar = new JButton("Salvar");
 		btSalvar.addActionListener(new ActionListener() {
@@ -171,7 +174,7 @@ public class PainelCadastroCliente01 extends JPanel {
 			}
 		});
 		
-		JButton btnBuscarCep = new JButton("Buscar Cep");
+		JButton btnBuscarCep = new JButton("Buscar");
 		btnBuscarCep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (txtCep.getText() != null || !txtCep.getText().isEmpty()) {
@@ -251,9 +254,9 @@ public class PainelCadastroCliente01 extends JPanel {
 					.addComponent(txtEmail, GroupLayout.PREFERRED_SIZE, 449, GroupLayout.PREFERRED_SIZE))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(233)
-					.addComponent(btSalvar, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+					.addComponent(btSalvar, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 					.addGap(134)
-					.addComponent(btLimpar, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE))
+					.addComponent(btLimpar, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)

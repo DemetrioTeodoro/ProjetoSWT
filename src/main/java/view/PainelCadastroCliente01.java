@@ -179,6 +179,7 @@ public class PainelCadastroCliente01 extends JPanel {
 					txtCidade.setText(endereco.getCidade());
 					txtBairro.setText(endereco.getBairro());
 					txtRua.setText(endereco.getRua());
+					cbEstado.setSelectedItem(endereco.getEstado());
 				}
 			}
 		});

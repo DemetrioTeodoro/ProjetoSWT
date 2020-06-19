@@ -1,7 +1,10 @@
 package model.BO;
 
+import java.util.ArrayList;
+
 import model.DAO.OrdemServicoDAO;
 import model.entity.OrdemServico;
+import model.seletor.OrdemServicoSeletor;
 
 public class OrdemServicoBO {
 	
@@ -16,6 +19,10 @@ public class OrdemServicoBO {
 		} else {
 			return msg = " Ocorreu um erro ao salvar Ordem de Serviço. ";
 		}
+	}
+
+	public ArrayList<OrdemServico> listarClientes(OrdemServicoSeletor seletor) {
+		return ordemServicoDAO.listarPorSeletor(seletor);
 	}
 
 }

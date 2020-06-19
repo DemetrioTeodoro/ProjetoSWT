@@ -1,0 +1,45 @@
+package model.seletor;
+
+import model.entity.Categoria;
+import model.entity.Cliente;
+
+public class OrdemServicoSeletor {
+
+	String numeroOS;
+	Cliente cliente;
+	Categoria catgoria;
+
+	public boolean temFiltro() {
+		boolean temFiltroPreenchido = false;
+
+		temFiltroPreenchido = (numeroOS != null || !numeroOS.trim().isEmpty()) || (cliente != null)
+				|| (catgoria != null);
+
+		return temFiltroPreenchido;
+	}
+
+	public String getNumeroOS() {
+		return numeroOS;
+	}
+
+	public void setNumeroOS(String numeroOS) {
+		this.numeroOS = numeroOS;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Categoria getCatgoria() {
+		return catgoria;
+	}
+
+	public void setCatgoria(Categoria catgoria) {
+		this.catgoria = catgoria;
+	}
+
+}

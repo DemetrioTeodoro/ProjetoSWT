@@ -5,14 +5,15 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import model.entity.Categoria;
+import model.entity.Cliente;
 import model.entity.Endereco;
 import model.entity.OrdemServico;
 import model.entity.Profissional;
+import model.seletor.OrdemServicoSeletor;
 
 public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 
@@ -62,7 +63,6 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar ordem de serviço. Causa: " + e.getMessage());
 		}
-
 
 		return ordemServico;
 	}
@@ -200,6 +200,10 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			CategoriaDAO categoriaDAO = new CategoriaDAO();
 			ArrayList<Categoria> categorias = categoriaDAO.consultarCategoriasPorOrdemServico(rs.getInt("id"));
 			ordemServico.setCategorias(categorias);
+			
+			ClienteDAO clienteDAO = new ClienteDAO();
+			Cliente cliente = clienteDAO.consultarPorId(rs.getInt("id_cliente"));
+			ordemServico.setCliente(cliente);
 
 		} catch (Exception e) {
 			System.out.println("Erro ao construir resultSet Ordem de Serviço. Causa:" + e.getMessage());
@@ -225,7 +229,8 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 				stmt.setInt(2, profissionais.get(i).getId());
 				stmt.execute();
 			} catch (Exception e) {
-				System.out.println(" Erro ao salvar vinculo Ordem de Serviço com Profissional. Causa: " + e.getMessage());
+				System.out
+						.println(" Erro ao salvar vinculo Ordem de Serviço com Profissional. Causa: " + e.getMessage());
 			}
 
 		}
@@ -264,7 +269,8 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			ResultSet rs = stmt.executeQuery();
 			enderecoVinculado = rs.next();
 		} catch (SQLException e) {
-			System.out.println("Erro ao verificar se Endereço está vinculado a alguma Ordem de Serviço. Causa: " + e.getMessage());
+			System.out.println(
+					"Erro ao verificar se Endereço está vinculado a alguma Ordem de Serviço. Causa: " + e.getMessage());
 		}
 
 		return enderecoVinculado;
@@ -283,10 +289,72 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			ResultSet rs = stmt.executeQuery();
 			clienteVinculado = rs.next();
 		} catch (SQLException e) {
-			System.out.println("Erro ao verificar se Cliente está vinculado a alguma Ordem de Serviço. Causa: " + e.getMessage());
+			System.out.println(
+					"Erro ao verificar se Cliente está vinculado a alguma Ordem de Serviço. Causa: " + e.getMessage());
 		}
 
 		return clienteVinculado;
+	}
+
+	public ArrayList<OrdemServico> listarPorSeletor(OrdemServicoSeletor seletor) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM ORDEM_SERVICO AS OS " 
+				+ " INNER JOIN ORDEM_SERVICO_CATEGORIA AS OSC "
+				+ " ON OS.id = OSC.id_categoria ";
+
+		if (seletor.temFiltro()) {
+			sql = criarFiltros(sql, seletor);
+		}
+
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		ArrayList<OrdemServico> ordemServicos = new ArrayList<OrdemServico>();
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				OrdemServico os = construirResultSet(rs);
+				ordemServicos.add(os);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar ordem de serviço por seletor.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return ordemServicos;
+	}
+
+	private String criarFiltros(String sql, OrdemServicoSeletor seletor) {
+		boolean primeiro = true;
+		sql += " WHERE ";
+
+		if (seletor.getNumeroOS() != null && !seletor.getNumeroOS().trim().isEmpty()) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " OS.numero_os LIKE " + "'%" + seletor.getNumeroOS() + "%' ";
+			primeiro = false;
+		}
+
+		if (seletor.getCliente() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " OS.id_cliente = " + seletor.getCliente().getId();
+			primeiro = false;
+		}
+
+		if (seletor.getCatgoria() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " OSC.id_categoria = " + seletor.getCatgoria().getId();
+		}
+
+		return sql;
 	}
 
 }

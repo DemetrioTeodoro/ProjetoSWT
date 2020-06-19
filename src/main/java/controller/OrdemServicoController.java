@@ -11,6 +11,7 @@ import model.entity.Cliente;
 import model.entity.Endereco;
 import model.entity.OrdemServico;
 import model.entity.Profissional;
+import model.seletor.OrdemServicoSeletor;
 
 public class OrdemServicoController {
 
@@ -154,6 +155,10 @@ public class OrdemServicoController {
 				cadOS.getEndereco().getEstado());
 
 		return msg;
+	}
+
+	public ArrayList<OrdemServico> listarClientes(OrdemServicoSeletor seletor) {
+		return ordemServicoBO.listarClientes(seletor);
 	}
 
 }

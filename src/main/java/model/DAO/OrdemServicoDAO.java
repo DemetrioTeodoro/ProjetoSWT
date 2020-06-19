@@ -45,7 +45,11 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			stmt.setString(3, dataCadastro);
 			stmt.setDate(4, Date.valueOf(ordemServico.getDataInicio()));
 			stmt.setDate(5, Date.valueOf(ordemServico.getDataPrevistaFim()));
+			if(ordemServico.getDataTermino()!=null) {
 			stmt.setDate(6, Date.valueOf(ordemServico.getDataTermino()));
+			}else {
+				stmt.setDate(6,null);
+			}
 			stmt.setInt(7, ordemServico.getCliente().getId());
 			if (endereco == null) {
 				stmt.setInt(8, ordemServico.getEndereco().getId());

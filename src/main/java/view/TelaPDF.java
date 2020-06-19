@@ -3,8 +3,10 @@ package view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -35,6 +37,7 @@ public class TelaPDF extends JFrame {
 	private JLabel lblProfissionalDoc;
 	private OrdemServicoController ordemServicoController = new OrdemServicoController();
 	private CadastroOS modelOS = new CadastroOS();
+	private Date dataAtual = new Date();
 
 	/**
 	 * Launch the application.
@@ -183,7 +186,8 @@ public class TelaPDF extends JFrame {
 	}
 
 	public CadastroOS enviarDados(CadastroOS cadOS) {
-		
+		String ano = new SimpleDateFormat("/yyyy").format(dataAtual);
+		cadOS.setNumeroOS(cadOS.getNumeroOS()+ano);
 		lblNumeroOSDoc.setText(cadOS.getNumeroOS());
 		lblClienteDoc.setText(cadOS.getCliente().toString());
 		lblEnderecoDoc.setText(cadOS.getEndereco().toString());

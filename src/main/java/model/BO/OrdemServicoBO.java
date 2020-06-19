@@ -15,10 +15,11 @@ public class OrdemServicoBO {
 		OrdemServico os = new OrdemServico();
 		os = ordemServicoDAO.salvar(ordemServico);
 		if (os != null) {
-			return msg = " Ordem de Serviço Salva com sucesso. ";
+			 msg= " Ordem de Serviço salva com sucesso. ";
 		} else {
-			return msg = " Ocorreu um erro ao salvar Ordem de Serviço. ";
+			 msg= " Ocorreu um erro ao salvar Ordem de Serviço. ";
 		}
+		return msg;
 	}
 
 	public ArrayList<OrdemServico> listarClientes(OrdemServicoSeletor seletor) {

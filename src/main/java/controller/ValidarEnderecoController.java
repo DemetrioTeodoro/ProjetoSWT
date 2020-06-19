@@ -8,13 +8,13 @@ public class ValidarEnderecoController {
 		
 		
 		if (cep == null || cep.trim().isEmpty() || cep.trim().replace("-", "").isEmpty()) {
-			msg += " Digite o cep. \n";
+			msg += " Digite o CEP. \n";
 		}
 		if (rua == null || rua.trim().isEmpty()) {
 			msg += " Digite a rua. \n";
 		}
 		if (numero == null || numero.trim().isEmpty()) {
-			msg += " Digite o número. \n";
+			msg += " Digite o número de endereço. \n";
 		}
 		if (bairro == null || bairro.trim().isEmpty()) {
 			msg += " Digite o bairro. \n";

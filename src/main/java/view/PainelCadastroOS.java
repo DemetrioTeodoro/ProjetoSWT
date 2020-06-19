@@ -61,6 +61,8 @@ public class PainelCadastroOS extends JPanel {
 	private JComboBox cbEstados;
 	private JTextField txtNumeroOS;
 	private JCheckBox chckbxFinalizada;
+	
+	private CadastroOS cadOS;
 
 	private ClienteController clienteController = new ClienteController();
 	private CategoriaController categoriaController = new CategoriaController();
@@ -224,13 +226,11 @@ public class PainelCadastroOS extends JPanel {
 
 		JButton btnVisualizar = new JButton("Visualizar");
 		CadastroOS cadOS = new CadastroOS();
+		
 		btnVisualizar.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent arg0) {
-				String ano = lblAno.getText();
-				String numeroOS = txtNumeroOS.getText();
-				numeroOS += ano;
-				cadOS.setNumeroOS(numeroOS);
+				
+				cadOS.setNumeroOS(txtNumeroOS.getText());
 				cadOS.setCliente((Cliente) cbCliente.getSelectedItem());
 				Endereco e = new Endereco(txtRua.getText(), txtNumero.getText(), txtBairro.getText(),
 						txtCidade.getText(), (String) cbEstados.getSelectedItem(), txtCep.getText());
@@ -243,9 +243,11 @@ public class PainelCadastroOS extends JPanel {
 				cadOS.setDescricao(txtDescricao.getText());
 
 				String msg = ordemServicoController.validarCampos(cadOS);
-				
+								
 				if (!msg.isEmpty()) {
+					
 					JOptionPane.showMessageDialog(null, msg);
+					msg="";
 				} else {
 					TelaPDF telaPDF = new TelaPDF();
 

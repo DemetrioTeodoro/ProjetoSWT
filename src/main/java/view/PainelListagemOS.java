@@ -53,11 +53,13 @@ public class PainelListagemOS extends JPanel {
 
 		categorias = categoriaController.listarCategorias();
 		cbCategoria = new JComboBox(categorias.toArray());
+		cbCategoria.setSelectedIndex(-1);
 
 		JLabel lblNumeroOS = new JLabel("N\u00FAmero da OS:");
 
 		clientes = clienteController.listarClientes();
 		cbCliente = new JComboBox(clientes.toArray());
+		cbCliente.setSelectedIndex(-1);
 
 		tblOrdemServico = new JTable();
 

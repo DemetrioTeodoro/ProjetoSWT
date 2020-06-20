@@ -1,5 +1,6 @@
 package model.BO;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import model.DAO.ProfissionalDAO;
@@ -43,8 +44,21 @@ public class ProfissionalBO {
 	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria) {
 		return dao.consultarProfissionalPorIdCategoria(idCategoria);
 	}
-	
-	
-	
-	
+
+	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria, LocalDate dataInicio,
+			LocalDate dataPrevistaTermino) {
+		
+		ArrayList<Profissional>profCategoriaSemOS = new ArrayList<Profissional>();
+		profCategoriaSemOS = dao.consultarProfsSemOSPorIdCategoria(idCategoria);
+		
+		ArrayList<Profissional>profsDisponiveis = new ArrayList<Profissional>();
+		profsDisponiveis = dao.consultarProfsDisponiveisPorIdCategoria(idCategoria, dataInicio, dataPrevistaTermino);
+		
+		for(int i = 0; i< profCategoriaSemOS.size(); i++) {
+			profsDisponiveis.add(profCategoriaSemOS.get(i));
+		}
+		
+		return profsDisponiveis;
+	}
+		
 }

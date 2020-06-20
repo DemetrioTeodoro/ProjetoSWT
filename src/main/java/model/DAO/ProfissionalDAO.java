@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import model.entity.Categoria;
@@ -253,6 +254,78 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		return profissionais;
 	}
+	//MÉTODO TRAZ PROFISSIONAIS COM 'OS' EM ADAMENTO PORÉM DISPONÍVEIS NO PERIODO DA NOVA OS REFERENTE A CATEGORIA SELECIONADA.
+	public ArrayList<Profissional> consultarProfsDisponiveisPorIdCategoria(int idCategoria, LocalDate dtInicio, LocalDate dtfimprevisto) {
+		
+//		dtInicio 
+//		dtfimprevisto
+
+		String sql = " SELECT DISTINCT * FROM PROFISSIONAL AS P " + 
+				" INNER JOIN ORDEM_SERVICO_PROFISSIONAL AS OP " + 
+				" ON P.id =  OP.id_profissional " + 
+				" INNER JOIN  ORDEM_SERVICO AS O " + 
+				" ON O.id = OP.id_ordem_servico " + 
+				" INNER JOIN PROFISSIONAL_CATEGORIA AS PC " + 
+				" ON P.id = PC.id_profissional " + 
+				" WHERE PC.id_categoria = " + idCategoria+
+				" AND P.ativo = TRUE " + 
+				" AND '"+ dtInicio +"' NOT BETWEEN O.data_inicio AND O.data_termino_previsto " + 
+				" AND '"+ dtfimprevisto +"' NOT BETWEEN O.data_inicio AND O.data_termino_previsto " + 
+				" AND O.data_inicio  NOT BETWEEN '"+ dtInicio +"' AND '"+ dtfimprevisto +"' " + 
+				" AND O.data_termino_previsto NOT BETWEEN '2020-06-24' AND '2020-06-30' ";
+
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+
+		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				Profissional profissional = construirResultSet(rs);
+				profissionais.add(profissional);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissionais ativos, com OS associadas, disponíveis no periodo por idCategoria: " + idCategoria);
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return profissionais;
+	}
+	
+	//MÉTODO TRAZ PROFISSIONAIS ATIVOS SEM OS VINCULADA REFERENTE A CATEGORIA SELECIONADA.
+		public ArrayList<Profissional> consultarProfsSemOSPorIdCategoria(int idCategoria) {
+			
+			String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + 
+					" INNER JOIN PROFISSIONAL_CATEGORIA PC " + 
+					" ON P.id = PC.id_profissional " + 
+					" LEFT JOIN ORDEM_SERVICO_PROFISSIONAL OP " + 
+					" ON P.id = OP.id_profissional " + 
+					" WHERE P.ATIVO = TRUE AND PC.id_categoria = " + idCategoria +
+					" AND P.id NOT IN (SELECT DISTINCT id_profissional  FROM ORDEM_SERVICO_PROFISSIONAL) ";
+
+			Connection conn = Banco.getConnection();
+			Statement stmt = Banco.getStatement(conn);
+
+			ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+
+			try {
+				ResultSet rs = stmt.executeQuery(sql);
+
+				while (rs.next()) {
+					Profissional profissional = construirResultSet(rs);
+					profissionais.add(profissional);
+				}
+
+			} catch (SQLException e) {
+				System.out.println("Erro ao consultar profissionais ativos por idCategoria ("+idCategoria+") sem OS vinculada. ");
+				System.out.println("Erro: " + e.getMessage());
+			}
+
+			return profissionais;
+		}
 
 	public boolean cpfJaUtilizado(String cpf) {
 		Connection conexao = Banco.getConnection();

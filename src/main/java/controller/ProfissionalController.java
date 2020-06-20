@@ -57,11 +57,11 @@ public class ProfissionalController {
 			return msg;
 		}
 	}
-
+//Lista todos os profissionais
 	public ArrayList<Profissional> listarProfissionais() {
 		return profBO.listarProfissionais();
 	}
-
+//Lista profissionais pela categoria
 	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria) {
 		return profBO.listarProfissionaisPorCategoria(idCategoria);
 	}
@@ -69,6 +69,11 @@ public class ProfissionalController {
 	public Endereco buscarEnderecoPorCep(String cep) {
 		BuscarCep buscarCep = new BuscarCep();
 		return buscarCep.buscarCep(cep);
+	}
+//Lista profissionais ativos pela categoria e disponíveis no periodo
+	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria, LocalDate dataInicio, LocalDate dataPrevistaTermino) {
+		// TODO Auto-generated method stub
+		return profBO.listarProfissionaisPorCategoria(idCategoria,dataInicio,dataPrevistaTermino);
 	}
 
 }

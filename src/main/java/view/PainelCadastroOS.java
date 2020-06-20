@@ -61,7 +61,7 @@ public class PainelCadastroOS extends JPanel {
 	private JComboBox cbEstados;
 	private JTextField txtNumeroOS;
 	private JCheckBox chckbxFinalizada;
-	
+
 	private CadastroOS cadOS;
 
 	private ClienteController clienteController = new ClienteController();
@@ -183,7 +183,7 @@ public class PainelCadastroOS extends JPanel {
 		categorias = categoriaController.listarCategorias();
 		cbCategoria = new JComboBox(categorias.toArray());
 		cbCategoria.setSelectedIndex(-1);
-		cbProfissional = new JComboBox();
+		cbProfissional = new JComboBox<Profissional>();
 
 		cbCategoria.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
@@ -191,31 +191,46 @@ public class PainelCadastroOS extends JPanel {
 				Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
 				if (!categoriasSelecionadas.contains(categoria)) {
 					categoriasSelecionadas.add(categoria);
-					
 				}
-				try {
-					profsxCategoria = profissionalController.listarProfissionaisPorCategoria(categoria.getId());
+				if (dateInicial.getText().isEmpty() || datePrevistaFinal.getText().isEmpty()
+						|| dateInicial.getDate().isAfter(datePrevistaFinal.getDate())) {
+					JOptionPane.showMessageDialog(null,
+							"Antes da seleção do profissional, favor informar as datas de início e previsão de término, "+
+					        "onde data de início deve ser menor que a data prevista para término");
+				} else {
 
-				} catch (Exception e2) {
-					System.out.println("Erro ao trazer dados para o combox profs x categoria. Causa: " + e2.getMessage());
-				}
+					try {
+						profsxCategoria = profissionalController.listarProfissionaisPorCategoria(categoria.getId(),
+								dateInicial.getDate(), datePrevistaFinal.getDate());
+						if(profsxCategoria.isEmpty()) {
+							JOptionPane.showMessageDialog(null,
+									"Nenhum profissional disponível para a categoria "+categoria+ " no período informado.");
+						}
 
-				cbProfissional.addItem("SELECIONE PROFISSIONAL");
-				for (int i = 0; i < profsxCategoria.size(); i++) {
-					cbProfissional.addItem(profsxCategoria.get(i));
+					} catch (Exception e2) {
+						System.out.println(
+								"Erro ao trazer dados para o combox profs x categoria."+
+						" Causa: " + e2.getMessage());// acusa este erro mas combo é feito corretamente...
+					}
+
+					cbProfissional.addItem("SELECIONE PROFISSIONAL");
+					for (int i = 0; i < profsxCategoria.size(); i++) {
+						cbProfissional.addItem(profsxCategoria.get(i));
+					}
 				}
 			}
 		});
 
 		JButton btnAdd = new JButton("");
 		btnAdd.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				Profissional profSelecionado = (Profissional) cbProfissional.getSelectedItem();
 				if (profissionaisSelecionados.contains(profSelecionado)) {
 					JOptionPane.showMessageDialog(null, "Profissional já foi selecionado");
 				} else {
 					profissionaisSelecionados.add(profSelecionado);
-					
+
 				}
 			}
 		});
@@ -226,10 +241,10 @@ public class PainelCadastroOS extends JPanel {
 
 		JButton btnVisualizar = new JButton("Visualizar");
 		CadastroOS cadOS = new CadastroOS();
-		
+
 		btnVisualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				cadOS.setNumeroOS(txtNumeroOS.getText());
 				cadOS.setCliente((Cliente) cbCliente.getSelectedItem());
 				Endereco e = new Endereco(txtRua.getText(), txtNumero.getText(), txtBairro.getText(),
@@ -243,11 +258,11 @@ public class PainelCadastroOS extends JPanel {
 				cadOS.setDescricao(txtDescricao.getText());
 
 				String msg = ordemServicoController.validarCampos(cadOS);
-								
+
 				if (!msg.isEmpty()) {
-					
+
 					JOptionPane.showMessageDialog(null, msg);
-					msg="";
+					msg = "";
 				} else {
 					TelaPDF telaPDF = new TelaPDF();
 
@@ -298,202 +313,131 @@ public class PainelCadastroOS extends JPanel {
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-							.addGroup(groupLayout.createSequentialGroup()
-								.addGap(51)
-								.addComponent(lblCategoria)
-								.addGap(12)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+						.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(51).addComponent(lblCategoria).addGap(12)
 								.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, 188, GroupLayout.PREFERRED_SIZE)
-								.addGap(4)
-								.addComponent(lblProfissionais)
-								.addGap(5)
-								.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 187, GroupLayout.PREFERRED_SIZE)
-								.addGap(18)
-								.addComponent(btnAdd))
-							.addGroup(groupLayout.createSequentialGroup()
-								.addGap(151)
+								.addGap(4).addComponent(lblProfissionais).addGap(5)
+								.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 187,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(18).addComponent(btnAdd))
+						.addGroup(groupLayout.createSequentialGroup().addGap(151)
 								.addComponent(btnLimpar, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-								.addGap(249)
-								.addComponent(btnVisualizar)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(51)
-							.addComponent(lblCadastroOrdemDeServio))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(51)
-							.addComponent(lblNumeroOS)
-							.addGap(12)
-							.addComponent(txtNumeroOS, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
-							.addComponent(lblAno)
-							.addGap(262)
-							.addComponent(chckbxFinalizada, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(51)
-							.addComponent(lblCliente)
-							.addGap(5)
-							.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, 550, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(53)
-							.addComponent(lblEndereo))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(53)
-							.addComponent(chckbxMesmoEnderecoDo))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(53)
-							.addComponent(lblCep)
-							.addGap(5)
-							.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
-							.addComponent(btnBuscarCep, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
-							.addGap(5)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(51)
-									.addComponent(cbEstados, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)))
-							.addGap(9)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 56, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(50)
-									.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(53)
-							.addComponent(lblRua)
-							.addGap(5)
-							.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
-							.addComponent(lblBairro)
-							.addGap(5)
-							.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
-							.addGap(14)
-							.addComponent(lblNumero)
-							.addGap(12)
-							.addComponent(txtNumero, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(51)
-							.addComponent(lblDescricao)
-							.addGap(12)
-							.addComponent(txtDescricao, GroupLayout.PREFERRED_SIZE, 527, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(51)
-							.addComponent(lblDataInicial)
-							.addGap(5)
-							.addComponent(dateInicial, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(12)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(140)
-									.addComponent(datePrevistaFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-								.addComponent(lblDataPrevistaTermino, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(51, Short.MAX_VALUE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(13)
-					.addComponent(lblCadastroOrdemDeServio)
-					.addGap(10)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblNumeroOS))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(4)
-							.addComponent(txtNumeroOS, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(7)
-							.addComponent(lblAno))
+								.addGap(249).addComponent(btnVisualizar)))
+						.addGroup(groupLayout.createSequentialGroup().addGap(51).addComponent(lblCadastroOrdemDeServio))
+						.addGroup(groupLayout.createSequentialGroup().addGap(51).addComponent(lblNumeroOS).addGap(12)
+								.addComponent(txtNumeroOS, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+								.addGap(12).addComponent(lblAno).addGap(262).addComponent(chckbxFinalizada,
+										GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(51).addComponent(lblCliente).addGap(5)
+								.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, 550, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(53).addComponent(lblEndereo))
+						.addGroup(groupLayout.createSequentialGroup().addGap(53).addComponent(chckbxMesmoEnderecoDo))
+						.addGroup(groupLayout.createSequentialGroup().addGap(53).addComponent(lblCep).addGap(5)
+								.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+								.addGap(12)
+								.addComponent(btnBuscarCep, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+								.addGap(5)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblEstado, GroupLayout.PREFERRED_SIZE, 56,
+												GroupLayout.PREFERRED_SIZE)
+										.addGroup(groupLayout.createSequentialGroup().addGap(51).addComponent(cbEstados,
+												GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)))
+								.addGap(9)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblCidade, GroupLayout.PREFERRED_SIZE, 56,
+												GroupLayout.PREFERRED_SIZE)
+										.addGroup(groupLayout.createSequentialGroup().addGap(50).addComponent(txtCidade,
+												GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(groupLayout.createSequentialGroup().addGap(53).addComponent(lblRua).addGap(5)
+								.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, 204, GroupLayout.PREFERRED_SIZE)
+								.addGap(12).addComponent(lblBairro).addGap(5)
+								.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
+								.addGap(14).addComponent(lblNumero).addGap(12)
+								.addComponent(txtNumero, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(51).addComponent(lblDescricao).addGap(12)
+								.addComponent(txtDescricao, GroupLayout.PREFERRED_SIZE, 527,
+										GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(51).addComponent(lblDataInicial).addGap(5)
+								.addComponent(dateInicial, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(12)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup().addGap(140).addComponent(
+												datePrevistaFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))
+										.addComponent(lblDataPrevistaTermino, GroupLayout.PREFERRED_SIZE, 144,
+												GroupLayout.PREFERRED_SIZE))))
+				.addContainerGap(51, Short.MAX_VALUE)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addGap(13).addComponent(lblCadastroOrdemDeServio).addGap(10)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(4).addComponent(lblNumeroOS))
+						.addGroup(groupLayout.createSequentialGroup().addGap(4).addComponent(txtNumeroOS,
+								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(7).addComponent(lblAno))
 						.addComponent(chckbxFinalizada))
-					.addGap(29)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblCliente))
-						.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addComponent(lblEndereo)
-					.addGap(11)
-					.addComponent(chckbxMesmoEnderecoDo)
-					.addGap(27)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(4)
-							.addComponent(lblCep))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(1)
-							.addComponent(txtCep, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGap(29)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblCliente))
+						.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE))
+				.addGap(18).addComponent(lblEndereo).addGap(11).addComponent(chckbxMesmoEnderecoDo).addGap(27)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(4).addComponent(lblCep))
+						.addGroup(groupLayout.createSequentialGroup().addGap(1).addComponent(txtCep,
+								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(btnBuscarCep)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(1)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(3)
-									.addComponent(lblEstado))
-								.addComponent(cbEstados, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(1)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(3)
-									.addComponent(lblCidade))
-								.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addGap(25)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblRua))
-						.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblBairro))
-						.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblNumero))
-						.addComponent(txtNumero, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblDescricao))
+						.addGroup(groupLayout.createSequentialGroup().addGap(1)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblEstado))
+										.addComponent(cbEstados, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE)))
+						.addGroup(groupLayout.createSequentialGroup().addGap(1)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblCidade))
+										.addComponent(txtCidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+												GroupLayout.PREFERRED_SIZE))))
+				.addGap(25)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblRua))
+						.addComponent(txtRua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblBairro))
+						.addComponent(txtBairro, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblNumero))
+						.addComponent(txtNumero, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE))
+				.addGap(18)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblDescricao))
 						.addComponent(txtDescricao, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
-					.addGap(58)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(2)
-							.addComponent(lblDataInicial))
-						.addComponent(dateInicial, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(2)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(datePrevistaFinal, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addGap(2)
-									.addComponent(lblDataPrevistaTermino)))))
-					.addGap(37)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(6)
-							.addComponent(lblCategoria))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(3)
-							.addComponent(lblProfissionais))
-						.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addGap(58)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(2).addComponent(lblDataInicial))
+						.addComponent(dateInicial, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createSequentialGroup().addGap(2)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(datePrevistaFinal, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGroup(groupLayout.createSequentialGroup().addGap(2)
+												.addComponent(lblDataPrevistaTermino)))))
+				.addGap(37)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addGap(6).addComponent(lblCategoria))
+						.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(cbCategoria,
+								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(3).addComponent(lblProfissionais))
+						.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnAdd))
-					.addGap(52)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnLimpar)
+				.addGap(52).addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(btnLimpar)
 						.addComponent(btnVisualizar))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		);
+				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		setLayout(groupLayout);
 
 	}
@@ -508,6 +452,6 @@ public class PainelCadastroOS extends JPanel {
 		this.txtDescricao.setText("");
 		this.cbCategoria.setSelectedIndex(-1);
 		this.cbEstados.setSelectedIndex(-1);
-		
+
 	}
 }

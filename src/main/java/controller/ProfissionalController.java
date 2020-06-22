@@ -8,6 +8,7 @@ import model.BO.ProfissionalBO;
 import model.entity.Categoria;
 import model.entity.Endereco;
 import model.entity.Profissional;
+import model.seletor.ProfissionalSeletor;
 
 public class ProfissionalController {
 
@@ -72,8 +73,17 @@ public class ProfissionalController {
 	}
 //Lista profissionais ativos pela categoria e disponíveis no periodo
 	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria, LocalDate dataInicio, LocalDate dataPrevistaTermino) {
-		// TODO Auto-generated method stub
+		
 		return profBO.listarProfissionaisPorCategoria(idCategoria,dataInicio,dataPrevistaTermino);
+	}
+	
+	public int buscarQdeOS(String nome) {
+		return profBO.buscarQdeOS(nome);
+		
+	}
+	public ArrayList<Profissional> listarProfissionaisPorSeletor(ProfissionalSeletor seletor) {
+		
+		return profBO.listarProfissionaisPorSeletor(seletor);
 	}
 
 }

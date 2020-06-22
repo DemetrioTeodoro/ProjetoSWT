@@ -260,7 +260,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		}
 	}
 
-	private boolean verficarOSVinculadaEndereco(int idEndereco) {
+	public boolean verficarOSVinculadaEndereco(int idEndereco) {
 
 		String sql = " SELECT id FROM ORDEM_SERVICO OS " + " WHERE OS.id_endereco = " + idEndereco;
 

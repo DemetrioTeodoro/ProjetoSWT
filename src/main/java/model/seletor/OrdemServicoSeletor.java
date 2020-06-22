@@ -5,9 +5,9 @@ import model.entity.Cliente;
 
 public class OrdemServicoSeletor {
 
-	String numeroOS;
-	Cliente cliente;
-	Categoria catgoria;
+	private String numeroOS;
+	private Cliente cliente;
+	private Categoria catgoria;
 
 	public boolean temFiltro() {
 		boolean temFiltroPreenchido = false;

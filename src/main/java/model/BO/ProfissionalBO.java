@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import model.DAO.ProfissionalDAO;
 import model.entity.Profissional;
+import model.seletor.ProfissionalSeletor;
 
 public class ProfissionalBO {
 
@@ -59,6 +60,16 @@ public class ProfissionalBO {
 		}
 		
 		return profsDisponiveis;
+	}
+
+	public int buscarQdeOS(String nome) {
+		
+		return dao.buscarQdeOS(nome);
+	}
+
+	public ArrayList<Profissional> listarProfissionaisPorSeletor(ProfissionalSeletor seletor) {
+		
+		return dao.listarPorSeletor(seletor);
 	}
 		
 }

@@ -40,7 +40,7 @@ public class PainelListagemCliente extends JPanel {
 	private ArrayList<Cliente> clientes;
 	private MaskFormatter cnpjMask;
 	private MaskFormatter cpfMask;
-	private Cliente cliente = new Cliente();;
+	private Cliente cliente = new Cliente();
 
 	/**
 	 * Create the panel.
@@ -209,7 +209,7 @@ public class PainelListagemCliente extends JPanel {
 		
 		for ( Cliente c : clientes) {
 			
-			String[] novaLinha = new String[7];
+			String[] novaLinha = new String[4];
 			novaLinha[0] = c.getNome();
 			novaLinha[1] = c.getInscricao();
 			novaLinha[2] = c.getTelefone();

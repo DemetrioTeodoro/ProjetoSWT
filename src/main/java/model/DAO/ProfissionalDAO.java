@@ -11,7 +11,10 @@ import java.util.ArrayList;
 
 import model.entity.Categoria;
 import model.entity.Endereco;
+import model.entity.OrdemServico;
 import model.entity.Profissional;
+import model.seletor.OrdemServicoSeletor;
+import model.seletor.ProfissionalSeletor;
 
 public class ProfissionalDAO implements BaseDAO<Profissional> {
 
@@ -76,8 +79,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 	public boolean atualizar(Profissional profissional) {
 		EnderecoDAO endDAO = new EnderecoDAO();
 		Endereco endereco = null;
+		OrdemServicoDAO osDAo = new OrdemServicoDAO();
 
-		if (!verficarOSVinculadaEndereco(profissional.getEndereco().getId())) {
+		if (!osDAo.verficarOSVinculadaEndereco(profissional.getEndereco().getId())) {
 			endDAO.atualizar(profissional.getEndereco());
 		} else {
 			endereco = endDAO.salvar(profissional.getEndereco());
@@ -112,23 +116,23 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		return registrosAlterados > 0;
 	}
 
-	// PASSAR O MÉTODO PARA A OrdemServicoDAO
-	private boolean verficarOSVinculadaEndereco(int idEndereco) {
-		Connection conexao = Banco.getConnection();
-		String sql = " SELECT id FROM ORDEMSERVICO OS " + " WHERE OS.id_endereco = " + idEndereco;
-		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
-
-		boolean enderecoVinculado = false;
-
-		try {
-			ResultSet rs = stmt.executeQuery();
-			enderecoVinculado = rs.next();
-		} catch (SQLException e) {
-			System.out.println("Erro ao verificar se endereço está vinculado a alguma OS. Causa: " + e.getMessage());
-		}
-
-		return enderecoVinculado;
-	}
+	// PASSAR O MÉTODO PARA A OrdemServicoDAO já esta no lugar certo so testar e
+	// excluir estas linhas.
+	/*
+	 * private boolean verficarOSVinculadaEndereco(int idEndereco) { Connection
+	 * conexao = Banco.getConnection(); String sql =
+	 * " SELECT id FROM ORDEMSERVICO OS " + " WHERE OS.id_endereco = " + idEndereco;
+	 * PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+	 * 
+	 * boolean enderecoVinculado = false;
+	 * 
+	 * try { ResultSet rs = stmt.executeQuery(); enderecoVinculado = rs.next(); }
+	 * catch (SQLException e) { System.out.
+	 * println("Erro ao verificar se endereço está vinculado a alguma OS. Causa: " +
+	 * e.getMessage()); }
+	 * 
+	 * return enderecoVinculado; }
+	 */
 
 	public ArrayList<Profissional> verficarProfissionalPorCategoria(int idCategoria) {
 		Connection conexao = Banco.getConnection();
@@ -254,25 +258,20 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		return profissionais;
 	}
-	//MÉTODO TRAZ PROFISSIONAIS COM 'OS' EM ADAMENTO PORÉM DISPONÍVEIS NO PERIODO DA NOVA OS REFERENTE A CATEGORIA SELECIONADA.
-	public ArrayList<Profissional> consultarProfsDisponiveisPorIdCategoria(int idCategoria, LocalDate dtInicio, LocalDate dtfimprevisto) {
-		
-//		dtInicio 
-//		dtfimprevisto
 
-		String sql = " SELECT DISTINCT * FROM PROFISSIONAL AS P " + 
-				" INNER JOIN ORDEM_SERVICO_PROFISSIONAL AS OP " + 
-				" ON P.id =  OP.id_profissional " + 
-				" INNER JOIN  ORDEM_SERVICO AS O " + 
-				" ON O.id = OP.id_ordem_servico " + 
-				" INNER JOIN PROFISSIONAL_CATEGORIA AS PC " + 
-				" ON P.id = PC.id_profissional " + 
-				" WHERE PC.id_categoria = " + idCategoria+
-				" AND P.ativo = TRUE " + 
-				" AND '"+ dtInicio +"' NOT BETWEEN O.data_inicio AND O.data_termino_previsto " + 
-				" AND '"+ dtfimprevisto +"' NOT BETWEEN O.data_inicio AND O.data_termino_previsto " + 
-				" AND O.data_inicio  NOT BETWEEN '"+ dtInicio +"' AND '"+ dtfimprevisto +"' " + 
-				" AND O.data_termino_previsto NOT BETWEEN '2020-06-24' AND '2020-06-30' ";
+	// MÉTODO TRAZ PROFISSIONAIS COM 'OS' EM ADAMENTO PORÉM DISPONÍVEIS NO PERIODO
+	// DA NOVA OS REFERENTE A CATEGORIA SELECIONADA.
+	public ArrayList<Profissional> consultarProfsDisponiveisPorIdCategoria(int idCategoria, LocalDate dtInicio,
+			LocalDate dtfimprevisto) {
+
+		String sql = " SELECT DISTINCT * FROM PROFISSIONAL AS P " + " INNER JOIN ORDEM_SERVICO_PROFISSIONAL AS OP "
+				+ " ON P.id =  OP.id_profissional " + " INNER JOIN  ORDEM_SERVICO AS O "
+				+ " ON O.id = OP.id_ordem_servico " + " INNER JOIN PROFISSIONAL_CATEGORIA AS PC "
+				+ " ON P.id = PC.id_profissional " + " WHERE PC.id_categoria = " + idCategoria + " AND P.ativo = TRUE "
+				+ " AND '" + dtInicio + "' NOT BETWEEN O.data_inicio AND O.data_termino_previsto " + " AND '"
+				+ dtfimprevisto + "' NOT BETWEEN O.data_inicio AND O.data_termino_previsto "
+				+ " AND O.data_inicio  NOT BETWEEN '" + dtInicio + "' AND '" + dtfimprevisto + "' "
+				+ " AND O.data_termino_previsto NOT BETWEEN '2020-06-24' AND '2020-06-30' ";
 
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
@@ -288,44 +287,45 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar profissionais ativos, com OS associadas, disponíveis no periodo por idCategoria: " + idCategoria);
+			System.out.println(
+					"Erro ao consultar profissionais ativos, com OS associadas, disponíveis no periodo por idCategoria: "
+							+ idCategoria);
 			System.out.println("Erro: " + e.getMessage());
 		}
 
 		return profissionais;
 	}
-	
-	//MÉTODO TRAZ PROFISSIONAIS ATIVOS SEM OS VINCULADA REFERENTE A CATEGORIA SELECIONADA.
-		public ArrayList<Profissional> consultarProfsSemOSPorIdCategoria(int idCategoria) {
-			
-			String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + 
-					" INNER JOIN PROFISSIONAL_CATEGORIA PC " + 
-					" ON P.id = PC.id_profissional " + 
-					" LEFT JOIN ORDEM_SERVICO_PROFISSIONAL OP " + 
-					" ON P.id = OP.id_profissional " + 
-					" WHERE P.ATIVO = TRUE AND PC.id_categoria = " + idCategoria +
-					" AND P.id NOT IN (SELECT DISTINCT id_profissional  FROM ORDEM_SERVICO_PROFISSIONAL) ";
 
-			Connection conn = Banco.getConnection();
-			Statement stmt = Banco.getStatement(conn);
+	// MÉTODO TRAZ PROFISSIONAIS ATIVOS SEM OS VINCULADA REFERENTE A CATEGORIA
+	// SELECIONADA.
+	public ArrayList<Profissional> consultarProfsSemOSPorIdCategoria(int idCategoria) {
 
-			ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+		String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + " INNER JOIN PROFISSIONAL_CATEGORIA PC "
+				+ " ON P.id = PC.id_profissional " + " LEFT JOIN ORDEM_SERVICO_PROFISSIONAL OP "
+				+ " ON P.id = OP.id_profissional " + " WHERE P.ATIVO = TRUE AND PC.id_categoria = " + idCategoria
+				+ " AND P.id NOT IN (SELECT DISTINCT id_profissional  FROM ORDEM_SERVICO_PROFISSIONAL) ";
 
-			try {
-				ResultSet rs = stmt.executeQuery(sql);
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
 
-				while (rs.next()) {
-					Profissional profissional = construirResultSet(rs);
-					profissionais.add(profissional);
-				}
+		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
 
-			} catch (SQLException e) {
-				System.out.println("Erro ao consultar profissionais ativos por idCategoria ("+idCategoria+") sem OS vinculada. ");
-				System.out.println("Erro: " + e.getMessage());
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				Profissional profissional = construirResultSet(rs);
+				profissionais.add(profissional);
 			}
 
-			return profissionais;
+		} catch (SQLException e) {
+			System.out.println(
+					"Erro ao consultar profissionais ativos por idCategoria (" + idCategoria + ") sem OS vinculada. ");
+			System.out.println("Erro: " + e.getMessage());
 		}
+
+		return profissionais;
+	}
 
 	public boolean cpfJaUtilizado(String cpf) {
 		Connection conexao = Banco.getConnection();
@@ -344,5 +344,104 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		return cpfUsado;
 	}
+
+	public ArrayList<Profissional> listarPorSeletor(ProfissionalSeletor seletor) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + " INNER JOIN PROFISSIONAL_CATEGORIA PC "
+				+ " ON P.id = PC.id_profissional " + " INNER JOIN CATEGORIA C " + " ON PC.id_categoria = C.id"
+				+ " LEFT JOIN ORDEM_SERVICO_PROFISSIONAL OP " + " ON P.id = OP.id_profissional "
+				+ " INNER JOIN  ORDEM_SERVICO AS O " + " ON O.id = OP.id_ordem_servico " + " INNER JOIN  ENDERECO AS E "
+				+ " ON E.id = P.id_endereco " + " INNER JOIN VIEW_PROFISSIONAL_QDE_OS AS QDE "
+				+ " ON P.NOME = QDE.NOME ";
+
+		if (seletor.temFiltro()) {
+			sql = criarFiltros(sql, seletor);
+		}
+		
+		sql+= " GROUP BY P.ID ";
+
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Profissional p = construirResultSet(rs);
+				profissionais.add(p);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissionais por seletor.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return profissionais;
+	}
+
+	private String criarFiltros(String sql, ProfissionalSeletor seletor) {
+		boolean primeiro = true;
+		sql += " WHERE ";
+
+		if (seletor.getNome() != null && !seletor.getNome().trim().isEmpty()) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " P.nome LIKE " + "'%" + seletor.getNome() + "%' ";
+			primeiro = false;
+		}
+
+		if (seletor.getCategoria() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " C.nome = " + seletor.getCategoria().getNome();
+			primeiro = false;
+		}
+
+		if (seletor.getCidade() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " E.cidade = " + seletor.getCidade();
+			primeiro = false;
+		}
+
+		if (seletor.getQdeOS() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " QDE.QDE_OS = " + seletor.getQdeOS();
+			primeiro = false;
+		}
+
+		return sql;
+	}
+
+	public int buscarQdeOS(String nome) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT qde_os FROM VIEW_PROFISSIONAL_QDE_OS WHERE nome = " + nome;
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		int qdeOS = 0;
+
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				qdeOS = rs.getInt("QDE_OS");
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao buscar qde de OS x profissiona (" + nome+")");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return qdeOS;
+	}
+		
 
 }

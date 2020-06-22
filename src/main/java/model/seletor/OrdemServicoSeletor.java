@@ -42,4 +42,9 @@ public class OrdemServicoSeletor {
 		this.catgoria = catgoria;
 	}
 
+	@Override
+	public String toString() {
+		return "OrdemServicoSeletor [numeroOS=" + numeroOS + ", cliente=" + cliente + ", catgoria=" + catgoria + "]";
+	}
+
 }

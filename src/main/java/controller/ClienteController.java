@@ -82,4 +82,55 @@ public class ClienteController {
 		return bo.listarClientes(seletor);
 	}
 
+	public String atualizar(int id, String cep, String bairro, String cidade, String rua, String numero, String nome,
+			String cpf, String telefone, String email, String estado) {
+		
+		String msg = "";
+		
+		if (id == 0) {
+			msg += " Selecione um cliente. ";
+		}
+		if (cpf == null || cpf.trim().isEmpty()) {
+			msg += " Digite a inscrição. \n";
+		}
+		if (nome == null || nome.trim().isEmpty()) {
+			msg += " Digite o nome. \n";
+		}
+		if (telefone == null || telefone.trim().isEmpty()) {
+			msg += " Digite o telefone. \n";
+		}
+		if (email == null || email.trim().isEmpty()) {
+			msg += " Digite o email. \n";
+		}
+		
+		ValidarEnderecoController validarEndereco = new ValidarEnderecoController();
+		msg += validarEndereco.validarEndereco(cep, rua, numero, bairro, cidade, estado);
+		
+		if (msg.isEmpty()) {
+
+			LocalDate dtcadastro = LocalDate.now();
+			boolean ehCpf = false;
+
+
+			Endereco e = new Endereco(rua, numero, bairro, cidade, estado, cep);
+			Cliente cliente = new Cliente();
+			cliente.setId(id);
+			cliente.setInscricao(cpf);
+			cliente.setNome(nome);
+			cliente.setAtivo(true);
+			cliente.setDataCadastro(dtcadastro);
+			cliente.setEhCpf(ehCpf);
+			cliente.setEmail(email);
+			cliente.setTelefone(telefone);
+			cliente.setEndereco(e);
+
+			msg = bo.atualizar(cliente);
+
+			return msg;
+
+		} else {
+			return msg;
+		}
+	}
+
 }

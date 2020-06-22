@@ -43,8 +43,19 @@ public class ClienteBO {
 	}
 
 	public ArrayList<Cliente> listarClientes(ClienteSeletor seletor) {
-		
+
 		return dao.listarPorSeletor(seletor);
+	}
+
+	public String atualizar(Cliente cliente) {
+		boolean atualizado = false;
+		String msg = "";
+		atualizado = dao.atualizar(cliente);
+		if (atualizado == true) {
+			return msg = " Cliente atualizado com sucesso. ";
+		} else {
+			return msg = " Ocorreu um erro ao atualizar cliente. ";
+		}
 	}
 
 }

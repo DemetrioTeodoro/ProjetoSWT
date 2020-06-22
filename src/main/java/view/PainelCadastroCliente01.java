@@ -177,12 +177,16 @@ public class PainelCadastroCliente01 extends JPanel {
 		JButton btnBuscarCep = new JButton("Buscar");
 		btnBuscarCep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (txtCep.getText() != null || !txtCep.getText().isEmpty()) {
+				String cep = txtCep.getText().trim().replace("-", "");
+				if (cep != null && !cep.trim().isEmpty()) {
 					endereco = clienteController.buscarEnderecoPorCep(txtCep.getText());
-					txtCidade.setText(endereco.getCidade());
+					txtCidade.setText(endereco.getCidade().replace("รณ", "๓").replace("รง", "็"));
 					txtBairro.setText(endereco.getBairro());
 					txtRua.setText(endereco.getRua());
 					cbEstado.setSelectedItem(endereco.getEstado());
+				} else {
+					String msg = " Digite o cep. ";
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});

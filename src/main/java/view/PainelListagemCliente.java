@@ -27,6 +27,8 @@ import model.entity.Cliente;
 import model.seletor.ClienteSeletor;
 import javax.swing.JRadioButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PainelListagemCliente extends JPanel {
 	
@@ -38,6 +40,7 @@ public class PainelListagemCliente extends JPanel {
 	private ArrayList<Cliente> clientes;
 	private MaskFormatter cnpjMask;
 	private MaskFormatter cpfMask;
+	private Cliente cliente = new Cliente();;
 
 	/**
 	 * Create the panel.
@@ -51,6 +54,17 @@ public class PainelListagemCliente extends JPanel {
 		lblNomeCliente.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
 		tblClientes = new JTable();
+		/*tblClientes.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int row = tblClientes.getSelectedRow();
+				cliente.setNome((String) tblClientes.getValueAt(row, 0));
+				cliente.setInscricao((String) tblClientes.getValueAt(row, 1));
+				cliente.setTelefone((String) tblClientes.getValueAt(row, 2));
+				//Pegar Endereco de cliente selecionado
+			}
+		});*/
 
 		limparTabela();
 
@@ -199,7 +213,7 @@ public class PainelListagemCliente extends JPanel {
 			novaLinha[0] = c.getNome();
 			novaLinha[1] = c.getInscricao();
 			novaLinha[2] = c.getTelefone();
-			novaLinha[3] = String.valueOf(c.isAtivo());
+			novaLinha[3] = String.valueOf(c.isAtivo() == true ? "Ativo" : "Inativado");
 
 			model.addRow(novaLinha);
 		}

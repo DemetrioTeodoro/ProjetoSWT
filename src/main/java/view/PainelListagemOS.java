@@ -28,7 +28,7 @@ import model.seletor.OrdemServicoSeletor;
 public class PainelListagemOS extends JPanel {
 	private TelaEditarOS telaEditarOS = null;
 	private JTable tblOrdemServico;
-	private String[] colunasTabelaOS = { "Número da Ordem", "Nome do Cliente", "Nome do Profissional", "Categoria" };
+	private String[] colunasTabelaOS = { "Número da Ordem", "Nome do Cliente", "Data de Início", "Data Prevista para Fim" };
 	private JTextField txtNumeroOS;
 	private ClienteController clienteController = new ClienteController();
 	private CategoriaController categoriaController = new CategoriaController();
@@ -153,8 +153,8 @@ public class PainelListagemOS extends JPanel {
 			String[] novaLinha = new String[7];
 			novaLinha[0] = os.getNumeroOS();
 			novaLinha[1] = os.getCliente().getNome();
-			novaLinha[2] = os.getProfissionais().toString();
-			novaLinha[3] = os.getCategorias().toString();
+			novaLinha[2] = os.getDataInicio().toString();
+			novaLinha[3] = os.getDataPrevistaFim().toString();
 
 
 			model.addRow(novaLinha);

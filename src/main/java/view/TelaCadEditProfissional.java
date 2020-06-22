@@ -2,14 +2,21 @@ package view;
 
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.ScrollPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.MaskFormatter;
@@ -19,22 +26,6 @@ import controller.ProfissionalController;
 import helpers.Estados;
 import model.entity.Categoria;
 import model.entity.Endereco;
-
-import javax.swing.JOptionPane;
-import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
-import javax.swing.JRadioButton;
-import javax.swing.JList;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.ImageIcon;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
 public class TelaCadEditProfissional extends JFrame {
 
@@ -223,7 +214,7 @@ public class TelaCadEditProfissional extends JFrame {
 		lblTitulo.setBounds(15, 11, 369, 14);
 		contentPane.add(lblTitulo);
 
-		final JTextArea txtArea = new JTextArea();
+		txtArea = new JTextArea();
 		txtArea.setEditable(false);
 		txtArea.setBounds(292, 365, 177, 23);
 		contentPane.add(txtArea);
@@ -286,12 +277,16 @@ public class TelaCadEditProfissional extends JFrame {
 		JButton btnBuscarCep = new JButton("Buscar Cep");
 		btnBuscarCep.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (txtCep.getText() != null || !txtCep.getText().isEmpty()) {
+				String cep = txtCep.getText().trim().replace("-", "");
+				if (cep != null && !cep.trim().isEmpty()) {
 					endereco = profissionalController.buscarEnderecoPorCep(txtCep.getText());
-					txtCidade.setText(endereco.getCidade());
+					txtCidade.setText(endereco.getCidade().replace("รณ", "๓").replace("รง", "็"));
 					txtBairro.setText(endereco.getBairro());
 					txtRua.setText(endereco.getRua());
 					cbEstado.setSelectedItem(endereco.getEstado());
+				} else {
+					String msg = " Digite o cep. ";
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});
@@ -311,6 +306,7 @@ public class TelaCadEditProfissional extends JFrame {
 		this.txtCidade.setText("");
 		this.txtEmail.setText("");
 		this.txtTelefone.setText("");
+		this.txtArea.setText("");
 
 	}
 }

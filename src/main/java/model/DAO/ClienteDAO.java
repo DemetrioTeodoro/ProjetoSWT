@@ -54,10 +54,10 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 		Connection conexao = Banco.getConnection();
 
 		EnderecoDAO enderecoDAO = new EnderecoDAO();
-
+System.out.println(cliente);
 		boolean enderecoAtualizado = enderecoDAO.atualizar(cliente.getEndereco());
 
-		String sql = " UPDATE CLIENTE SET nome=?, inscricao=?, cpf=?, ativo=?, data_cadastro=?, telefone=? email=? WHERE id = ?";
+		String sql = " UPDATE CLIENTE SET nome=?, inscricao=?, ecpf=?, ativo=?, data_cadastro=?, telefone=?, email=? WHERE id = ?";
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 		int registrosAlterados = 0;
 

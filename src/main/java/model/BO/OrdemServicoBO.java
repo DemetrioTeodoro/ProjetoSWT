@@ -23,7 +23,12 @@ public class OrdemServicoBO {
 	}
 
 	public ArrayList<OrdemServico> listarClientes(OrdemServicoSeletor seletor) {
-		return ordemServicoDAO.listarPorSeletor(seletor);
+		if (seletor.getCatgoria() != null && seletor.getCliente() != null && !seletor.getNumeroOS().trim().isEmpty()) {
+			System.out.println(seletor);
+			return ordemServicoDAO.listarPorSeletor(seletor);			
+		} else {
+			return ordemServicoDAO.listarTodos();
+		}
 	}
 
 }

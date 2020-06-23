@@ -1,24 +1,23 @@
 package model.seletor;
 
 import java.time.LocalDate;
-
 import model.entity.Categoria;
 
 public class ProfissionalSeletor {
 	private String nome;
 	private Categoria categoria;
 	private String cidade;
-	private Integer qdeOS;
 	private LocalDate dataInicio;
 	private LocalDate dataPrevTermino;
+	private Integer qdeOS;
 
 	public boolean temFiltro() {
 		boolean temFiltroPreenchido = false;
 
 		temFiltroPreenchido = (nome != null && nome.trim().length() > 0)
 
-				|| (categoria != null) || (cidade != null) || (qdeOS != null) || (dataInicio != null)
-				|| (dataPrevTermino != null);
+				|| (categoria != null) || (cidade != null) || (dataInicio != null)
+				|| (dataPrevTermino != null)|| (qdeOS != null);
 
 		return temFiltroPreenchido;
 	}
@@ -47,23 +46,6 @@ public class ProfissionalSeletor {
 		this.cidade = cidade;
 	}
 
-	public Integer getQdeOS() {
-		return qdeOS;
-	}
-
-	public void setQdeOS(Integer qdeOS) {
-		this.qdeOS = qdeOS;
-	}
-	
-	public void setQdeOS(String qdeOS) {
-		try {
-		this.qdeOS = Integer.parseInt(qdeOS);
-		  }catch (Exception e){
-	            this.qdeOS = null;
-	        }
-	    }
-	
-
 	public LocalDate getDataInicio() {
 		return dataInicio;
 	}
@@ -78,6 +60,23 @@ public class ProfissionalSeletor {
 
 	public void setDataPrevTermino(LocalDate dataPrevTermino) {
 		this.dataPrevTermino = dataPrevTermino;
+	}
+
+	public Integer getQdeOS() {
+		return qdeOS;
+	}
+
+	public void setQdeOS(Integer qdeOS) {
+		this.qdeOS = qdeOS;
+	}
+	
+	public void setQdeOS(String qdeOS) {
+		try{
+			this.qdeOS = Integer.parseInt(qdeOS) ;
+		} catch (Exception e){
+            this.qdeOS = null;
+            System.out.println("Erro parseint na qdeOS ");
+        }
 	}
 
 }

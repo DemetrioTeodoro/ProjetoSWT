@@ -207,10 +207,6 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT * FROM PROFISSIONAL P ";
 
-		/*
-		 * if (seletor.temFiltro()) { sql = criarFiltros(sql, seletor); }
-		 */
-
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
 		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
@@ -271,7 +267,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 				+ " AND '" + dtInicio + "' NOT BETWEEN O.data_inicio AND O.data_termino_previsto " + " AND '"
 				+ dtfimprevisto + "' NOT BETWEEN O.data_inicio AND O.data_termino_previsto "
 				+ " AND O.data_inicio  NOT BETWEEN '" + dtInicio + "' AND '" + dtfimprevisto + "' "
-				+ " AND O.data_termino_previsto NOT BETWEEN '2020-06-24' AND '2020-06-30' ";
+				+ " AND O.data_termino_previsto NOT BETWEEN '2020-06-24' AND '2020-06-30' " + " GROUP BY P.ID ";
 
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
@@ -303,7 +299,8 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + " INNER JOIN PROFISSIONAL_CATEGORIA PC "
 				+ " ON P.id = PC.id_profissional " + " LEFT JOIN ORDEM_SERVICO_PROFISSIONAL OP "
 				+ " ON P.id = OP.id_profissional " + " WHERE P.ATIVO = TRUE AND PC.id_categoria = " + idCategoria
-				+ " AND P.id NOT IN (SELECT DISTINCT id_profissional  FROM ORDEM_SERVICO_PROFISSIONAL) ";
+				+ " AND P.id NOT IN (SELECT DISTINCT id_profissional  FROM ORDEM_SERVICO_PROFISSIONAL) "
+				+ " GROUP BY P.ID";
 
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
@@ -345,20 +342,20 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		return cpfUsado;
 	}
 
+	// BUSCAR POR SELETOR Profissionais com OS VINCULADA
 	public ArrayList<Profissional> listarPorSeletor(ProfissionalSeletor seletor) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + " INNER JOIN PROFISSIONAL_CATEGORIA PC "
-				+ " ON P.id = PC.id_profissional " + " INNER JOIN CATEGORIA C " + " ON PC.id_categoria = C.id"
+				+ " ON P.id = PC.id_profissional " + " INNER JOIN CATEGORIA C " + " ON PC.id_categoria = C.id "
 				+ " LEFT JOIN ORDEM_SERVICO_PROFISSIONAL OP " + " ON P.id = OP.id_profissional "
 				+ " INNER JOIN  ORDEM_SERVICO AS O " + " ON O.id = OP.id_ordem_servico " + " INNER JOIN  ENDERECO AS E "
-				+ " ON E.id = P.id_endereco " + " INNER JOIN VIEW_PROFISSIONAL_QDE_OS AS QDE "
-				+ " ON P.NOME = QDE.NOME ";
+				+ " ON E.id = P.id_endereco " + " RIGHT JOIN VIEW_PROFISSIONAL_QDE_OS POS " + " ON P.ID = POS.ID ";
 
 		if (seletor.temFiltro()) {
 			sql = criarFiltros(sql, seletor);
 		}
-		
-		sql+= " GROUP BY P.ID ";
+
+		sql += " GROUP BY P.ID ";
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
@@ -408,22 +405,96 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			sql += " E.cidade = " + seletor.getCidade();
 			primeiro = false;
 		}
-
 		if (seletor.getQdeOS() != null) {
 			if (!primeiro) {
 				sql += " AND ";
 			}
 
-			sql += " QDE.QDE_OS = " + seletor.getQdeOS();
+			sql += " POS.QDE_OS = " + seletor.getQdeOS();
 			primeiro = false;
 		}
 
 		return sql;
 	}
 
-	public int buscarQdeOS(String nome) {
+	// BUSCAR POR SELETOR profs sem OS
+	public ArrayList<Profissional> listarPorSeletorProfSemOS(ProfissionalSeletor seletor) {
 		Connection conexao = Banco.getConnection();
-		String sql = " SELECT qde_os FROM VIEW_PROFISSIONAL_QDE_OS WHERE nome = " + nome;
+		String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + " INNER JOIN PROFISSIONAL_CATEGORIA PC "
+				+ " ON P.id = PC.id_profissional " + " INNER JOIN CATEGORIA C " + " ON PC.id_categoria = C.id "
+				+ " INNER JOIN  ENDERECO AS E " + " ON E.id = P.id_endereco "
+				+ " RIGHT JOIN VIEW_PROFISSIONAL_QDE_OS POS " + " ON P.ID = POS.ID ";
+
+		if (seletor.temFiltro()) {
+			sql = criarFiltros2(sql, seletor);
+		}
+
+		sql += " GROUP BY P.ID ";
+
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Profissional p = construirResultSet(rs);
+				profissionais.add(p);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissionais sem OS por seletor.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return profissionais;
+	}
+
+	// arrumar..
+	private String criarFiltros2(String sql, ProfissionalSeletor seletor) {
+		boolean primeiro = true;
+		sql += " WHERE ";
+
+		if (seletor.getNome() != null && !seletor.getNome().trim().isEmpty()) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " P.nome LIKE " + "'%" + seletor.getNome() + "%' ";
+			primeiro = false;
+		}
+
+		if (seletor.getCategoria() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " C.nome = " + seletor.getCategoria().getNome();
+			primeiro = false;
+		}
+
+		if (seletor.getCidade() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " E.cidade = " + seletor.getCidade();
+			primeiro = false;
+		}
+		if (seletor.getQdeOS() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " POS.qde_os = " + seletor.getQdeOS();
+			primeiro = false;
+		}
+
+		return sql;
+	}
+	//MÉTODO PARA BUSCAR QDE DE OS PELO ID DO PROFISSIONAL PARA POPULAR A TABELA LISTAGEM DE PROFISSIONAL
+	public int buscarQdeOS(int id) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT qde_os FROM VIEW_PROFISSIONAL_QDE_OS WHERE id = " + id;
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
 		int qdeOS = 0;
@@ -436,12 +507,11 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao buscar qde de OS x profissiona (" + nome+")");
+			System.out.println("Erro ao buscar qde de OS x profissiona (" + id + ")");
 			System.out.println("Erro: " + e.getMessage());
 		}
 
 		return qdeOS;
 	}
-		
 
 }

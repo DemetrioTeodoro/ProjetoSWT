@@ -100,6 +100,7 @@ public class PainelListagemProfissionais extends JPanel {
 				seletor.setCidade((String) cbCidade.getSelectedItem());
 				seletor.setDataInicio(DataInicio.getDate());
 				seletor.setDataPrevTermino(DataTermino.getDate());
+				seletor.setQdeOS(txtQdeOS.getText());
 				profissionais = controller.listarProfissionaisPorSeletor(seletor);
 				atualizarTabelaProfissionais();
 			}

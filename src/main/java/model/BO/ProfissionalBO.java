@@ -13,13 +13,13 @@ public class ProfissionalBO {
 
 	public String salvar(Profissional profissional) {
 		String msg = "";
-		
+
 		if (dao.cpfJaUtilizado(profissional.getInscricao())) {
-			
+
 			msg = "CPF informado (" + profissional.getInscricao() + ")já utilizado.";
-		
+
 		} else {
-			
+
 			if (profissional.getId() > 0) {
 				if (dao.atualizar(profissional)) {
 					msg = "Atualização realizada com sucesso";
@@ -48,28 +48,50 @@ public class ProfissionalBO {
 
 	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria, LocalDate dataInicio,
 			LocalDate dataPrevistaTermino) {
-		
-		ArrayList<Profissional>profCategoriaSemOS = new ArrayList<Profissional>();
+
+		ArrayList<Profissional> profCategoriaSemOS = new ArrayList<Profissional>();
 		profCategoriaSemOS = dao.consultarProfsSemOSPorIdCategoria(idCategoria);
-		
-		ArrayList<Profissional>profsDisponiveis = new ArrayList<Profissional>();
+
+		ArrayList<Profissional> profsDisponiveis = new ArrayList<Profissional>();
 		profsDisponiveis = dao.consultarProfsDisponiveisPorIdCategoria(idCategoria, dataInicio, dataPrevistaTermino);
-		
-		for(int i = 0; i< profCategoriaSemOS.size(); i++) {
+
+		for (int i = 0; i < profCategoriaSemOS.size(); i++) {
 			profsDisponiveis.add(profCategoriaSemOS.get(i));
 		}
-		
+
 		return profsDisponiveis;
 	}
 
 	public int buscarQdeOS(int id) {
-		
+
 		return dao.buscarQdeOS(id);
 	}
 
 	public ArrayList<Profissional> listarProfissionaisPorSeletor(ProfissionalSeletor seletor) {
-		
-		return dao.listarPorSeletor(seletor);
+		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+		if (!seletor.temFiltro()) {
+			profissionais = dao.listarTodos();
+
+		} else {
+			if (seletor.getQdeOS() == 0) {
+				profissionais = dao.listarPorSeletorProfSemOS(seletor);
+			} else {
+				if (seletor.getQdeOS() > 0) {
+					profissionais = dao.listarPorSeletor(seletor);
+				} else {
+					if (seletor.getQdeOS() == null) {
+						profissionais = dao.listarPorSeletor(seletor);
+						ArrayList<Profissional> profsSemOS = new ArrayList<Profissional>();
+						profsSemOS = dao.listarPorSeletorProfSemOS(seletor);
+						for (int i = 0; i < profsSemOS.size(); i++) {
+							profissionais.add(profsSemOS.get(i));
+						}
+					}
+				}
+			}
+		}
+
+		return profissionais;
+
 	}
-		
 }

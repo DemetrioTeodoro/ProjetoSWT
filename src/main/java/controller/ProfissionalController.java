@@ -85,5 +85,9 @@ public class ProfissionalController {
 		
 		return profBO.listarProfissionaisPorSeletor(seletor);
 	}
+	public ArrayList<String> buscarCidades() {
+		// TODO Auto-generated method stub
+		return profBO.buscarCidades();
+	}
 
 }

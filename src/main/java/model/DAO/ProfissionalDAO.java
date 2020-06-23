@@ -47,8 +47,10 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar profissional. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
-
 		return profissional;
 	}
 
@@ -111,8 +113,10 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao atualizar dados do proffisional.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
-
 		return registrosAlterados > 0;
 	}
 
@@ -149,6 +153,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		} catch (SQLException e) {
 			System.out.println(
 					"Erro ao verificar se profissional está vinculado a alguma Categoria. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return profissionais;
@@ -171,6 +178,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar profissional por id = " + id);
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return profissional;
@@ -200,7 +210,6 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			System.out.println("Erro ao construir resultSet profissional. Causa:" + e.getMessage());
 		}
 		return p;
-
 	}
 
 	public ArrayList<Profissional> listarTodos() {
@@ -220,6 +229,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar profissionais.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 		return profissionais;
 	}
@@ -250,8 +262,10 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar profissionais por idCategoria: " + idCategoria);
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conn);
 		}
-
 		return profissionais;
 	}
 
@@ -287,6 +301,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 					"Erro ao consultar profissionais ativos, com OS associadas, disponíveis no periodo por idCategoria: "
 							+ idCategoria);
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conn);
 		}
 
 		return profissionais;
@@ -319,6 +336,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			System.out.println(
 					"Erro ao consultar profissionais ativos por idCategoria (" + idCategoria + ") sem OS vinculada. ");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conn);
 		}
 
 		return profissionais;
@@ -337,8 +357,10 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 		} catch (Exception e) {
 			System.out.println("Erro ao verificar se o cpf já está sendo utilizado.Causa:" + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
-
 		return cpfUsado;
 	}
 
@@ -370,6 +392,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar profissionais por seletor.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return profissionais;
@@ -393,7 +418,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 				sql += " AND ";
 			}
 
-			sql += " C.nome = " + seletor.getCategoria().getNome();
+			sql += " C.id = " + seletor.getCategoria().getId();
 			primeiro = false;
 		}
 
@@ -402,7 +427,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 				sql += " AND ";
 			}
 
-			sql += " E.cidade = " + seletor.getCidade();
+			sql += " E.cidade = '" + seletor.getCidade() + "'";
 			primeiro = false;
 		}
 		if (seletor.getQdeOS() != null) {
@@ -417,8 +442,8 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		return sql;
 	}
 
-	// BUSCAR POR SELETOR profs sem OS
-	public ArrayList<Profissional> listarPorSeletorProfSemOS(ProfissionalSeletor seletor) {
+	// BUSCAR POR SELETOR TODOS PROFISSIONAIS
+	public ArrayList<Profissional> listarPorSeletorTodos(ProfissionalSeletor seletor) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + " INNER JOIN PROFISSIONAL_CATEGORIA PC "
 				+ " ON P.id = PC.id_profissional " + " INNER JOIN CATEGORIA C " + " ON PC.id_categoria = C.id "
@@ -444,12 +469,14 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar profissionais sem OS por seletor.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return profissionais;
 	}
 
-	// arrumar..
 	private String criarFiltros2(String sql, ProfissionalSeletor seletor) {
 		boolean primeiro = true;
 		sql += " WHERE ";
@@ -468,7 +495,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 				sql += " AND ";
 			}
 
-			sql += " C.nome = " + seletor.getCategoria().getNome();
+			sql += " C.id = " + seletor.getCategoria().getId();
 			primeiro = false;
 		}
 
@@ -477,7 +504,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 				sql += " AND ";
 			}
 
-			sql += " E.cidade = " + seletor.getCidade();
+			sql += " E.cidade '" + seletor.getCidade() + "'";
 			primeiro = false;
 		}
 		if (seletor.getQdeOS() != null) {
@@ -488,10 +515,11 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			sql += " POS.qde_os = " + seletor.getQdeOS();
 			primeiro = false;
 		}
-
 		return sql;
 	}
-	//MÉTODO PARA BUSCAR QDE DE OS PELO ID DO PROFISSIONAL PARA POPULAR A TABELA LISTAGEM DE PROFISSIONAL
+
+	// MÉTODO PARA BUSCAR QDE DE OS PELO ID DO PROFISSIONAL PARA POPULAR A TABELA
+	// LISTAGEM DE PROFISSIONAL
 	public int buscarQdeOS(int id) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT qde_os FROM VIEW_PROFISSIONAL_QDE_OS WHERE id = " + id;
@@ -509,6 +537,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao buscar qde de OS x profissiona (" + id + ")");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return qdeOS;

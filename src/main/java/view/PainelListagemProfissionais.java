@@ -14,10 +14,14 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
+import org.w3c.dom.CDATASection;
+
 import com.github.lgooddatepicker.components.DatePicker;
 
+import controller.CategoriaController;
 import controller.ClienteController;
 import controller.ProfissionalController;
+import helpers.JTextFieldSomenteNumeros;
 import model.entity.Categoria;
 import model.entity.Cliente;
 import model.entity.Profissional;
@@ -33,9 +37,10 @@ public class PainelListagemProfissionais extends JPanel {
 	
 	private TelaCadEditProfissional telaCadEditProfissional = new TelaCadEditProfissional();
 	private JTextField txtNome;
-	private JTextField txtQdeOS;
+	private JTextFieldSomenteNumeros txtQdeOS;
 	private JTextField txtDataInicio;
 	private JTextField txtDataTermino;
+	private JComboBox<Categoria> cbCategoria;
 	private JTable tblProfissionais;
 	private String[] colunasTabelaProfissionais = { " Profissional "," CPF " , " Telefone "," Categoria ", "Qde OS Exec."};
 	private ArrayList<Profissional> profissionais;
@@ -64,15 +69,19 @@ public class PainelListagemProfissionais extends JPanel {
 		
 		JLabel lblCategoria = new JLabel("Categoria :");
 		
-		JComboBox cbCategoria = new JComboBox();
+		CategoriaController catControl = new CategoriaController();
+		JComboBox<Categoria> cbCategoria = new JComboBox(catControl.listarCategorias().toArray());
+		cbCategoria.setSelectedIndex(-1);
 		
 		JLabel lblCidade = new JLabel("Cidade :");
 		
 		JLabel lblQdeOS = new JLabel("Quantidade de Ordem de Servi\u00E7os Executadas:");
 		
-		JComboBox cbCidade = new JComboBox();
+		ArrayList<String>cidades = controller.buscarCidades();
+		JComboBox cbCidade = new JComboBox(cidades.toArray());
+		cbCidade.setSelectedIndex(-1);
 		
-		txtQdeOS = new JTextField();
+		txtQdeOS = new JTextFieldSomenteNumeros();
 		txtQdeOS.setColumns(10);
 		
 		JLabel lblPeriodo = new JLabel("Dispon\u00EDvel no Per\u00EDodo :");
@@ -103,6 +112,8 @@ public class PainelListagemProfissionais extends JPanel {
 				seletor.setQdeOS(txtQdeOS.getText());
 				profissionais = controller.listarProfissionaisPorSeletor(seletor);
 				atualizarTabelaProfissionais();
+				cbCategoria.setSelectedIndex(-1);
+				cbCidade.setSelectedIndex(-1);
 			}
 		});
 		

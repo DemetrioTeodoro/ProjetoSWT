@@ -69,23 +69,28 @@ public class ProfissionalBO {
 
 	public ArrayList<Profissional> listarProfissionaisPorSeletor(ProfissionalSeletor seletor) {
 		ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+
 		if (!seletor.temFiltro()) {
 			profissionais = dao.listarTodos();
 
 		} else {
-			if (seletor.getQdeOS() == 0) {
-				profissionais = dao.listarPorSeletorProfSemOS(seletor);
-			} else {
+			if (seletor.getQdeOS() != null) {
 				if (seletor.getQdeOS() > 0) {
 					profissionais = dao.listarPorSeletor(seletor);
 				} else {
-					if (seletor.getQdeOS() == null) {
-						profissionais = dao.listarPorSeletor(seletor);
-						ArrayList<Profissional> profsSemOS = new ArrayList<Profissional>();
-						profsSemOS = dao.listarPorSeletorProfSemOS(seletor);
-						for (int i = 0; i < profsSemOS.size(); i++) {
-							profissionais.add(profsSemOS.get(i));
-						}
+					profissionais = dao.listarPorSeletorTodos(seletor);
+				}
+			} else {
+				ArrayList<Profissional> profComOS = new ArrayList<Profissional>();
+				profComOS = dao.listarPorSeletor(seletor);
+				profissionais = dao.listarPorSeletorTodos(seletor);
+				
+				for (int i = 0; i < profComOS.size(); i++) {
+					Profissional p = profComOS.get(i);
+					if (profissionais.contains(p)) {
+						System.out.println("Já existe esse profissional na lista");
+					} else {
+						profissionais.add(p);
 					}
 				}
 			}
@@ -93,5 +98,17 @@ public class ProfissionalBO {
 
 		return profissionais;
 
+	}
+
+	public ArrayList<String> buscarCidades() {
+		ArrayList<String> cidades = new ArrayList<String>();
+		ArrayList<Profissional> profissinais = dao.listarTodos();
+		for (int i = 0; i < profissinais.size(); i++) {
+			String c = profissinais.get(i).getEndereco().getCidade();
+			if (!cidades.contains(c)) {
+				cidades.add(profissinais.get(i).getEndereco().getCidade());
+			}
+		}
+		return cidades;
 	}
 }

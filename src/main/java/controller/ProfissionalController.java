@@ -77,8 +77,8 @@ public class ProfissionalController {
 		return profBO.listarProfissionaisPorCategoria(idCategoria,dataInicio,dataPrevistaTermino);
 	}
 	
-	public int buscarQdeOS(String nome) {
-		return profBO.buscarQdeOS(nome);
+	public int buscarQdeOS(int id) {
+		return profBO.buscarQdeOS(id);
 		
 	}
 	public ArrayList<Profissional> listarProfissionaisPorSeletor(ProfissionalSeletor seletor) {

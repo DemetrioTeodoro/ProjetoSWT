@@ -98,7 +98,6 @@ public class PainelListagemProfissionais extends JPanel {
 				seletor.setNome(txtNome.getText());
 				seletor.setCategoria((Categoria) cbCategoria.getSelectedItem());
 				seletor.setCidade((String) cbCidade.getSelectedItem());
-				seletor.setQdeOS(txtQdeOS.getText());
 				seletor.setDataInicio(DataInicio.getDate());
 				seletor.setDataPrevTermino(DataTermino.getDate());
 				profissionais = controller.listarProfissionaisPorSeletor(seletor);
@@ -238,15 +237,15 @@ public class PainelListagemProfissionais extends JPanel {
 			novaLinha[1] = p.getInscricao();
 			novaLinha[2] = p.getTelefone();
 			novaLinha[3] = p.getCategorias().toString();
-		    novaLinha[4] = buscarQdeOS(p.getNome());
+		    novaLinha[4] = buscarQdeOS(p.getId());
 
 			model.addRow(novaLinha);
 		}
 	}
 
-	private String buscarQdeOS(String nome) {
+	private String buscarQdeOS(int id) {
 		int qde_os = 0;
-		qde_os = controller.buscarQdeOS(nome);
+		qde_os = controller.buscarQdeOS(id);
 		 String qde= ""+qde_os;
 		 
 		 return qde;

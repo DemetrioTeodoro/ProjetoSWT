@@ -62,9 +62,9 @@ public class ProfissionalBO {
 		return profsDisponiveis;
 	}
 
-	public int buscarQdeOS(String nome) {
+	public int buscarQdeOS(int id) {
 		
-		return dao.buscarQdeOS(nome);
+		return dao.buscarQdeOS(id);
 	}
 
 	public ArrayList<Profissional> listarProfissionaisPorSeletor(ProfissionalSeletor seletor) {

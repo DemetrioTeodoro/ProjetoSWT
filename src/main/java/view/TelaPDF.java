@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import controller.OrdemServicoController;
@@ -23,6 +24,8 @@ import model.entity.Cliente;
 import model.entity.Endereco;
 import model.entity.OrdemServico;
 import model.entity.Profissional;
+import javax.swing.SwingConstants;
+import javax.swing.JTextArea;
 
 public class TelaPDF extends JFrame {
 
@@ -80,19 +83,20 @@ public class TelaPDF extends JFrame {
 		panel.add(lblNumeroOSDoc);
 
 		JLabel lblCliente = new JLabel("Cliente: ");
-		lblCliente.setBounds(190, 216, 56, 16);
+		lblCliente.setBounds(190, 227, 56, 16);
 		panel.add(lblCliente);
 
 		lblClienteDoc = new JLabel();
-		lblClienteDoc.setBounds(272, 216, 362, 16);
+		lblClienteDoc.setBounds(264, 227, 313, 16);
 		panel.add(lblClienteDoc);
 
 		JLabel lblEndereco = new JLabel("Endere\u00E7o:");
-		lblEndereco.setBounds(190, 255, 56, 16);
+		lblEndereco.setBounds(190, 267, 71, 16);
 		panel.add(lblEndereco);
 
 		lblEnderecoDoc = new JLabel("");
-		lblEnderecoDoc.setBounds(271, 255, 83, 16);
+		lblEnderecoDoc.setVerticalAlignment(SwingConstants.TOP);
+		lblEnderecoDoc.setBounds(290, 267, 287, 100);
 		panel.add(lblEnderecoDoc);
 
 		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o:");
@@ -100,7 +104,8 @@ public class TelaPDF extends JFrame {
 		panel.add(lblDescricao);
 
 		lblDescricaoDoc = new JLabel(modelOS.getDescricao());
-		lblDescricaoDoc.setBounds(257, 388, 283, 71);
+		lblDescricaoDoc.setVerticalAlignment(SwingConstants.TOP);
+		lblDescricaoDoc.setBounds(257, 388, 320, 70);
 		panel.add(lblDescricaoDoc);
 
 		JLabel lblDataInicial = new JLabel("Data Inicial:");
@@ -108,31 +113,31 @@ public class TelaPDF extends JFrame {
 		panel.add(lblDataInicial);
 
 		lblDataInicialDoc = new JLabel("");
-		lblDataInicialDoc.setBounds(273, 493, 74, 16);
+		lblDataInicialDoc.setBounds(190, 520, 105, 16);
 		panel.add(lblDataInicialDoc);
 
 		JLabel lblDataPrevistaTermino = new JLabel("Data Prevista de Término:");
-		lblDataPrevistaTermino.setBounds(380, 493, 135, 16);
+		lblDataPrevistaTermino.setBounds(379, 493, 159, 16);
 		panel.add(lblDataPrevistaTermino);
 
 		lblDataPrevistaTerminoDoc = new JLabel("");
-		lblDataPrevistaTerminoDoc.setBounds(525, 493, 65, 16);
+		lblDataPrevistaTerminoDoc.setBounds(379, 520, 127, 16);
 		panel.add(lblDataPrevistaTerminoDoc);
 
-		JLabel lblCategoria = new JLabel("Categoria:");
-		lblCategoria.setBounds(190, 546, 71, 16);
+		JLabel lblCategoria = new JLabel("Categoria (s):");
+		lblCategoria.setBounds(190, 565, 86, 16);
 		panel.add(lblCategoria);
 
 		lblCategoriaDoc = new JLabel("");
-		lblCategoriaDoc.setBounds(257, 546, 261, 16);
+		lblCategoriaDoc.setBounds(190, 590, 387, 16);
 		panel.add(lblCategoriaDoc);
 
-		JLabel lblProfissional = new JLabel("Profissional:");
-		lblProfissional.setBounds(190, 648, 71, 16);
+		JLabel lblProfissional = new JLabel("Profissionais :");
+		lblProfissional.setBounds(190, 635, 117, 16);
 		panel.add(lblProfissional);
 
 		lblProfissionalDoc = new JLabel("");
-		lblProfissionalDoc.setBounds(272, 648, 246, 16);
+		lblProfissionalDoc.setBounds(190, 660, 387, 16);
 		panel.add(lblProfissionalDoc);
 
 		JLabel lblDocPDF = new JLabel("");
@@ -200,5 +205,4 @@ public class TelaPDF extends JFrame {
 		return modelOS = cadOS;
 
 	}
-
 }

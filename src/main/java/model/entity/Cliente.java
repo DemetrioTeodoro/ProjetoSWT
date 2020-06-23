@@ -22,7 +22,7 @@ public class Cliente extends Pessoa{
 	
 	@Override
 	public String toString() {
-		return getNome() + " - "+ getInscricao() + getEndereco();
+		return getNome() + " - "+ getInscricao();
 	}
 
 }

@@ -180,8 +180,8 @@ public class PainelCadastroCliente01 extends JPanel {
 				String cep = txtCep.getText().trim().replace("-", "");
 				if (cep != null && !cep.trim().isEmpty()) {
 					endereco = clienteController.buscarEnderecoPorCep(txtCep.getText());
-					txtCidade.setText(endereco.getCidade().replace("Ã³", "ó").replace("Ã§", "ç"));
-					txtBairro.setText(endereco.getBairro());
+					txtCidade.setText(endereco.getCidade().replace("Ã³", "ó").replace("Ã§", "ç").replace("Ã­", "í"));
+					txtBairro.setText(endereco.getBairro().replace("Ã³", "ó").replace("Ã§", "ç").replace("Ã­", "í"));
 					txtRua.setText(endereco.getRua());
 					cbEstado.setSelectedItem(endereco.getEstado());
 				} else {

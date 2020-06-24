@@ -1,14 +1,11 @@
 package model.seletor;
 
-import java.time.LocalDate;
 import model.entity.Categoria;
 
 public class ProfissionalSeletor {
 	private String nome;
 	private Categoria categoria;
 	private String cidade;
-	private LocalDate dataInicio;
-	private LocalDate dataPrevTermino;
 	private Integer qdeOS;
 
 	public boolean temFiltro() {
@@ -16,8 +13,7 @@ public class ProfissionalSeletor {
 
 		temFiltroPreenchido = (nome != null && nome.trim().length() > 0)
 
-				|| (categoria != null) || (cidade != null) || (dataInicio != null)
-				|| (dataPrevTermino != null)|| (qdeOS != null);
+				|| (categoria != null) || (cidade != null) || (qdeOS != null);
 
 		return temFiltroPreenchido;
 	}
@@ -44,22 +40,6 @@ public class ProfissionalSeletor {
 
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
-	}
-
-	public LocalDate getDataInicio() {
-		return dataInicio;
-	}
-
-	public void setDataInicio(LocalDate dataInicio) {
-		this.dataInicio = dataInicio;
-	}
-
-	public LocalDate getDataPrevTermino() {
-		return dataPrevTermino;
-	}
-
-	public void setDataPrevTermino(LocalDate dataPrevTermino) {
-		this.dataPrevTermino = dataPrevTermino;
 	}
 
 	public Integer getQdeOS() {

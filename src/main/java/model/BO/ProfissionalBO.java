@@ -111,4 +111,9 @@ public class ProfissionalBO {
 		}
 		return cidades;
 	}
+
+	public Profissional buscarProfissionalPorCpf(String cpf) {
+		// TODO Auto-generated method stub
+		return dao.buscarProfissionalPorCpf(cpf);
+	}
 }

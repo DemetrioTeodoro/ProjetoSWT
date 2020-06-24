@@ -89,5 +89,9 @@ public class ProfissionalController {
 		// TODO Auto-generated method stub
 		return profBO.buscarCidades();
 	}
+	public Profissional buscarProfissionalPorCpf(String cpf) {
+		return profBO.buscarProfissionalPorCpf(cpf);
+		
+	}
 
 }

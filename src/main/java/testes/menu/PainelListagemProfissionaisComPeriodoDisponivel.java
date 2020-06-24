@@ -1,4 +1,4 @@
-package view;
+package testes.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,18 +27,20 @@ import model.entity.Cliente;
 import model.entity.Profissional;
 import model.seletor.ClienteSeletor;
 import model.seletor.ProfissionalSeletor;
+import view.TelaCadEditProfissional;
 
 import javax.swing.JComboBox;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ImageIcon;
 
-public class PainelListagemProfissionais extends JPanel {
+public class PainelListagemProfissionaisComPeriodoDisponivel extends JPanel {
 	
 	private TelaCadEditProfissional telaCadEditProfissional = new TelaCadEditProfissional();
-	private TelaEditProfissional telaEditProfissional = new TelaEditProfissional();
 	private JTextField txtNome;
 	private JTextFieldSomenteNumeros txtQdeOS;
+	private JTextField txtDataInicio;
+	private JTextField txtDataTermino;
 	private JComboBox<Categoria> cbCategoria;
 	private JTable tblProfissionais;
 	private String[] colunasTabelaProfissionais = { " Profissional "," CPF " , " Telefone "," Categoria ", "Qde OS Exec."};
@@ -48,9 +50,9 @@ public class PainelListagemProfissionais extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PainelListagemProfissionais() {
+	public PainelListagemProfissionaisComPeriodoDisponivel() {
 		
-		JButton btAdicionar = new JButton("Cadastrar");
+		JButton btAdicionar = new JButton("Adicionar Profissional");
 		btAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaCadEditProfissional.setVisible(true);
@@ -83,6 +85,21 @@ public class PainelListagemProfissionais extends JPanel {
 		txtQdeOS = new JTextFieldSomenteNumeros();
 		txtQdeOS.setColumns(10);
 		
+		JLabel lblPeriodo = new JLabel("Dispon\u00EDvel no Per\u00EDodo :");
+		
+		JLabel lblDataInicio = new JLabel("Data In\u00EDcio:");
+		
+		JLabel lblDataTermino = new JLabel("Data T\u00E9rmino:");
+		final DatePicker DataInicio = new DatePicker();
+		DataInicio.getComponentToggleCalendarButton().setText("");
+		DataInicio.getComponentToggleCalendarButton()
+				.setIcon(new ImageIcon(PainelCadastroOS.class.getResource("/icones/calendar-icon.png")));
+
+		final DatePicker DataTermino = new DatePicker();
+		DataTermino.getComponentToggleCalendarButton()
+				.setIcon(new ImageIcon(PainelCadastroOS.class.getResource("/icones/calendar-icon.png")));
+		DataTermino.getComponentToggleCalendarButton().setText("");
+		
 		
 		JButton btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
@@ -91,6 +108,8 @@ public class PainelListagemProfissionais extends JPanel {
 				seletor.setNome(txtNome.getText());
 				seletor.setCategoria((Categoria) cbCategoria.getSelectedItem());
 				seletor.setCidade((String) cbCidade.getSelectedItem());
+				seletor.setDataInicio(DataInicio.getDate());
+				seletor.setDataPrevTermino(DataTermino.getDate());
 				seletor.setQdeOS(txtQdeOS.getText());
 				profissionais = controller.listarProfissionaisPorSeletor(seletor);
 				atualizarTabelaProfissionais();
@@ -102,58 +121,72 @@ public class PainelListagemProfissionais extends JPanel {
 		tblProfissionais = new JTable();
 		limparTabela();
 		
-		JButton btnVisualizar = new JButton("Editar");
+		JButton btnVisualizar = new JButton("Visualizar");
 		btnVisualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				telaEditProfissional.setVisible(true);
-				telaEditProfissional.setLocationRelativeTo(null);
+				telaCadEditProfissional.setVisible(true);
+				telaCadEditProfissional.setLocationRelativeTo(null);
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(42)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblNome)
-							.addGap(29)
-							.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
+							.addGap(27)
+							.addComponent(lblNewLabel)
+							.addGap(258)
+							.addComponent(btnVisualizar, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+							.addGap(211)
+							.addComponent(btAdicionar, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblCategoria)
-							.addGap(9)
-							.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblCidade)
-							.addGap(23)
-							.addComponent(cbCidade, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblQdeOS)
-							.addGap(12)
-							.addComponent(txtQdeOS, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(149)
-							.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)))
-					.addGap(51)
-					.addComponent(tblProfissionais, GroupLayout.PREFERRED_SIZE, 682, GroupLayout.PREFERRED_SIZE)
+							.addGap(42)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblNome)
+									.addGap(29)
+									.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblCategoria)
+									.addGap(9)
+									.addComponent(cbCategoria, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblCidade)
+									.addGap(23)
+									.addComponent(cbCidade, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(lblQdeOS)
+									.addGap(12)
+									.addComponent(txtQdeOS, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblPeriodo)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(116)
+									.addComponent(btnConsultar))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGap(45)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(DataInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblDataInicio, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE))
+									.addGap(66)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblDataTermino, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
+										.addComponent(DataTermino, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+							.addGap(65)
+							.addComponent(tblProfissionais, GroupLayout.PREFERRED_SIZE, 777, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(27)
-					.addComponent(lblNewLabel)
-					.addGap(234)
-					.addComponent(btnVisualizar, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 359, Short.MAX_VALUE)
-					.addComponent(btAdicionar, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
-					.addGap(34))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(27)
+					.addGap(23)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnVisualizar)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(2)
+							.addComponent(lblNewLabel))
+						.addComponent(btnVisualizar)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(2)
 							.addComponent(btAdicionar)))
 					.addGap(26)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
@@ -181,7 +214,17 @@ public class PainelListagemProfissionais extends JPanel {
 									.addGap(3)
 									.addComponent(lblQdeOS))
 								.addComponent(txtQdeOS, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(48)
+							.addGap(18)
+							.addComponent(lblPeriodo)
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblDataInicio)
+								.addComponent(lblDataTermino))
+							.addGap(7)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(DataInicio, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(DataTermino, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(44)
 							.addComponent(btnConsultar))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(4)

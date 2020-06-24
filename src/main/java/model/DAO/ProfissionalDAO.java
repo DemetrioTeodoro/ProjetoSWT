@@ -545,4 +545,29 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		return qdeOS;
 	}
 
+	public Profissional buscarProfissionalPorCpf(String cpf) {
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM PROFISSIONAL WHERE cpf = '" + cpf+"'";
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		Profissional profissional = null;
+
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+
+			if (rs.next()) {
+				profissional = construirResultSet(rs);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar profissional por cpf = " + cpf);
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
+
+		return profissional;
+	}
+
 }

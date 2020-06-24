@@ -1,4 +1,4 @@
-package view;
+package testes.menu;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;

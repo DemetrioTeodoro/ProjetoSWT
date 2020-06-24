@@ -66,6 +66,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			vincularOrdemServicoCategoria(ordemServico.getId(), ordemServico.getCategorias());
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar ordem de serviço. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return ordemServico;
@@ -115,6 +118,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			}
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar ordem de serviço. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		vincularOrdemServicoProfissionais(ordemServico.getId(), ordemServico.getProfissionais());
@@ -137,6 +143,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			excluiu = (codigoRetornoUpdate == Banco.CODIGO_RETORNO_SUCESSO_EXCLUSAO);
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao excluir Ordem de Serviço. Id: " + id + " .Causa: " + ex.getMessage());
+		} finally {
+			Banco.closePreparedStatement(preparedStatement);
+			Banco.closeConnection(conexao);
 		}
 		return excluiu;
 	}
@@ -159,6 +168,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar Ordem de serviço por id = " + id);
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return ordemServico;
@@ -182,6 +194,34 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar todas as Ordens de Serviço.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
+		return ordemServicos;
+	}
+	
+	public ArrayList<OrdemServico> listarPorTodosPorNumeroOS(String numeroOS) {
+
+		String sql = " SELECT * FROM ORDEM_SERVICO WHERE numero_os LIKE "  + "'%" + numeroOS + "%' ";;
+
+		Connection conexao = Banco.getConnection();
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		ArrayList<OrdemServico> ordemServicos = new ArrayList<OrdemServico>();
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				OrdemServico ordemServico = construirResultSet(rs);
+				ordemServicos.add(ordemServico);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar todas as Ordens de Serviço pelo Numero.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 		return ordemServicos;
 	}
@@ -235,6 +275,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			} catch (Exception e) {
 				System.out
 						.println(" Erro ao salvar vinculo Ordem de Serviço com Profissional. Causa: " + e.getMessage());
+			} finally {
+				Banco.closePreparedStatement(stmt);
+				Banco.closeConnection(conexao);
 			}
 
 		}
@@ -255,6 +298,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 				stmt.execute();
 			} catch (Exception e) {
 				System.out.println(" Erro ao salvar vinculo Ordem de Serviço com Categoria. Causa: " + e.getMessage());
+			} finally {
+				Banco.closePreparedStatement(stmt);
+				Banco.closeConnection(conexao);
 			}
 
 		}
@@ -275,6 +321,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		} catch (SQLException e) {
 			System.out.println(
 					"Erro ao verificar se Endereço está vinculado a alguma Ordem de Serviço. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return enderecoVinculado;
@@ -295,6 +344,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		} catch (SQLException e) {
 			System.out.println(
 					"Erro ao verificar se Cliente está vinculado a alguma Ordem de Serviço. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return clienteVinculado;
@@ -323,6 +375,9 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar ordem de serviço por seletor.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return ordemServicos;

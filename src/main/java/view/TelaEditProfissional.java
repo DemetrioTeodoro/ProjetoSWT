@@ -256,7 +256,7 @@ public class TelaEditProfissional extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProfissionalController control = new ProfissionalController();
-				String mensagem = control.salvar(txtNome.getText(), txtCpf.getText(), rdbAtivar.isSelected(),
+				String mensagem = control.atualizar(txtNome.getText(), txtCpf.getText(), rdbAtivar.isSelected(),
 						txtEmail.getText(), txtTelefone.getText(), txtCep.getText(), txtRua.getText(),
 						txtNumero.getText(), txtBairro.getText(), txtCidade.getText(),
 						(String) cbEstado.getSelectedItem(), categorias);

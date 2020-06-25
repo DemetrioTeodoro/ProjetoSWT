@@ -116,4 +116,14 @@ public class ProfissionalBO {
 		// TODO Auto-generated method stub
 		return dao.buscarProfissionalPorCpf(cpf);
 	}
+
+	public String atualizar(Profissional p) {
+		String msg = "";
+		if(dao.atualizar(p)) {
+			msg = "Profissional ("+p.toString()+") alterado com sucesso!";
+		}else {
+			msg = "Erro ao tentar alterar profissional ("+p.toString()+")";
+		}
+		return msg;
+	}
 }

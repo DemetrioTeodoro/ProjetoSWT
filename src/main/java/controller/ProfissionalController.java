@@ -16,7 +16,7 @@ public class ProfissionalController {
 
 	public String salvar(String nome, String cpf, boolean ativo, String email, String telefone, String cep, String rua,
 			String numero, String bairro, String cidade, String estado, ArrayList<Categoria> categorias) {
-
+		
 		String msg = "";
 
 		if (nome == null || nome.trim().isEmpty()) {
@@ -92,6 +92,48 @@ public class ProfissionalController {
 	public Profissional buscarProfissionalPorCpf(String cpf) {
 		return profBO.buscarProfissionalPorCpf(cpf);
 		
+	}
+	
+	public String atualizar(String nome, String cpf, boolean ativo, String email, String telefone, String cep,
+			String rua, String num, String bairro, String cidade, String estado,
+			ArrayList<Categoria> categorias) {
+		
+		String msg = "";
+
+		if (nome == null || nome.trim().isEmpty()) {
+			msg += " Digite o nome. \n";
+		}
+		if (telefone == null || telefone.trim().isEmpty()) {
+			msg += " Digite o telefone. \n";
+		}
+		if (email == null || email.trim().isEmpty()) {
+			msg += " Digite o email. \n";
+		}
+		if (categorias == null || categorias.size() == 0) {
+			msg += " Selecione uma categoria. \n";
+		}
+		
+		ValidarEnderecoController validarEndereco = new ValidarEnderecoController();
+		msg += validarEndereco.validarEndereco(cep, rua, num, bairro, cidade, estado);
+		
+		if(msg.isEmpty()) {
+		LocalDate dtcadastro = LocalDate.now();
+		Endereco e = new Endereco(rua, num, bairro, cidade, estado, cep);
+
+		Profissional p = new Profissional();
+		p.setNome(nome);
+		p.setAtivo(ativo);
+		p.setCategorias(categorias);
+		p.setDataCadastro(dtcadastro);
+		p.setTelefone(telefone);
+		p.setEmail(email);
+		p.setInscricao(cpf);
+		p.setEndereco(e);
+		
+		profBO.atualizar(p);
+		}
+		
+		return msg;
 	}
 
 }

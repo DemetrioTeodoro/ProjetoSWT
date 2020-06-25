@@ -111,7 +111,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			registrosAlterados = stmt.executeUpdate();
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao atualizar dados do proffisional.");
+			System.out.println("Erro ao atualizar dados do profissional.");
 			System.out.println("Erro: " + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(stmt);

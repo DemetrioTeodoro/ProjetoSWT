@@ -113,16 +113,18 @@ public class ProfissionalBO {
 	}
 
 	public Profissional buscarProfissionalPorCpf(String cpf) {
-		// TODO Auto-generated method stub
 		return dao.buscarProfissionalPorCpf(cpf);
 	}
 
-	public String atualizar(Profissional p) {
+	public String atualizar(Profissional profissional) {
 		String msg = "";
-		if(dao.atualizar(p)) {
-			msg = "Profissional ("+p.toString()+") alterado com sucesso!";
+		Profissional p = buscarProfissionalPorCpf(profissional.getInscricao());
+		profissional.setId(p.getId());
+		profissional.getEndereco().setId(p.getEndereco().getId());
+		if(dao.atualizar(profissional)) {
+			msg = "Profissional ("+profissional.toString()+") alterado com sucesso!";
 		}else {
-			msg = "Erro ao tentar alterar profissional ("+p.toString()+")";
+			msg = "Erro ao tentar alterar profissional ("+profissional.toString()+")";
 		}
 		return msg;
 	}

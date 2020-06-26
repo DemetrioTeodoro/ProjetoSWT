@@ -43,28 +43,29 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			if (rs.next()) {
 				profissional.setId(rs.getInt(1));
 			}
-			vincularProfissionalCategoria(profissional.getId(), profissional.getCategorias());
+			vincularProfissionalCategoria(profissional);
 
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar profissional. Causa: " + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(stmt);
 			Banco.closeConnection(conexao);
+			Banco.closePreparedStatement(stmt);
 		}
 		return profissional;
 	}
 
-	private void vincularProfissionalCategoria(int idProfissional, ArrayList<Categoria> categorias) {
+	private void vincularProfissionalCategoria(Profissional profissional) {
 
-		for (int i = 0; i < categorias.size(); i++) {
+		for (int i = 0; i < profissional.getCategorias().size(); i++) {
 
 			Connection conexao = Banco.getConnection();
 			String sql = "INSERT INTO  PROFISSIONAL_CATEGORIA (id_profissional, id_categoria)" + "VALUES (?,?)";
 
 			PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			try {
-				stmt.setInt(1, idProfissional);
-				stmt.setInt(2, categorias.get(i).getId());
+				stmt.setInt(1, profissional.getId());
+				stmt.setInt(2, profissional.getCategorias().get(i).getId());
 				stmt.execute();
 
 			} catch (Exception e) {
@@ -73,18 +74,25 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			} finally {
 				Banco.closeStatement(stmt);
 				Banco.closeConnection(conexao);
+				Banco.closePreparedStatement(stmt);
 			}
-
 		}
+
 	}
 
 	public boolean atualizar(Profissional profissional) {
+
 		EnderecoDAO endDAO = new EnderecoDAO();
 		Endereco endereco = null;
 		OrdemServicoDAO osDAo = new OrdemServicoDAO();
 
+		desVincularProfissionalCategoria(profissional.getId());
+
+		vincularProfissionalCategoria(profissional);
+
 		if (!osDAo.verficarOSVinculadaEndereco(profissional.getEndereco().getId())) {
-			endDAO.atualizar(profissional.getEndereco());
+			endereco = profissional.getEndereco();
+
 		} else {
 			endereco = endDAO.salvar(profissional.getEndereco());
 		}
@@ -107,6 +115,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			} else {
 				stmt.setInt(7, endereco.getId());
 			}
+			stmt.setInt(8, profissional.getId());
 
 			registrosAlterados = stmt.executeUpdate();
 
@@ -118,6 +127,24 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			Banco.closeConnection(conexao);
 		}
 		return registrosAlterados > 0;
+	}
+
+	private void desVincularProfissionalCategoria(int idProfissional) {
+
+		Connection conexao = Banco.getConnection();
+		
+		String sql = " DELETE FROM  PROFISSIONAL_CATEGORIA 	WHERE id_profissional = ?";
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao,sql);
+
+		try {
+			stmt.setInt(1, idProfissional);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(" Erro ao excluir vinculo profissional x categoria. Causa: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
 	}
 
 	// PASSAR O MÉTODO PARA A OrdemServicoDAO já esta no lugar certo so testar e
@@ -547,7 +574,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 
 	public Profissional buscarProfissionalPorCpf(String cpf) {
 		Connection conexao = Banco.getConnection();
-		String sql = " SELECT * FROM PROFISSIONAL WHERE cpf = '" + cpf+"'";
+		String sql = " SELECT * FROM PROFISSIONAL WHERE cpf = '" + cpf + "'";
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
 		Profissional profissional = null;

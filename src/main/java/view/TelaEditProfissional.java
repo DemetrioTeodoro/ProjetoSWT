@@ -45,8 +45,8 @@ public class TelaEditProfissional extends JFrame {
 	private JComboBox<String> cbEstado;
 	private JButton btnLimpar;
 	private JTextArea txtArea;
-	
-	private ArrayList<Categoria> categorias = new ArrayList<Categoria>();
+
+	private ArrayList<Categoria> categorias;
 	private Endereco endereco = new Endereco();
 	private ProfissionalController profissionalController = new ProfissionalController();
 	private Profissional profissional = new Profissional();
@@ -85,7 +85,23 @@ public class TelaEditProfissional extends JFrame {
 			System.out.println("Causa: " + e.getMessage());
 			e.printStackTrace();
 		}
-		
+
+		JButton btnConsultarCpf = new JButton("Consultar");
+		btnConsultarCpf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				profissional = null;
+				String cpf = txtCpf.getText();
+				String msg = profissionalController.validarTxtCpf(cpf);
+				if (msg.isEmpty()) {
+					profissional = profissionalController.buscarProfissionalPorCpf(cpf);
+					popularTela(profissional);
+				} else {
+					JOptionPane.showMessageDialog(null, msg);
+				}
+			}
+		});
+		btnConsultarCpf.setBounds(209, 41, 89, 23);
+		contentPane.add(btnConsultarCpf);
 
 		txtNome = new JTextField();
 		txtNome.setBounds(90, 73, 405, 20);
@@ -222,28 +238,58 @@ public class TelaEditProfissional extends JFrame {
 		txtArea.setEditable(false);
 		contentPane.add(txtArea);
 
-		JButton btnAddCategoria = new JButton(""); 
+		JButton btnAddCategoria = new JButton("");
 		btnAddCategoria.setBounds(350, 396, 28, 23);
-		
+		btnAddCategoria
+				.setIcon(new ImageIcon(TelaEditProfissional.class.getResource("/icones/Button-Add-icon-24px.png")));
+		contentPane.add(btnAddCategoria);
+
 		btnAddCategoria.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Categoria categoriaSelecionada = (Categoria) cbCategoria.getSelectedItem();
+				int check = 0;
 
-				if (categorias.contains(categoriaSelecionada)) {
-					JOptionPane.showMessageDialog(null, "Categoria já foi selecionada");
-				} else {
+				for (int i = 0; i < categorias.size(); i++) {
+					if (categoriaSelecionada.getId() != categorias.get(i).getId()) {
+						check++;
+						break;
+					}
+				}
+				if (check > 0) {
 					categorias.add(categoriaSelecionada);
 					txtArea.setText(categorias.toString());
+				} else {
+					JOptionPane.showMessageDialog(null, "Categoria já foi adicionada anteriormente");
 				}
 				categoriaSelecionada = null;
 				cbCategoria.setSelectedIndex(-1);
 			}
-
 		});
 
-		btnAddCategoria
-				.setIcon(new ImageIcon(TelaEditProfissional.class.getResource("/icones/Button-Add-icon-24px.png")));
-		contentPane.add(btnAddCategoria);
+		JButton btnDelCategoria = new JButton("");
+		btnDelCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Categoria categoriaSelecionada = (Categoria) cbCategoria.getSelectedItem();
+				int check = 0;
+
+				for (int i = 0; i < categorias.size(); i++) {
+					if (categoriaSelecionada.getId() == categorias.get(i).getId()) {
+						categorias.remove(categorias.get(i));
+						check = 1;
+						txtArea.setText(categorias.toString());
+					}
+				}
+				if (check == 0) {
+					JOptionPane.showMessageDialog(null, "Categoria não pode ser excluída, pois não foi adicionada");
+				}
+				categoriaSelecionada = null;
+				cbCategoria.setSelectedIndex(-1);
+			}
+		});
+
+		btnDelCategoria.setIcon(new ImageIcon(TelaEditProfissional.class.getResource("/icones/delete-icon.png")));
+		btnDelCategoria.setBounds(388, 396, 28, 23);
+		contentPane.add(btnDelCategoria);
 
 		JLabel lblCategoriasSelecionadas = new JLabel("Categoria(s) selecionada(s) :");
 		lblCategoriasSelecionadas.setBounds(21, 358, 178, 14);
@@ -261,7 +307,11 @@ public class TelaEditProfissional extends JFrame {
 						txtNumero.getText(), txtBairro.getText(), txtCidade.getText(),
 						(String) cbEstado.getSelectedItem(), categorias);
 				JOptionPane.showMessageDialog(null, mensagem);
-				
+				String sucesso = "Profissional (" + profissional.toString() + ") alterado com sucesso!";
+				if (mensagem.contains(sucesso)) {
+					limpar();
+
+				}
 			}
 		});
 
@@ -293,43 +343,11 @@ public class TelaEditProfissional extends JFrame {
 			}
 		});
 		contentPane.add(btnBuscarCep);
-		
-		JButton btnConsultarCpf = new JButton("Consultar");
-		btnConsultarCpf.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				profissional = profissionalController.buscarProfissionalPorCpf(txtCpf.getText());
-				System.out.println(profissional);
-				popularTela(profissional);
-			}
-
-			
-		});
-		btnConsultarCpf.setBounds(209, 41, 89, 23);
-		contentPane.add(btnConsultarCpf);
-		
-		JButton btnDelCategoria = new JButton("");
-		btnDelCategoria.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Categoria categoriaSelecionada = (Categoria) cbCategoria.getSelectedItem();
-
-				if (categorias.contains(categoriaSelecionada)) {
-					categorias.remove(categoriaSelecionada);
-					txtArea.setText(categorias.toString());
-				} else {
-					JOptionPane.showMessageDialog(null, "Categoria não pode ser excluída, pois não foi adicionada");
-				}
-				categoriaSelecionada = null;
-				cbCategoria.setSelectedIndex(-1);
-				
-			}
-		});
-		btnDelCategoria.setIcon(new ImageIcon(TelaEditProfissional.class.getResource("/icones/delete-icon.png")));
-		btnDelCategoria.setBounds(388, 396, 28, 23);
-		contentPane.add(btnDelCategoria);
-
 	}
-	
+
 	private void popularTela(Profissional profissional) {
+		this.categorias = new ArrayList<Categoria>();
+
 		this.txtNome.setText(profissional.getNome());
 		this.txtCep.setText(profissional.getEndereco().getCep());
 		this.txtBairro.setText(profissional.getEndereco().getBairro());
@@ -338,7 +356,7 @@ public class TelaEditProfissional extends JFrame {
 		this.txtCidade.setText(profissional.getEndereco().getCidade());
 		this.txtEmail.setText(profissional.getEmail());
 		this.txtTelefone.setText(profissional.getTelefone());
-		categorias = profissional.getCategorias();
+		this.categorias = profissional.getCategorias();
 		this.txtArea.setText(categorias.toString());
 		this.cbEstado.setSelectedItem(profissional.getEndereco().getEstado());
 	}
@@ -356,7 +374,6 @@ public class TelaEditProfissional extends JFrame {
 		this.txtTelefone.setText("");
 		this.txtArea.setText("");
 		this.profissional = null;
-		
 
 	}
 }

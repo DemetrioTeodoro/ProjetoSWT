@@ -3,6 +3,8 @@ package controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import model.BO.BuscarCep;
 import model.BO.ProfissionalBO;
 import model.entity.Categoria;
@@ -16,7 +18,7 @@ public class ProfissionalController {
 
 	public String salvar(String nome, String cpf, boolean ativo, String email, String telefone, String cep, String rua,
 			String numero, String bairro, String cidade, String estado, ArrayList<Categoria> categorias) {
-		
+
 		String msg = "";
 
 		if (nome == null || nome.trim().isEmpty()) {
@@ -58,10 +60,12 @@ public class ProfissionalController {
 			return msg;
 		}
 	}
+
 //Lista todos os profissionais
 	public ArrayList<Profissional> listarProfissionais() {
 		return profBO.listarProfissionais();
 	}
+
 //Lista profissionais pela categoria
 	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria) {
 		return profBO.listarProfissionaisPorCategoria(idCategoria);
@@ -71,33 +75,35 @@ public class ProfissionalController {
 		BuscarCep buscarCep = new BuscarCep();
 		return buscarCep.buscarCep(cep);
 	}
+
 //Lista profissionais ativos pela categoria e disponíveis no periodo
-	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria, LocalDate dataInicio, LocalDate dataPrevistaTermino) {
-		
-		return profBO.listarProfissionaisPorCategoria(idCategoria,dataInicio,dataPrevistaTermino);
+	public ArrayList<Profissional> listarProfissionaisPorCategoria(int idCategoria, LocalDate dataInicio,
+			LocalDate dataPrevistaTermino) {
+
+		return profBO.listarProfissionaisPorCategoria(idCategoria, dataInicio, dataPrevistaTermino);
 	}
-	
+
 	public int buscarQdeOS(int id) {
 		return profBO.buscarQdeOS(id);
-		
+
 	}
+
 	public ArrayList<Profissional> listarProfissionaisPorSeletor(ProfissionalSeletor seletor) {
-		
+
 		return profBO.listarProfissionaisPorSeletor(seletor);
 	}
+
 	public ArrayList<String> buscarCidades() {
-		// TODO Auto-generated method stub
 		return profBO.buscarCidades();
 	}
+
 	public Profissional buscarProfissionalPorCpf(String cpf) {
 		return profBO.buscarProfissionalPorCpf(cpf);
-		
 	}
-	
+
 	public String atualizar(String nome, String cpf, boolean ativo, String email, String telefone, String cep,
-			String rua, String num, String bairro, String cidade, String estado,
-			ArrayList<Categoria> categorias) {
-		
+			String rua, String num, String bairro, String cidade, String estado, ArrayList<Categoria> categorias) {
+
 		String msg = "";
 
 		if (nome == null || nome.trim().isEmpty()) {
@@ -112,27 +118,36 @@ public class ProfissionalController {
 		if (categorias == null || categorias.size() == 0) {
 			msg += " Selecione uma categoria. \n";
 		}
-		
+
 		ValidarEnderecoController validarEndereco = new ValidarEnderecoController();
 		msg += validarEndereco.validarEndereco(cep, rua, num, bairro, cidade, estado);
-		
-		if(msg.isEmpty()) {
-		LocalDate dtcadastro = LocalDate.now();
-		Endereco e = new Endereco(rua, num, bairro, cidade, estado, cep);
 
-		Profissional p = new Profissional();
-		p.setNome(nome);
-		p.setAtivo(ativo);
-		p.setCategorias(categorias);
-		p.setDataCadastro(dtcadastro);
-		p.setTelefone(telefone);
-		p.setEmail(email);
-		p.setInscricao(cpf);
-		p.setEndereco(e);
-		
-		profBO.atualizar(p);
+		if (msg.isEmpty()) {
+			LocalDate dtcadastro = LocalDate.now();
+			Endereco e = new Endereco(rua, num, bairro, cidade, estado, cep);
+
+			Profissional p = new Profissional();
+			p.setNome(nome);
+			p.setAtivo(ativo);
+			p.setCategorias(categorias);
+			p.setDataCadastro(dtcadastro);
+			p.setTelefone(telefone);
+			p.setEmail(email);
+			p.setInscricao(cpf);
+			p.setEndereco(e);
+
+			msg = profBO.atualizar(p);
 		}
+
+		return msg;
+	}
+
+	public String validarTxtCpf(String cpf) {
+		String msg = "";
 		
+		if(cpf.trim().length() < 14 ) {
+		   msg += " CPF deve conter 11 dígitos";
+		}
 		return msg;
 	}
 

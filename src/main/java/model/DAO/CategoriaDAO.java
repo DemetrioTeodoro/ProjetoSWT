@@ -28,6 +28,9 @@ public class CategoriaDAO {
 			}
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao consultar categorias. Causa: " + ex.getMessage());
+		} finally {
+			Banco.closeStatement(preparedStatement);
+			Banco.closeConnection(conexao);
 		}
 		return categorias;
 	}
@@ -53,6 +56,9 @@ public class CategoriaDAO {
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar categorias por idprofissional: " + idProfissional);
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conn);
 		}
 
 		return categorias;

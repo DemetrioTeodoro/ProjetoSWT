@@ -61,6 +61,9 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 		} catch (SQLException e) {
 			System.out.println("Erro ao atualizar endereço.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return registrosAlterados > 0;
@@ -79,6 +82,9 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 			excluiu = (codigoRetornoUpdate == Banco.CODIGO_RETORNO_SUCESSO_EXCLUSAO);
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao excluir endereço. Id: " + id + " .Causa: " + ex.getMessage());
+		} finally {
+			Banco.closeStatement(preparedStatement);
+			Banco.closeConnection(conexao);
 		}
 		return excluiu;
 	}
@@ -98,6 +104,9 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 			}
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao consultar endereço. Id: " + id + " .Causa: " + ex.getMessage());
+		} finally {
+			Banco.closeStatement(preparedStatement);
+			Banco.closeConnection(conexao);
 		}
 		return enderecoConsultado;
 	}
@@ -133,6 +142,9 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 			}
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao consultar endereços. Causa: " + ex.getMessage());
+		} finally {
+			Banco.closeStatement(preparedStatement);
+			Banco.closeConnection(conexao);
 		}
 		return enderecos;
 	}

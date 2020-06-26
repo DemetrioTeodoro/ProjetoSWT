@@ -156,9 +156,10 @@ public class TelaEditarCliente extends JFrame {
 		
 		clientes = clienteController.listarClientes();
 		cbCliente = new JComboBox(clientes.toArray());
+		cbCliente.setSelectedIndex(-1);
 		
-		JButton btnEsteCliente = new JButton("\u00C9 este cliente");
-		btnEsteCliente.addActionListener(new ActionListener() {
+		JButton btnBuscarCliente = new JButton("Buscar");
+		btnBuscarCliente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Cliente cliente = (Cliente) cbCliente.getSelectedItem();
 				txtCep.setText(cliente.getEndereco().getCep());
@@ -184,7 +185,7 @@ public class TelaEditarCliente extends JFrame {
 							.addComponent(cbCliente, GroupLayout.PREFERRED_SIZE, 189, GroupLayout.PREFERRED_SIZE))
 						.addComponent(lblCadastroProfissional, GroupLayout.PREFERRED_SIZE, 224, GroupLayout.PREFERRED_SIZE))
 					.addGap(26)
-					.addComponent(btnEsteCliente, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
+					.addComponent(btnBuscarCliente, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGap(21)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -256,7 +257,7 @@ public class TelaEditarCliente extends JFrame {
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addGap(1)
 									.addComponent(lblCadastroProfissional))))
-						.addComponent(btnEsteCliente))
+						.addComponent(btnBuscarCliente))
 					.addGap(50)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtCpf, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)

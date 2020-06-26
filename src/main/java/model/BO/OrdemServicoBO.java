@@ -36,4 +36,20 @@ public class OrdemServicoBO {
 		}
 	}
 
+	public ArrayList<OrdemServico> listarTodos() {
+		return ordemServicoDAO.listarTodos();
+	}
+
+	public String atualizar(OrdemServico os) {
+		boolean atualizadp = ordemServicoDAO.atualizar(os);
+		if (atualizadp) {
+			msg = " Ordem de Serviço atualizado! ";
+		} else if (atualizadp == false) {
+			msg = " Ordem de Serviço não atualizado! ";
+		} else {
+			msg = " Ocorreu um erro ao atualizar Ordem de Serviço ";
+		}
+		return msg;
+	}
+
 }

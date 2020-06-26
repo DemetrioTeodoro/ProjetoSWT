@@ -91,7 +91,7 @@ public class PainelListagemOS extends JPanel {
 		txtNumeroOS = new JTextField();
 		txtNumeroOS.setColumns(10);
 
-		JButton btnEditarOs = new JButton("Visualizar OS");
+		JButton btnEditarOs = new JButton("Editar OS");
 		btnEditarOs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				telaEditarOS = new TelaEditarOS();

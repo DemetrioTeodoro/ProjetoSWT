@@ -46,6 +46,9 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 			}
 		} catch (SQLException e) {
 			System.out.println(" Erro ao salvar cliente. Causa: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 		return cliente;
 	}
@@ -54,7 +57,7 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 		Connection conexao = Banco.getConnection();
 
 		EnderecoDAO enderecoDAO = new EnderecoDAO();
-System.out.println(cliente);
+
 		boolean enderecoAtualizado = enderecoDAO.atualizar(cliente.getEndereco());
 
 		String sql = " UPDATE CLIENTE SET nome=?, inscricao=?, ecpf=?, ativo=?, data_cadastro=?, telefone=?, email=? WHERE id = ?";
@@ -76,6 +79,9 @@ System.out.println(cliente);
 		} catch (SQLException e) {
 			System.out.println("Erro ao atualizar cliente.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return registrosAlterados > 0;
@@ -94,6 +100,9 @@ System.out.println(cliente);
 			excluiu = (codigoRetornoUpdate == Banco.CODIGO_RETORNO_SUCESSO_EXCLUSAO);
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao excluir cliente. Id: " + id + " .Causa: " + ex.getMessage());
+		} finally {
+			Banco.closeStatement(preparedStatement);
+			Banco.closeConnection(conexao);
 		}
 		return excluiu;
 	}
@@ -113,6 +122,9 @@ System.out.println(cliente);
 			}
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao consultar cliente. Id: " + id + " .Causa: " + ex.getMessage());
+		} finally {
+			Banco.closeStatement(preparedStatement);
+			Banco.closeConnection(conexao);
 		}
 		return clienteConsultado;
 	}
@@ -132,6 +144,9 @@ System.out.println(cliente);
 
 		} catch (SQLException ex) {
 			System.out.println(" Erro ao consultar todos os cliente. Causa: " + ex.getMessage());
+		} finally {
+			Banco.closeStatement(preparedStatement);
+			Banco.closeConnection(conexao);
 		}
 		return clientes;
 	}
@@ -169,6 +184,9 @@ System.out.println(cliente);
 		} catch (Exception e) {
 			System.out.println("Erro ao verificar se a incrição (cpf ou cnpj)" + inscricao
 					+ " já está sendo utilizada por cliente. Causa:" + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return jaUsada;
@@ -202,6 +220,9 @@ System.out.println(cliente);
 		} catch (SQLException e) {
 			System.out.println("Erro ao consultar clientes por seletor.");
 			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closeStatement(stmt);
+			Banco.closeConnection(conexao);
 		}
 
 		return clientes;

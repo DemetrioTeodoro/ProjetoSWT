@@ -144,10 +144,4 @@ public class OrdemServicoController {
 		return ordemServicoBO.atualizar(os);
 	}
 
-	public ArrayList<Agenda> listarOSAgenda(AgendaSeletor seletor) {
-		return  ordemServicoBO.listarOSAgenda(seletor);
-	}
-	
-	
-
 }

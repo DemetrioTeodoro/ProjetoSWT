@@ -54,8 +54,4 @@ public class OrdemServicoBO {
 		return msg;
 	}
 
-	public ArrayList<Agenda> listarOSAgenda(AgendaSeletor seletor) {
-		return ordemServicoDAO.listarOSAgenda(seletor);
-	}
-
 }

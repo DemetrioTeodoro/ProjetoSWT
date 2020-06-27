@@ -19,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.github.lgooddatepicker.components.DatePicker;
 
+import controller.AgendaController;
 import controller.OrdemServicoController;
 import controller.ProfissionalController;
 import model.details.Agenda;
@@ -70,23 +71,28 @@ public class PainelAgenda extends JPanel {
 		JButton btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String msg ="";
-				msg= validarCamposObrigatórios();
-				if(msg.isEmpty()) {
+				String msg = "";
+				AgendaController control = new AgendaController();
+				msg = control.validarCamposObrigatorios(dpInicio.getDate(), dpFim.getDate());
+				if (msg.isEmpty()) {
 					AgendaSeletor seletor = new AgendaSeletor();
 					seletor.setDataInicio(dpInicio.getDate());
 					seletor.setDataTermino(dpFim.getDate());
 					seletor.setProfissional((Profissional) cbProfissional.getSelectedItem());
-					OrdemServicoController control = new OrdemServicoController();
 					agendas = new ArrayList<Agenda>();
 					agendas = control.listarOSAgenda(seletor);
-					atualizarTabelaAgenda();
-					cbProfissional.setSelectedIndex(-1);
-				}else {
+					if (agendas.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Nenhum resultado para esta consulta.");
+					} else {
+						atualizarTabelaAgenda();
+					}
+				} else {
 					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});
+		
+		
 
 		tblAgenda = new JTable();
 		tblAgenda.setCellSelectionEnabled(true);
@@ -103,9 +109,19 @@ public class PainelAgenda extends JPanel {
 		});
 
 		JButton btnExportar = new JButton("Exportar");
-		
+
 		JLabel lblPeriodo = new JLabel("Per\u00EDodo");
 		lblPeriodo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		JButton btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dpInicio.clear();
+				dpFim.clear();
+				cbProfissional.setSelectedIndex(-1);
+				limparTabela();
+			}
+		});
 
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -138,7 +154,9 @@ public class PainelAgenda extends JPanel {
 									.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, 355, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGap(126)
-									.addComponent(btnConsultar, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)))
+									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(btnLimpar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnConsultar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))))
 							.addGap(9)
 							.addComponent(tblAgenda, GroupLayout.PREFERRED_SIZE, 962, GroupLayout.PREFERRED_SIZE))))
 		);
@@ -171,27 +189,13 @@ public class PainelAgenda extends JPanel {
 							.addGap(13)
 							.addComponent(cbProfissional, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(56)
-							.addComponent(btnConsultar))
+							.addComponent(btnConsultar)
+							.addGap(30)
+							.addComponent(btnLimpar))
 						.addComponent(tblAgenda, GroupLayout.PREFERRED_SIZE, 520, GroupLayout.PREFERRED_SIZE)))
 		);
 		setLayout(groupLayout);
 
-	}
-	
-	protected String validarCamposObrigatórios() {
-		String msg ="";
-		
-		if(dpInicio.getText().isEmpty()) {
-			msg+= "Inserir a data de início do perído. \n";
-		}
-		if(dpFim.getText().isEmpty()) {
-			msg += "Inserir a data de fim do período.";
-		}
-		if(dpInicio.getDate().isAfter(dpFim.getDate())) {
-			msg += "Data de início do período não pode ser maior que a data de término .";
-		}
-			
-		return msg;
 	}
 
 	private void atualizarTabelaAgenda() {
@@ -199,17 +203,17 @@ public class PainelAgenda extends JPanel {
 		this.limparTabela();
 
 		DefaultTableModel model = (DefaultTableModel) tblAgenda.getModel();
-		
-		for ( Agenda a : agendas) {
-			
+
+		for (Agenda a : agendas) {
+
 			DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-			
+
 			String[] novaLinha = new String[6];
 			novaLinha[0] = a.getInicio().format(formatador);
 			novaLinha[1] = a.getFim().format(formatador);
 			novaLinha[2] = a.TextoEndereco();
 			novaLinha[3] = a.TextoCliente();
-		    novaLinha[4] = a.getNumOS();
+			novaLinha[4] = a.getNumOS();
 
 			model.addRow(novaLinha);
 		}

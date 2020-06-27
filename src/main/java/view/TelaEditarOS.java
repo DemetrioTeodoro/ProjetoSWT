@@ -301,7 +301,7 @@ public class TelaEditarOS extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				os = (OrdemServico) cbOrdemServico.getSelectedItem();
 				cadOS.setId(os.getId());
-				cadOS.setNumeroOS(txtNumeroOS.getText());
+				cadOS.setNumeroOS(txtNumeroOS.getText() + lblAno.getText());
 				cadOS.setCliente((Cliente) cbCliente.getSelectedItem());
 				Endereco endereco = new Endereco(txtRua.getText(), txtNumero.getText(), txtBairro.getText(),
 						txtCidade.getText(), (String) cbEstados.getSelectedItem(), txtCep.getText());
@@ -323,7 +323,8 @@ public class TelaEditarOS extends JFrame {
 					JOptionPane.showMessageDialog(null, msg);
 					msg = "";
 				} else {
-					ordemServicoController.atualizar(cadOS);
+					msg = ordemServicoController.atualizar(cadOS);
+					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
 		});
@@ -409,7 +410,7 @@ public class TelaEditarOS extends JFrame {
 		lblOrdemDeServio.setBounds(70, 42, 121, 29);
 		contentPane.add(lblOrdemDeServio);
 		
-		JButton btnBuscar = new JButton("Buscar");
+		JButton btnBuscar = new JButton("Buscar OS");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OrdemServico os = new OrdemServico();
@@ -429,5 +430,17 @@ public class TelaEditarOS extends JFrame {
 		});
 		btnBuscar.setBounds(443, 45, 97, 25);
 		contentPane.add(btnBuscar);
+		
+		JButton btnExcluir = new JButton("Excluir");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				OrdemServico os = (OrdemServico) cbOrdemServico.getSelectedItem();
+				String msg = "";
+				msg = ordemServicoController.excluir(os.getId());
+				
+			}
+		});
+		btnExcluir.setBounds(572, 46, 97, 25);
+		contentPane.add(btnExcluir);
 	}
 }

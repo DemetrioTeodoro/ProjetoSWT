@@ -144,16 +144,7 @@ public class OrdemServico {
 
 	@Override
 	public String toString() {
-		return "OrdemServico [id=" + id + ", numeroOS=" + numeroOS + ", cliente=" + cliente + ", endereco=" + endereco
-				+ ", descricao=" + descricao + ", dataInicio=" + dataInicio + ", dataPrevistaFim=" + dataPrevistaFim
-				+ ", dataTermino=" + dataTermino + ", categorias=" + categorias + ", profissionais=" + profissionais
-				+ ", dataCadastro=" + dataCadastro + "]";
+		return numeroOS + ", " + cliente;
 	}
-
-	
-//	@Override
-//	public String toString() {
-//		return  numeroOS + ", " + cliente;
-//	}
 
 }

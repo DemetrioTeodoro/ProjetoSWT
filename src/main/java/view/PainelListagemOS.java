@@ -3,6 +3,7 @@ package view;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
@@ -149,12 +150,14 @@ public class PainelListagemOS extends JPanel {
 
 		DefaultTableModel model = (DefaultTableModel) tblOrdemServico.getModel();
 		for (OrdemServico os : ordemServicos) {
-			System.out.println(ordemServicos);
+			
+			DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/YYYY");
+			
 			String[] novaLinha = new String[7];
 			novaLinha[0] = os.getNumeroOS();
 			novaLinha[1] = os.getCliente().getNome();
-			novaLinha[2] = os.getDataInicio().toString();
-			novaLinha[3] = os.getDataPrevistaFim().toString();
+			novaLinha[2] = os.getDataInicio().format(formatador);
+			novaLinha[3] = os.getDataPrevistaFim().format(formatador);
 
 
 			model.addRow(novaLinha);

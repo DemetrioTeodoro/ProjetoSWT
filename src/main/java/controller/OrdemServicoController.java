@@ -144,4 +144,8 @@ public class OrdemServicoController {
 		return ordemServicoBO.atualizar(os);
 	}
 
+	public String excluir(int id) {
+		return ordemServicoBO.excluir(id);
+	}
+
 }

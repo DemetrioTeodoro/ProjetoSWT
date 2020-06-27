@@ -43,15 +43,28 @@ public class OrdemServicoBO {
 	}
 
 	public String atualizar(OrdemServico os) {
-		boolean atualizadp = ordemServicoDAO.atualizar(os);
-		if (atualizadp) {
+		boolean atualizado = ordemServicoDAO.atualizar(os);
+		if (atualizado) {
 			msg = " Ordem de Serviço atualizado! ";
-		} else if (atualizadp == false) {
+		} else if (atualizado == false) {
 			msg = " Ordem de Serviço não atualizado! ";
 		} else {
 			msg = " Ocorreu um erro ao atualizar Ordem de Serviço ";
 		}
 		return msg;
+	}
+
+	public String excluir(int id) {
+		boolean excluido =  ordemServicoDAO.excluir(id);
+		if (excluido) {
+			msg = " Ordem de Serviço excluida! ";
+		} else if (excluido == false) {
+			msg = " Ordem de Serviço não excluida! ";
+		} else {
+			msg = " Ocorreu um erro ao excluir Ordem de Serviço ";
+		}
+		return msg;
+
 	}
 
 }

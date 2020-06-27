@@ -77,22 +77,20 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 	}
 
 	public boolean atualizar(OrdemServico ordemServico) {
-		String sql = " UPDATE ORDEM_SERVICO SET numero_os=?, descricao=?, data_cadastro=?, data_inicio=?, data_termino_previsto=?, data_termino=?, id_cliente=?, id_endereco=? "
+		String sql = " UPDATE ORDEM_SERVICO SET numero_os=?, descricao=?, data_inicio=?, data_termino_previsto=?, data_termino=?, id_cliente=?, id_endereco=? "
 				+ " WHERE id=?";
 
-		/**
-		 * Pega data atual para coluna: data_cadastro
-		 */
-		java.util.Date dataNova = new java.util.Date();
-		String dataCadastro = new SimpleDateFormat("yyy-MM-dd").format(dataNova);
 		Connection conexao = Banco.getConnection();
 
 		EnderecoDAO endDAO = new EnderecoDAO();
+		ClienteDAO clienteDAO = new ClienteDAO();
 		Endereco endereco = null;
 
-		if (!verficarOSVinculadaEndereco(ordemServico.getEndereco().getId())) {
+		if (verficarOSVinculadaEndereco(ordemServico.getEndereco().getId())) {
 			endDAO.atualizar(ordemServico.getEndereco());
-		} else {
+		} else if (clienteDAO.verficarEnderecoVinculadoCliente(ordemServico.getEndereco().getId())) {
+			endDAO.atualizar(ordemServico.getEndereco());
+		}else {
 			endereco = endDAO.salvar(ordemServico.getEndereco());
 		}
 		int registrosAlterados = 0;
@@ -101,20 +99,22 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		try {
 			stmt.setString(1, ordemServico.getNumeroOS());
 			stmt.setString(2, ordemServico.getDescricao());
-			stmt.setString(3, dataCadastro);
-			stmt.setDate(4, Date.valueOf(ordemServico.getDataInicio()));
-			stmt.setDate(5, Date.valueOf(ordemServico.getDataPrevistaFim()));
+			stmt.setDate(3, Date.valueOf(ordemServico.getDataInicio()));
+			stmt.setDate(4, Date.valueOf(ordemServico.getDataPrevistaFim()));
 			if (ordemServico.getDataTermino() != null) {
-				stmt.setDate(6, Date.valueOf(ordemServico.getDataTermino()));
+				stmt.setDate(5, Date.valueOf(ordemServico.getDataTermino()));
 			}
-			stmt.setInt(7, ordemServico.getCliente().getId());
+			stmt.setInt(6, ordemServico.getCliente().getId());
 			if (endereco == null) {
-				stmt.setInt(8, ordemServico.getEndereco().getId());
+				stmt.setInt(7, ordemServico.getEndereco().getId());
 			} else {
-				stmt.setInt(8, endereco.getId());
+				stmt.setInt(7, endereco.getId());
 			}
-			stmt.setInt(9, ordemServico.getId());
+			stmt.setInt(8, ordemServico.getId());
 			registrosAlterados = stmt.executeUpdate();
+			
+			atualizaOrdemServicoProfissionais(ordemServico.getId(), ordemServico.getProfissionais());
+			atualizaOrdemServicoCategoria(ordemServico.getId(), ordemServico.getCategorias());
 
 		} catch (SQLException e) {
 			System.out.println(" Erro ao atualizar ordem de serviço. Causa: " + e.getMessage());
@@ -123,8 +123,6 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			Banco.closeConnection(conexao);
 		}
 
-//		vincularOrdemServicoProfissionais(ordemServico.getId(), ordemServico.getProfissionais());
-//		vincularOrdemServicoCategoria(ordemServico.getId(), ordemServico.getCategorias());
 
 		return registrosAlterados > 0;
 	}
@@ -295,6 +293,53 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 				stmt.execute();
 			} catch (Exception e) {
 				System.out.println(" Erro ao salvar vinculo Ordem de Serviço com Categoria. Causa: " + e.getMessage());
+			} finally {
+				Banco.closePreparedStatement(stmt);
+				Banco.closeConnection(conexao);
+			}
+
+		}
+	}
+	
+	private void atualizaOrdemServicoProfissionais(int idOrdemServico, ArrayList<Profissional> profissionais) {
+
+		for (int i = 0; i < profissionais.size(); i++) {
+
+			String sql = "UPDATE ORDEM_SERVICO_PROFISSIONAL SET (id_profissional= ?)" + " WHERE id_ordem_servico= ? ";
+
+			Connection conexao = Banco.getConnection();
+
+			PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			try {
+				stmt.setInt(2, idOrdemServico);
+				stmt.setInt(1, profissionais.get(i).getId());
+				stmt.execute();
+			} catch (Exception e) {
+				System.out
+						.println(" Erro ao atualizar vinculo Ordem de Serviço com Profissional. Causa: " + e.getMessage());
+			} finally {
+				Banco.closePreparedStatement(stmt);
+				Banco.closeConnection(conexao);
+			}
+
+		}
+	}
+	
+	private void atualizaOrdemServicoCategoria(int idOrdemServico, ArrayList<Categoria> categorias) {
+
+		for (int i = 0; i < categorias.size(); i++) {
+
+			String sql = "UPDATE ORDEM_SERVICO_CATEGORIA SET (id_categoria = ?)" + " WHERE id_ordem_servico = ? ";
+
+			Connection conexao = Banco.getConnection();
+
+			PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			try {
+				stmt.setInt(2, idOrdemServico);
+				stmt.setInt(1, categorias.get(i).getId());
+				stmt.execute();
+			} catch (Exception e) {
+				System.out.println(" Erro ao atualizar vinculo Ordem de Serviço com Categoria. Causa: " + e.getMessage());
 			} finally {
 				Banco.closePreparedStatement(stmt);
 				Banco.closeConnection(conexao);

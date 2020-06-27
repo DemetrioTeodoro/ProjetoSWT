@@ -253,4 +253,26 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 		return sql;
 	}
 
+	public boolean verficarEnderecoVinculadoCliente(int id) {
+		String sql = " SELECT id FROM CLIENTE C" + " WHERE C.id_endereco = " + id;
+
+		Connection conexao = Banco.getConnection();
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		boolean enderecoVinculado = false;
+
+		try {
+			ResultSet rs = stmt.executeQuery();
+			enderecoVinculado = rs.next();
+		} catch (SQLException e) {
+			System.out.println(
+					"Erro ao verificar se Endereço está vinculado a algum Cliente. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
+
+		return enderecoVinculado;
+	}
+
 }

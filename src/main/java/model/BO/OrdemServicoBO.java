@@ -3,7 +3,9 @@ package model.BO;
 import java.util.ArrayList;
 
 import model.DAO.OrdemServicoDAO;
+import model.details.Agenda;
 import model.entity.OrdemServico;
+import model.seletor.AgendaSeletor;
 import model.seletor.OrdemServicoSeletor;
 
 public class OrdemServicoBO {
@@ -50,6 +52,10 @@ public class OrdemServicoBO {
 			msg = " Ocorreu um erro ao atualizar Ordem de Serviço ";
 		}
 		return msg;
+	}
+
+	public ArrayList<Agenda> listarOSAgenda(AgendaSeletor seletor) {
+		return ordemServicoDAO.listarOSAgenda(seletor);
 	}
 
 }

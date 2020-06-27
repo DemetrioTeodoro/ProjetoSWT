@@ -5,12 +5,14 @@ import java.util.ArrayList;
 
 import model.BO.BuscarCep;
 import model.BO.OrdemServicoBO;
+import model.details.Agenda;
 import model.details.CadastroOS;
 import model.entity.Categoria;
 import model.entity.Cliente;
 import model.entity.Endereco;
 import model.entity.OrdemServico;
 import model.entity.Profissional;
+import model.seletor.AgendaSeletor;
 import model.seletor.OrdemServicoSeletor;
 
 public class OrdemServicoController {
@@ -141,5 +143,11 @@ public class OrdemServicoController {
 	public String atualizar(OrdemServico os) {
 		return ordemServicoBO.atualizar(os);
 	}
+
+	public ArrayList<Agenda> listarOSAgenda(AgendaSeletor seletor) {
+		return  ordemServicoBO.listarOSAgenda(seletor);
+	}
+	
+	
 
 }

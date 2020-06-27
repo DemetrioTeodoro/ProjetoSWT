@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import model.details.Agenda;
 import model.entity.Categoria;
 import model.entity.Cliente;
 import model.entity.Endereco;
 import model.entity.OrdemServico;
 import model.entity.Profissional;
+import model.seletor.AgendaSeletor;
 import model.seletor.OrdemServicoSeletor;
 
 public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
@@ -45,10 +47,10 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			stmt.setString(3, dataCadastro);
 			stmt.setDate(4, Date.valueOf(ordemServico.getDataInicio()));
 			stmt.setDate(5, Date.valueOf(ordemServico.getDataPrevistaFim()));
-			if(ordemServico.getDataTermino()!=null) {
-			stmt.setDate(6, Date.valueOf(ordemServico.getDataTermino()));
-			}else {
-				stmt.setDate(6,null);
+			if (ordemServico.getDataTermino() != null) {
+				stmt.setDate(6, Date.valueOf(ordemServico.getDataTermino()));
+			} else {
+				stmt.setDate(6, null);
 			}
 			stmt.setInt(7, ordemServico.getCliente().getId());
 			if (endereco == null) {
@@ -103,7 +105,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			stmt.setDate(4, Date.valueOf(ordemServico.getDataInicio()));
 			stmt.setDate(5, Date.valueOf(ordemServico.getDataPrevistaFim()));
 			if (ordemServico.getDataTermino() != null) {
-				stmt.setDate(6, Date.valueOf(ordemServico.getDataTermino()));				
+				stmt.setDate(6, Date.valueOf(ordemServico.getDataTermino()));
 			}
 			stmt.setInt(7, ordemServico.getCliente().getId());
 			if (endereco == null) {
@@ -198,10 +200,11 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		}
 		return ordemServicos;
 	}
-	
+
 	public ArrayList<OrdemServico> listarPorTodosPorNumeroOS(String numeroOS) {
 
-		String sql = " SELECT * FROM ORDEM_SERVICO WHERE numero_os LIKE "  + "'%" + numeroOS + "%' ";;
+		String sql = " SELECT * FROM ORDEM_SERVICO WHERE numero_os LIKE " + "'%" + numeroOS + "%' ";
+		;
 
 		Connection conexao = Banco.getConnection();
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
@@ -239,7 +242,6 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			Endereco end = enderecoDAO.consultarPorId(rs.getInt("id_endereco"));
 			ordemServico.setEndereco(end);
 
-			
 			ClienteDAO clienteDAO = new ClienteDAO();
 			Cliente cliente = clienteDAO.consultarPorId(rs.getInt("id_cliente"));
 			ordemServico.setCliente(cliente);
@@ -349,8 +351,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 
 	public ArrayList<OrdemServico> listarPorSeletor(OrdemServicoSeletor seletor) {
 		Connection conexao = Banco.getConnection();
-		String sql = " SELECT * FROM ORDEM_SERVICO AS OS " 
-				+ " INNER JOIN ORDEM_SERVICO_CATEGORIA AS OSC "
+		String sql = " SELECT * FROM ORDEM_SERVICO AS OS " + " INNER JOIN ORDEM_SERVICO_CATEGORIA AS OSC "
 				+ " ON OS.id = OSC.id_categoria ";
 
 		if (seletor.temFiltro()) {
@@ -409,6 +410,145 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		}
 
 		return sql;
+	}
+
+	public ArrayList<Agenda> listarOSAgendaProf(AgendaSeletor seletor) {
+
+		ArrayList<Agenda> agendas = new ArrayList<Agenda>();
+
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM vlw_agenda AS A " + " INNER JOIN ORDEM_SERVICO_PROFISSIONAL"
+				+ " ON A.id = OSP.id_ordem_servico " + "WHERE O.data_termino = null ";
+
+		if (seletor.temFiltro()) {
+			sql = criarFiltrosAgenda(sql, seletor);
+		}
+
+		sql += " GROUP BY OSP.id_profissional ";
+
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Agenda agenda = construirResultSetAgenda(rs);
+				agendas.add(agenda);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar agenda do profissional."+ seletor.getProfissional().toString());
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
+
+		return agendas;
+	}
+
+	public ArrayList<Agenda> listarOSAgenda(AgendaSeletor seletor) {
+
+		ArrayList<Agenda> agendas = new ArrayList<Agenda>();
+
+		Connection conexao = Banco.getConnection();
+		String sql = " SELECT * FROM vlw_agenda AS A " + " INNER JOIN ORDEM_SERVICO_PROFISSIONAL"
+				+ " ON A.id = OSP.id_ordem_servico " + "WHERE O.data_termino = null ";
+
+		if (seletor.temFiltro()) {
+			sql = criarFiltrosAgenda(sql, seletor);
+		}
+
+		sql += " GROUP BY A.id ";
+
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		try {
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Agenda agenda = construirResultSetAgenda(rs);
+				agendas.add(agenda);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar agenda.");
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
+
+		return agendas;
+	}
+
+	private String criarFiltrosAgenda(String sql, AgendaSeletor seletor) {
+		boolean primeiro = true;
+
+		if (seletor.getProfissional() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			sql += " P.id  = " + seletor.getProfissional().getId();
+			primeiro = false;
+		}
+
+		if (seletor.getDataInicio() != null || seletor.getDataTermino() != null) {
+			if (!primeiro) {
+				sql += " AND ";
+			}
+
+			if (seletor.getDataInicio() != null && seletor.getDataTermino() != null) {
+				sql += " A.data_inicio BETWEEN '" + seletor.getDataInicio() + "' AND '" + seletor.getDataTermino()
+						+ "'";
+			} else {
+				if (seletor.getDataInicio() == null) {
+					sql += " A.data_inicio <= '" + seletor.getDataTermino() + "'";
+				}
+
+				if (seletor.getDataTermino() == null) {
+					sql += " A.data_inicio >= '" + seletor.getDataInicio() + "'";
+				}
+			}
+
+			if (seletor.getDataInicio() != null || seletor.getDataTermino() != null) {
+				if (!primeiro) {
+					sql += " AND ";
+				}
+				if (seletor.getDataInicio() != null && seletor.getDataTermino() != null) {
+					sql += " A.data_termino_previsto BETWEEN '" + seletor.getDataInicio() + "' AND '"
+							+ seletor.getDataTermino() + "'";
+				} else {
+					if (seletor.getDataInicio() == null) {
+						sql += " A.data_termino_previsto <= '" + seletor.getDataTermino() + "'";
+					}
+
+					if (seletor.getDataTermino() == null) {
+						sql += " A.data_termino_previsto >= '" + seletor.getDataInicio() + "'";
+					}
+				}
+			}
+		}
+		return sql;
+	}
+
+	private Agenda construirResultSetAgenda(ResultSet rs) {
+		Agenda agenda = new Agenda();
+
+		try {
+			agenda.setIdOrdemServico(rs.getInt("id"));
+			agenda.setInicio(rs.getDate("data_inicio").toLocalDate());
+			agenda.setFim(rs.getDate("data_termino_previsto").toLocalDate());
+			agenda.setNumOS(rs.getString("numero_os"));
+			agenda.setBairro(rs.getString("bairro"));
+			agenda.setCidade(rs.getString("cidade"));
+			agenda.setEstado(rs.getString("estado"));
+			agenda.setCliente(rs.getString("nome"));
+			agenda.setTelCliente(rs.getString("telefone"));
+
+		} catch (Exception e) {
+			System.out.println("Erro ao construir resultSet Agenda. Causa:" + e.getMessage());
+		}
+		return agenda;
 	}
 
 }

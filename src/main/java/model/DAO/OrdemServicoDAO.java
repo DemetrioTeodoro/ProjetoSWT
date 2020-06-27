@@ -418,7 +418,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT * FROM vlw_agenda AS A " + " INNER JOIN ORDEM_SERVICO_PROFISSIONAL"
-				+ " ON A.id = OSP.id_ordem_servico " + "WHERE O.data_termino = null ";
+				+ " ON A.id = OSP.id_ordem_servico " + " WHERE O.data_termino = null ";
 
 		if (seletor.temFiltro()) {
 			sql = criarFiltrosAgenda(sql, seletor);
@@ -436,7 +436,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar agenda do profissional."+ seletor.getProfissional().toString());
+			System.out.println("Erro ao consultar agenda do profissional." + seletor.getProfissional().toString());
 			System.out.println("Erro: " + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(stmt);
@@ -451,14 +451,11 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		ArrayList<Agenda> agendas = new ArrayList<Agenda>();
 
 		Connection conexao = Banco.getConnection();
-		String sql = " SELECT * FROM vlw_agenda AS A " + " INNER JOIN ORDEM_SERVICO_PROFISSIONAL"
-				+ " ON A.id = OSP.id_ordem_servico " + "WHERE O.data_termino = null ";
+		String sql = " SELECT * FROM ORDEM_SERVICO AS O " + " INNER JOIN VIEW_AGENDA AS A " + " ON  O.ID = A.Id ";
 
 		if (seletor.temFiltro()) {
 			sql = criarFiltrosAgenda(sql, seletor);
 		}
-
-		sql += " GROUP BY A.id ";
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
@@ -481,52 +478,21 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 	}
 
 	private String criarFiltrosAgenda(String sql, AgendaSeletor seletor) {
-		boolean primeiro = true;
+		if (seletor.getProfissional() == null) {
+			sql += " WHERE A.data_inicio BETWEEN '" + seletor.getDataInicio() + "' AND '" + seletor.getDataTermino()
+					+ "'" + " OR A.data_termino_previsto BETWEEN '" + seletor.getDataInicio() + "' AND '"
+					+ seletor.getDataTermino() + "'" + " OR ISNULL(A.data_termino) AND A.data_inicio < '"
+					+ seletor.getDataInicio() + "'"
+					+" GROUP BY O.id ";
 
-		if (seletor.getProfissional() != null) {
-			if (!primeiro) {
-				sql += " AND ";
-			}
-
-			sql += " P.id  = " + seletor.getProfissional().getId();
-			primeiro = false;
-		}
-
-		if (seletor.getDataInicio() != null || seletor.getDataTermino() != null) {
-			if (!primeiro) {
-				sql += " AND ";
-			}
-
-			if (seletor.getDataInicio() != null && seletor.getDataTermino() != null) {
-				sql += " A.data_inicio BETWEEN '" + seletor.getDataInicio() + "' AND '" + seletor.getDataTermino()
-						+ "'";
-			} else {
-				if (seletor.getDataInicio() == null) {
-					sql += " A.data_inicio <= '" + seletor.getDataTermino() + "'";
-				}
-
-				if (seletor.getDataTermino() == null) {
-					sql += " A.data_inicio >= '" + seletor.getDataInicio() + "'";
-				}
-			}
-
-			if (seletor.getDataInicio() != null || seletor.getDataTermino() != null) {
-				if (!primeiro) {
-					sql += " AND ";
-				}
-				if (seletor.getDataInicio() != null && seletor.getDataTermino() != null) {
-					sql += " A.data_termino_previsto BETWEEN '" + seletor.getDataInicio() + "' AND '"
-							+ seletor.getDataTermino() + "'";
-				} else {
-					if (seletor.getDataInicio() == null) {
-						sql += " A.data_termino_previsto <= '" + seletor.getDataTermino() + "'";
-					}
-
-					if (seletor.getDataTermino() == null) {
-						sql += " A.data_termino_previsto >= '" + seletor.getDataInicio() + "'";
-					}
-				}
-			}
+		} else {
+			sql += " INNER JOIN ORDEM_SERVICO_PROFISSIONAL AS OP " + " ON  O.id = OP.id_ordem_servico "
+					+ " WHERE A.data_inicio BETWEEN '" + seletor.getDataInicio() + "' AND '" + seletor.getDataTermino()
+					+ "'" + " AND OP.id_profissional  = " + seletor.getProfissional().getId()
+					+ " OR A.data_termino_previsto BETWEEN '" + seletor.getDataInicio() + "' AND '"
+					+ seletor.getDataTermino() + "'" + " AND OP.id_profissional = " + seletor.getProfissional().getId()
+					+ " OR ISNULL(A.data_termino) AND A.data_inicio < '" + seletor.getDataInicio() + "'"
+					+ " GROUP BY OP.id_profissional ";
 		}
 		return sql;
 	}

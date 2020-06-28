@@ -64,6 +64,11 @@ public class TelaEditProfissional extends JFrame {
 		});
 	}
 
+	public void limparCampos() {
+		this.txtCpf.setText("");
+
+	}
+
 	public TelaEditProfissional() {
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -94,7 +99,16 @@ public class TelaEditProfissional extends JFrame {
 				String msg = profissionalController.validarTxtCpf(cpf);
 				if (msg.isEmpty()) {
 					profissional = profissionalController.buscarProfissionalPorCpf(cpf);
-					popularTela(profissional);
+					if (profissional == null) {
+						JOptionPane.showMessageDialog(null, "Profissional (" + cpf + ") não cadastrado.");
+					} else {
+						try {
+							popularTela(profissional);
+						} catch (Exception er) {
+							System.out.println("Erro ao popular a tela. Causa: " + er.getMessage());
+							JOptionPane.showMessageDialog(null, "Favor selecionar o estado.");
+						}
+					}
 				} else {
 					JOptionPane.showMessageDialog(null, msg);
 				}
@@ -342,6 +356,8 @@ public class TelaEditProfissional extends JFrame {
 			}
 		});
 		contentPane.add(btnBuscarCep);
+
+		limpar();
 	}
 
 	private void popularTela(Profissional profissional) {

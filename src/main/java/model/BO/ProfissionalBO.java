@@ -76,28 +76,34 @@ public class ProfissionalBO {
 		} else {
 			if (seletor.getQdeOS() != null) {
 				if (seletor.getQdeOS() > 0) {
-					profissionais = dao.listarPorSeletor(seletor);
+					profissionais = profissionaisComOS(seletor);
 				} else {
+					ArrayList<Profissional> p = profissionaisComOS(seletor);
 					profissionais = dao.listarPorSeletorTodos(seletor);
-				}
-			} else {
-				ArrayList<Profissional> profComOS = new ArrayList<Profissional>();
-				profComOS = dao.listarPorSeletor(seletor);
-				profissionais = dao.listarPorSeletorTodos(seletor);
-				
-				for (int i = 0; i < profComOS.size(); i++) {
-					Profissional p = profComOS.get(i);
-					if (profissionais.contains(p)) {
-						System.out.println("Já existe esse profissional na lista");
-					} else {
-						profissionais.add(p);
+					if (!p.isEmpty()) {
+						for (int y = 0; y < profissionais.size(); y++) {
+							for (int i = 0; i < p.size(); i++) {
+								if (profissionais.get(y).getId() == p.get(i).getId()) {
+									profissionais.remove(profissionais.get(y));
+								}
+							}
+						}
+
 					}
 				}
+			} else {
+				profissionais = dao.listarPorSeletorTodos(seletor);
+
 			}
 		}
 
 		return profissionais;
 
+	}
+
+	private ArrayList<Profissional> profissionaisComOS(ProfissionalSeletor seletor) {
+		// TODO Auto-generated method stub
+		return dao.listarPorSeletor(seletor);
 	}
 
 	public ArrayList<String> buscarCidades() {
@@ -121,10 +127,10 @@ public class ProfissionalBO {
 		Profissional p = buscarProfissionalPorCpf(profissional.getInscricao());
 		profissional.setId(p.getId());
 		profissional.getEndereco().setId(p.getEndereco().getId());
-		if(dao.atualizar(profissional)) {
-			msg = "Profissional ("+profissional.toString()+") alterado com sucesso!";
-		}else {
-			msg = "Erro ao tentar alterar profissional ("+profissional.toString()+")";
+		if (dao.atualizar(profissional)) {
+			msg = "Profissional (" + profissional.toString() + ") alterado com sucesso!";
+		} else {
+			msg = "Erro ao tentar alterar profissional (" + profissional.toString() + ")";
 		}
 		return msg;
 	}

@@ -17,6 +17,16 @@ public class ProfissionalSeletor {
 
 		return temFiltroPreenchido;
 	}
+	
+	public boolean temFiltroQdeZero() {
+		boolean temFiltroPreenchido = false;
+
+		temFiltroPreenchido = (nome != null && nome.trim().length() > 0)
+
+				|| (categoria != null) || (cidade != null);
+
+		return temFiltroPreenchido;
+	}
 
 	public String getNome() {
 		return nome;

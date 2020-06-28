@@ -12,6 +12,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.19</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.github.lgooddatepicker</groupId>
 			<artifactId>LGoodDatePicker</artifactId>
@@ -23,6 +30,6 @@
 			<artifactId>jgoodies-common</artifactId>
 			<version>1.8.1</version>
 		</dependency>
-		
+
 	</dependencies>
 </project>

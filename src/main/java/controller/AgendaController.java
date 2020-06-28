@@ -8,6 +8,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import model.BO.AgendaBO;
 import model.details.Agenda;
 import model.seletor.AgendaSeletor;
+import util.GeradorRelatorio;
 
 public class AgendaController {
 
@@ -33,6 +34,11 @@ public class AgendaController {
 
 	public ArrayList<Agenda> listarOSAgenda(AgendaSeletor seletor) {
 		return bo.listarOSAgenda(seletor);
+	}
+
+	public String gerarRelatorioAgenda(ArrayList<Agenda> agendas, String caminhoEscolhido) {
+		GeradorRelatorio geradorRelatorio = new GeradorRelatorio();
+		return geradorRelatorio.gerarPlanilhaAgenda(agendas, caminhoEscolhido);
 	}
 
 }

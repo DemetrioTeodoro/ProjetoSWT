@@ -11,23 +11,21 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
 import com.github.lgooddatepicker.components.DatePicker;
 
 import controller.AgendaController;
-import controller.OrdemServicoController;
 import controller.ProfissionalController;
 import model.details.Agenda;
-import model.entity.OrdemServico;
 import model.entity.Profissional;
 import model.seletor.AgendaSeletor;
-
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class PainelAgenda extends JPanel {
 	private TelaEditarOS telaEditarOS = null;
@@ -108,7 +106,22 @@ public class PainelAgenda extends JPanel {
 			}
 		});
 
-		JButton btnExportar = new JButton("Exportar");
+		JButton btnGerarRelatorio = new JButton("Gerar Relat\u00F3rio");
+		btnGerarRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser jcf = new JFileChooser();
+				jcf.setDialogTitle("Salvar relatório como...");
+				String msg = "";
+				int resultado = jcf.showSaveDialog(null);
+				if (resultado == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido = jcf.getSelectedFile().getAbsolutePath();
+					
+					AgendaController agendaController = new AgendaController();
+					msg = agendaController.gerarRelatorioAgenda(agendas, caminhoEscolhido);
+					JOptionPane.showMessageDialog(null, msg);
+				}
+			}
+		});
 
 		JLabel lblPeriodo = new JLabel("Per\u00EDodo");
 		lblPeriodo.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -137,7 +150,7 @@ public class PainelAgenda extends JPanel {
 							.addGap(322)
 							.addComponent(btnVisualizar, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
 							.addGap(722)
-							.addComponent(btnExportar, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnGerarRelatorio, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblInicio, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
@@ -170,7 +183,7 @@ public class PainelAgenda extends JPanel {
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(btnVisualizar)
-								.addComponent(btnExportar))
+								.addComponent(btnGerarRelatorio))
 							.addGap(14))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblPeriodo)

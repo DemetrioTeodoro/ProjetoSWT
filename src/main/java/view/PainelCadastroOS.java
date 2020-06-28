@@ -54,7 +54,7 @@ public class PainelCadastroOS extends JPanel {
 	private JTextArea txtDescricao;
 
 	private Endereco endereco = new Endereco();
-	private JComboBox<Categoria> cbCategoria;
+	private JComboBox cbCategoria;
 	private JComboBox cbCliente;
 	private JComboBox cbProfissional;
 	private JTextField txtCidade;
@@ -64,15 +64,14 @@ public class PainelCadastroOS extends JPanel {
 	private JCheckBox chckbxMesmoEnderecoDo;
 	private DatePicker dateInicial;
 	private DatePicker datePrevistaFinal;
-
-	private CadastroOS cadOS;
+	private Categoria categoria;
 
 	private ClienteController clienteController = new ClienteController();
 	private CategoriaController categoriaController = new CategoriaController();
 	private OrdemServicoController ordemServicoController = new OrdemServicoController();
-	private ProfissionalController profissionalController = new ProfissionalController();
 
-	private ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
+	private ArrayList<Profissional> profissionaisSelecionados = new ArrayList<Profissional>();
+	private ArrayList<Categoria> categoriasSelecionadas = new ArrayList<Categoria>();
 	private ArrayList<Categoria> categorias = new ArrayList<Categoria>();
 	private ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	private ArrayList<Profissional> profsxCategoria = new ArrayList<Profissional>();
@@ -83,8 +82,6 @@ public class PainelCadastroOS extends JPanel {
 	public PainelCadastroOS() {
 
 		JLabel lblNumeroOS = new JLabel("N\u00B0 Odem de Servi\u00E7o:");
-
-		MaskFormatter formatoOrdemServico;
 
 		String ano = new SimpleDateFormat("/yyyy").format(dataAtual);
 		final JLabel lblAno = new JLabel(ano);
@@ -101,25 +98,35 @@ public class PainelCadastroOS extends JPanel {
 
 		chckbxMesmoEnderecoDo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (cbCliente.getSelectedIndex() < 0) {
-					JOptionPane.showMessageDialog(null, "Favor informe um cliente.");
+				if (chckbxMesmoEnderecoDo.isSelected()) {
+					if (cbCliente.getSelectedIndex() < 0) {
+						JOptionPane.showMessageDialog(null, "Favor informe um cliente.");
+						chckbxMesmoEnderecoDo.setSelected(false);
+					} else {
+						Endereco end = null;
+						try {
+							end = clienteController.consultarEnderecoCliente((Cliente) cbCliente.getSelectedItem());
+
+						} catch (Exception er) {
+							System.out.println("Erro ao buscar endereço pelo Cliente. Causa: " + er.getMessage());
+						}
+
+						if (end != null) {
+							txtRua.setText(end.getRua());
+							txtNumero.setText(end.getNumero());
+							txtBairro.setText(end.getBairro());
+							txtCidade.setText(end.getCidade());
+							txtCep.setText(end.getCep());
+							cbEstados.setSelectedItem(end.getEstado());
+						}
+					}
 				} else {
-					Endereco end = null;
-					try {
-						end = clienteController.consultarEnderecoCliente((Cliente) cbCliente.getSelectedItem());
-
-					} catch (Exception er) {
-						System.out.println("Erro ao buscar endereço pelo Cliente. Causa: " + er.getMessage());
-					}
-
-					if (end != null) {
-						txtRua.setText(end.getRua());
-						txtNumero.setText(end.getNumero());
-						txtBairro.setText(end.getBairro());
-						txtCidade.setText(end.getCidade());
-						txtCep.setText(end.getCep());
-						cbEstados.setSelectedItem(end.getEstado());
-					}
+					txtRua.setText("");
+					txtNumero.setText("");
+					txtBairro.setText("");
+					txtCidade.setText("");
+					txtCep.setText("");
+					cbEstados.setSelectedIndex(-1);
 				}
 			}
 		});
@@ -180,8 +187,6 @@ public class PainelCadastroOS extends JPanel {
 		txtCidade.setColumns(10);
 
 		JLabel lblCategoria = new JLabel("Categoria:");
-		ArrayList<Categoria> categoriasSelecionadas = new ArrayList<Categoria>();
-		ArrayList<Profissional> profissionaisSelecionados = new ArrayList<Profissional>();
 
 		categorias = categoriaController.listarCategorias();
 		cbCategoria = new JComboBox(categorias.toArray());
@@ -189,37 +194,50 @@ public class PainelCadastroOS extends JPanel {
 		cbProfissional = new JComboBox<Profissional>();
 
 		cbCategoria.addItemListener(new ItemListener() {
+
 			public void itemStateChanged(ItemEvent e) {
 				cbProfissional.removeAllItems();
-				Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
-				if (!categoriasSelecionadas.contains(categoria)) {
-					categoriasSelecionadas.add(categoria);
-				}
+				categoria = (Categoria) cbCategoria.getSelectedItem();
 				ProfissionalController profcontrol = new ProfissionalController();
 
 				profsxCategoria = profcontrol.listarProfissionaisPorCategoria(categoria.getId());
 
 				if (profsxCategoria.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Nenhum profissional disponível para a categoria " + categoria);
+				} else {
+
+					cbProfissional.addItem("SELECIONE PROFISSIONAL");
+					for (int i = 0; i < profsxCategoria.size(); i++) {
+						cbProfissional.addItem(profsxCategoria.get(i));
+					}
 				}
 
-				cbProfissional.addItem("SELECIONE PROFISSIONAL");
-				for (int i = 0; i < profsxCategoria.size(); i++) {
-					cbProfissional.addItem(profsxCategoria.get(i));
-				}
 			}
 		});
 
 		JButton btnAdd = new JButton("");
 		btnAdd.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				Profissional profSelecionado = (Profissional) cbProfissional.getSelectedItem();
-				if (profissionaisSelecionados.contains(profSelecionado)) {
+				int check = 0;
+				for (int i = 0; i < profissionaisSelecionados.size(); i++) {
+					if (profissionaisSelecionados.get(i).getId() == profSelecionado.getId()) {
+						check++;
+					}
+				}
+				if (check != 0) {
 					JOptionPane.showMessageDialog(null, "Profissional já foi selecionado");
 				} else {
 					profissionaisSelecionados.add(profSelecionado);
-
+					int check2 = 0;
+					for (int i = 0; i < categoriasSelecionadas.size(); i++) {
+						if (categoriasSelecionadas.get(i).getId() == categoria.getId()) {
+							check2++;
+						}
+					}
+					if (check2 == 0) {
+						categoriasSelecionadas.add(categoria);
+					}
 				}
 			}
 		});
@@ -232,6 +250,7 @@ public class PainelCadastroOS extends JPanel {
 		CadastroOS cadOS = new CadastroOS();
 
 		btnVisualizar.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 				String ano = new SimpleDateFormat("/yyyy").format(dataAtual);
 				String numOs = txtNumeroOS.getText() + ano;
@@ -288,6 +307,7 @@ public class PainelCadastroOS extends JPanel {
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limparCampos();
+
 			}
 		});
 
@@ -457,13 +477,16 @@ public class PainelCadastroOS extends JPanel {
 		this.txtNumero.setText("");
 		this.txtCidade.setText("");
 		this.txtDescricao.setText("");
-		this.cbCategoria.setSelectedIndex(-1);
 		this.cbEstados.setSelectedIndex(-1);
 		this.cbCliente.setSelectedIndex(-1);
 		this.chckbxFinalizada.setSelected(false);
 		this.chckbxMesmoEnderecoDo.setSelected(false);
+		this.cbProfissional.setSelectedIndex(-1);
 		this.dateInicial.setText("");
 		this.datePrevistaFinal.setText("");
+		this.categoriasSelecionadas = new ArrayList<Categoria>();
+		this.profissionaisSelecionados = new ArrayList<Profissional>();
+
 	}
 
 }

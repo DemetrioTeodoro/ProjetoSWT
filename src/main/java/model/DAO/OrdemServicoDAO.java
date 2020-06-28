@@ -30,11 +30,14 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		System.out.println(dataCadastro);
 
 		Endereco endereco = null;
-		if (ordemServico.getEndereco() != null) {
+		if (ordemServico.getEndereco().getId() > 0) {
+			System.out.println("Endereço vem do cliente.");
+			endereco = ordemServico.getEndereco();
+
+		}else {
 			EnderecoDAO enderecoDAO = new EnderecoDAO();
 
 			endereco = enderecoDAO.salvar(ordemServico.getEndereco());
-
 		}
 
 		String sql = " INSERT INTO ORDEM_SERVICO ( numero_os, descricao, data_cadastro, data_inicio, data_termino_previsto, data_termino, id_cliente, id_endereco) "

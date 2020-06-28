@@ -252,7 +252,6 @@ public class TelaEditProfissional extends JFrame {
 				for (int i = 0; i < categorias.size(); i++) {
 					if (categoriaSelecionada.getId() != categorias.get(i).getId()) {
 						check++;
-						break;
 					}
 				}
 				if (check > 0) {

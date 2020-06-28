@@ -216,7 +216,7 @@ public class TelaCadEditProfissional extends JFrame {
 
 		txtArea = new JTextArea();
 		txtArea.setEditable(false);
-		txtArea.setBounds(292, 365, 177, 23);
+		txtArea.setBounds(292, 365, 178, 23);
 		contentPane.add(txtArea);
 
 		JButton btnAddCategoria = new JButton("");
@@ -259,8 +259,13 @@ public class TelaCadEditProfissional extends JFrame {
 						txtEmail.getText(), txtTelefone.getText(), txtCep.getText(), txtRua.getText(),
 						txtNumero.getText(), txtBairro.getText(), txtCidade.getText(),
 						(String) cbEstado.getSelectedItem(), categorias);
+
 				JOptionPane.showMessageDialog(null, mensagem);
-				
+
+				if (mensagem.contains("Cadastro realizado com sucesso")) {
+					limpar();
+					cbEstado.setSelectedIndex(-1);
+				}
 			}
 		});
 
@@ -292,6 +297,30 @@ public class TelaCadEditProfissional extends JFrame {
 		});
 		btnBuscarCep.setBounds(182, 122, 102, 25);
 		contentPane.add(btnBuscarCep);
+		
+		JButton btnDelCategoria = new JButton("");
+		btnDelCategoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Categoria categoriaSelecionada = (Categoria) cbCategoria.getSelectedItem();
+				int check = 0;
+
+				for (int i = 0; i < categorias.size(); i++) {
+					if (categoriaSelecionada.getId() == categorias.get(i).getId()) {
+						categorias.remove(categorias.get(i));
+						check = 1;
+						txtArea.setText(categorias.toString());
+					}
+				}
+				if (check == 0) {
+					JOptionPane.showMessageDialog(null, "Categoria não pode ser excluída, pois não foi adicionada");
+				}
+				categoriaSelecionada = null;
+				cbCategoria.setSelectedIndex(-1);
+			}
+		});
+		btnDelCategoria.setIcon(new ImageIcon(TelaCadEditProfissional.class.getResource("/icones/delete-icon.png")));
+		btnDelCategoria.setBounds(240, 378, 28, 23);
+		contentPane.add(btnDelCategoria);
 
 	}
 
@@ -307,6 +336,7 @@ public class TelaCadEditProfissional extends JFrame {
 		this.txtEmail.setText("");
 		this.txtTelefone.setText("");
 		this.txtArea.setText("");
+		this.categorias = new ArrayList<Categoria>();
 
 	}
 }

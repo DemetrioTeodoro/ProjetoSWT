@@ -486,7 +486,6 @@ public class PainelCadastroOS extends JPanel {
 		this.datePrevistaFinal.setText("");
 		this.categoriasSelecionadas = new ArrayList<Categoria>();
 		this.profissionaisSelecionados = new ArrayList<Profissional>();
-
 	}
-
+	
 }

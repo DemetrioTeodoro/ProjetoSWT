@@ -17,9 +17,9 @@ public class OrdemServicoBO {
 		OrdemServico os = new OrdemServico();
 		os = ordemServicoDAO.salvar(ordemServico);
 		if (os != null) {
-			 msg= " Ordem de Serviço salva com sucesso. ";
+			 msg= " Ordem de serviço salva com sucesso. ";
 		} else {
-			 msg= " Ocorreu um erro ao salvar Ordem de Serviço. ";
+			 msg= " Ocorreu um erro ao tentar salvar a ordem de serviço. ";
 		}
 		return msg;
 	}
@@ -65,6 +65,10 @@ public class OrdemServicoBO {
 		}
 		return msg;
 
+	}
+
+	public boolean jaTemNumeroOS(String numOS) {
+		return ordemServicoDAO.jaTemNumeroOS(numOS);
 	}
 
 }

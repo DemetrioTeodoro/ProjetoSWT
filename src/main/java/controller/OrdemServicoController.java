@@ -148,4 +148,8 @@ public class OrdemServicoController {
 		return ordemServicoBO.excluir(id);
 	}
 
+	public boolean jaTemNumeroOS(String numOS) {
+		return ordemServicoBO.jaTemNumeroOS(numOS);
+	}
+
 }

@@ -61,6 +61,9 @@ public class PainelCadastroOS extends JPanel {
 	private JComboBox cbEstados;
 	private JTextField txtNumeroOS;
 	private JCheckBox chckbxFinalizada;
+	private JCheckBox chckbxMesmoEnderecoDo;
+	private DatePicker dateInicial;
+	private DatePicker datePrevistaFinal;
 
 	private CadastroOS cadOS;
 
@@ -94,7 +97,7 @@ public class PainelCadastroOS extends JPanel {
 		cbCliente = new JComboBox(clientes.toArray());
 		cbCliente.setSelectedIndex(-1);
 
-		JCheckBox chckbxMesmoEnderecoDo = new JCheckBox("Mesmo endere\u00E7o do Cliente");
+		chckbxMesmoEnderecoDo = new JCheckBox("Mesmo endere\u00E7o do Cliente");
 
 		chckbxMesmoEnderecoDo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -156,12 +159,12 @@ public class PainelCadastroOS extends JPanel {
 
 		JLabel lblDataPrevistaTermino = new JLabel("Data Prevista Término:");
 
-		final DatePicker dateInicial = new DatePicker();
+		dateInicial = new DatePicker();
 		dateInicial.getComponentToggleCalendarButton().setText("");
 		dateInicial.getComponentToggleCalendarButton()
 				.setIcon(new ImageIcon(PainelCadastroOS.class.getResource("/icones/calendar-icon.png")));
 
-		final DatePicker datePrevistaFinal = new DatePicker();
+		datePrevistaFinal = new DatePicker();
 		datePrevistaFinal.getComponentToggleCalendarButton()
 				.setIcon(new ImageIcon(PainelCadastroOS.class.getResource("/icones/calendar-icon.png")));
 		datePrevistaFinal.getComponentToggleCalendarButton().setText("");
@@ -195,22 +198,21 @@ public class PainelCadastroOS extends JPanel {
 				if (dateInicial.getText().isEmpty() || datePrevistaFinal.getText().isEmpty()
 						|| dateInicial.getDate().isAfter(datePrevistaFinal.getDate())) {
 					JOptionPane.showMessageDialog(null,
-							"Antes da seleção do profissional, favor informar as datas de início e previsão de término, "+
-					        "onde data de início deve ser menor que a data prevista para término");
+							"Antes da seleção do profissional, favor informar as datas de início e previsão de término, "
+									+ "onde data de início deve ser menor que a data prevista para término");
 				} else {
 
 					try {
 						profsxCategoria = profissionalController.listarProfissionaisPorCategoria(categoria.getId(),
 								dateInicial.getDate(), datePrevistaFinal.getDate());
-						if(profsxCategoria.isEmpty()) {
-							JOptionPane.showMessageDialog(null,
-									"Nenhum profissional disponível para a categoria "+categoria+ " no período informado.");
+						if (profsxCategoria.isEmpty()) {
+							JOptionPane.showMessageDialog(null, "Nenhum profissional disponível para a categoria "
+									+ categoria + " no período informado.");
 						}
 
 					} catch (Exception e2) {
 						System.out.println(
-								"Erro ao trazer dados para o combox profs x categoria."+
-						" Causa: " + e2.getMessage());// acusa este erro mas combo é feito corretamente...
+								"Erro ao trazer dados para o combox profs x categoria." + " Causa: " + e2.getMessage());
 					}
 
 					cbProfissional.addItem("SELECIONE PROFISSIONAL");
@@ -244,35 +246,42 @@ public class PainelCadastroOS extends JPanel {
 
 		btnVisualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
-				cadOS.setNumeroOS(txtNumeroOS.getText());
-				cadOS.setCliente((Cliente) cbCliente.getSelectedItem());
-				Endereco e = new Endereco(txtRua.getText(), txtNumero.getText(), txtBairro.getText(),
-						txtCidade.getText(), (String) cbEstados.getSelectedItem(), txtCep.getText());
-				cadOS.setEndereco(e);
-				cadOS.setCategorias(categoriasSelecionadas);
-				cadOS.setProfissionais(profissionaisSelecionados);
-				cadOS.setDataInicio(dateInicial.getDate());
-				cadOS.setDataPrevistaFim(datePrevistaFinal.getDate());
-				cadOS.setFinalizada(chckbxFinalizada.isSelected());
-				cadOS.setDescricao(txtDescricao.getText());
-
-				String msg = ordemServicoController.validarCampos(cadOS);
-
-				if (!msg.isEmpty()) {
-
-					JOptionPane.showMessageDialog(null, msg);
-					msg = "";
+				String ano = new SimpleDateFormat("/yyyy").format(dataAtual);
+				String numOs = txtNumeroOS.getText()+ano;
+				if (ordemServicoController.jaTemNumeroOS(numOs)) {
+					JOptionPane.showMessageDialog(null,
+							"Número de ordem de serviço já existe, favor informar outro número.");
+					txtNumeroOS.setText("");
 				} else {
-					TelaPDF telaPDF = new TelaPDF();
+					cadOS.setNumeroOS(txtNumeroOS.getText());
+					cadOS.setCliente((Cliente) cbCliente.getSelectedItem());
+					Endereco e = new Endereco(txtRua.getText(), txtNumero.getText(), txtBairro.getText(),
+							txtCidade.getText(), (String) cbEstados.getSelectedItem(), txtCep.getText());
+					cadOS.setEndereco(e);
+					cadOS.setCategorias(categoriasSelecionadas);
+					cadOS.setProfissionais(profissionaisSelecionados);
+					cadOS.setDataInicio(dateInicial.getDate());
+					cadOS.setDataPrevistaFim(datePrevistaFinal.getDate());
+					cadOS.setFinalizada(chckbxFinalizada.isSelected());
+					cadOS.setDescricao(txtDescricao.getText());
 
-					telaPDF.enviarDados(cadOS);
+					String msg = ordemServicoController.validarCampos(cadOS);
 
-					telaPDF.setVisible(true);
+					if (!msg.isEmpty()) {
 
-					telaPDF.setLocationRelativeTo(null);
+						JOptionPane.showMessageDialog(null, msg);
+						msg = "";
+					} else {
+						TelaPDF telaPDF = new TelaPDF();
+
+						telaPDF.enviarDados(cadOS);
+
+						telaPDF.setVisible(true);
+
+						telaPDF.setLocationRelativeTo(null);
+					}
+
 				}
-
 			}
 		});
 
@@ -457,6 +466,11 @@ public class PainelCadastroOS extends JPanel {
 		this.txtDescricao.setText("");
 		this.cbCategoria.setSelectedIndex(-1);
 		this.cbEstados.setSelectedIndex(-1);
-
+		this.cbCliente.setSelectedIndex(-1);
+		this.chckbxFinalizada.setSelected(false);
+		this.chckbxMesmoEnderecoDo.setSelected(false);
+		this.dateInicial.setText("");
+		this.datePrevistaFinal.setText("");
 	}
+	      
 }

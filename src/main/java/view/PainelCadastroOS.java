@@ -195,30 +195,17 @@ public class PainelCadastroOS extends JPanel {
 				if (!categoriasSelecionadas.contains(categoria)) {
 					categoriasSelecionadas.add(categoria);
 				}
-				if (dateInicial.getText().isEmpty() || datePrevistaFinal.getText().isEmpty()
-						|| dateInicial.getDate().isAfter(datePrevistaFinal.getDate())) {
-					JOptionPane.showMessageDialog(null,
-							"Antes da seleção do profissional, favor informar as datas de início e previsão de término, "
-									+ "onde data de início deve ser menor que a data prevista para término");
-				} else {
+				ProfissionalController profcontrol = new ProfissionalController();
 
-					try {
-						profsxCategoria = profissionalController.listarProfissionaisPorCategoria(categoria.getId(),
-								dateInicial.getDate(), datePrevistaFinal.getDate());
-						if (profsxCategoria.isEmpty()) {
-							JOptionPane.showMessageDialog(null, "Nenhum profissional disponível para a categoria "
-									+ categoria + " no período informado.");
-						}
+				profsxCategoria = profcontrol.listarProfissionaisPorCategoria(categoria.getId());
 
-					} catch (Exception e2) {
-						System.out.println(
-								"Erro ao trazer dados para o combox profs x categoria." + " Causa: " + e2.getMessage());
-					}
+				if (profsxCategoria.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Nenhum profissional disponível para a categoria " + categoria);
+				}
 
-					cbProfissional.addItem("SELECIONE PROFISSIONAL");
-					for (int i = 0; i < profsxCategoria.size(); i++) {
-						cbProfissional.addItem(profsxCategoria.get(i));
-					}
+				cbProfissional.addItem("SELECIONE PROFISSIONAL");
+				for (int i = 0; i < profsxCategoria.size(); i++) {
+					cbProfissional.addItem(profsxCategoria.get(i));
 				}
 			}
 		});
@@ -247,7 +234,8 @@ public class PainelCadastroOS extends JPanel {
 		btnVisualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String ano = new SimpleDateFormat("/yyyy").format(dataAtual);
-				String numOs = txtNumeroOS.getText()+ano;
+				String numOs = txtNumeroOS.getText() + ano;
+				Endereco e = new Endereco();
 				if (ordemServicoController.jaTemNumeroOS(numOs)) {
 					JOptionPane.showMessageDialog(null,
 							"Número de ordem de serviço já existe, favor informar outro número.");
@@ -255,8 +243,13 @@ public class PainelCadastroOS extends JPanel {
 				} else {
 					cadOS.setNumeroOS(txtNumeroOS.getText());
 					cadOS.setCliente((Cliente) cbCliente.getSelectedItem());
-					Endereco e = new Endereco(txtRua.getText(), txtNumero.getText(), txtBairro.getText(),
-							txtCidade.getText(), (String) cbEstados.getSelectedItem(), txtCep.getText());
+					if (chckbxMesmoEnderecoDo.isSelected()) {
+						Cliente c = (Cliente) cbCliente.getSelectedItem();
+						e = c.getEndereco();
+					} else {
+						e = new Endereco(txtRua.getText(), txtNumero.getText(), txtBairro.getText(),
+								txtCidade.getText(), (String) cbEstados.getSelectedItem(), txtCep.getText());
+					}
 					cadOS.setEndereco(e);
 					cadOS.setCategorias(categoriasSelecionadas);
 					cadOS.setProfissionais(profissionaisSelecionados);
@@ -472,5 +465,5 @@ public class PainelCadastroOS extends JPanel {
 		this.dateInicial.setText("");
 		this.datePrevistaFinal.setText("");
 	}
-	      
+
 }

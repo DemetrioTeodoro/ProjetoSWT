@@ -147,24 +147,6 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		}
 	}
 
-	// PASSAR O MÉTODO PARA A OrdemServicoDAO já esta no lugar certo so testar e
-	// excluir estas linhas.
-	/*
-	 * private boolean verficarOSVinculadaEndereco(int idEndereco) { Connection
-	 * conexao = Banco.getConnection(); String sql =
-	 * " SELECT id FROM ORDEMSERVICO OS " + " WHERE OS.id_endereco = " + idEndereco;
-	 * PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
-	 * 
-	 * boolean enderecoVinculado = false;
-	 * 
-	 * try { ResultSet rs = stmt.executeQuery(); enderecoVinculado = rs.next(); }
-	 * catch (SQLException e) { System.out.
-	 * println("Erro ao verificar se endereço está vinculado a alguma OS. Causa: " +
-	 * e.getMessage()); }
-	 * 
-	 * return enderecoVinculado; }
-	 */
-
 	public ArrayList<Profissional> verficarProfissionalPorCategoria(int idCategoria) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT id FROM PROFISSIONAL_CATEGORIA " + " WHERE id_categoria = " + idCategoria;

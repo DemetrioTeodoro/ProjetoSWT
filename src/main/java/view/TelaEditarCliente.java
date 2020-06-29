@@ -138,7 +138,7 @@ public class TelaEditarCliente extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Cliente client = (Cliente) cbCliente.getSelectedItem();
-				String msg = clienteController.atualizar(client.getId(), txtCep.getText(), txtBairro.getText(), txtCidade.getText(), txtRua.getText(), 
+				String msg = clienteController.atualizar(client.getId(),client.getEndereco().getId(), txtCep.getText(), txtBairro.getText(), txtCidade.getText(), txtRua.getText(), 
 						txtNumero.getText(), txtNome.getText(), txtCpf.getText(), txtTelefone.getText(), txtEmail.getText(), (String) cbEstado.getSelectedItem());
 				JOptionPane.showMessageDialog(null, msg);
 			}
@@ -147,6 +147,7 @@ public class TelaEditarCliente extends JFrame {
 		JButton btnLimpar = new JButton("Cancelar");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 

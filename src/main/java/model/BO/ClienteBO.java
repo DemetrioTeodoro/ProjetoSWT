@@ -3,6 +3,7 @@ package model.BO;
 import java.util.ArrayList;
 
 import model.DAO.ClienteDAO;
+import model.DAO.EnderecoDAO;
 import model.entity.Cliente;
 import model.entity.Endereco;
 import model.seletor.ClienteSeletor;
@@ -59,12 +60,12 @@ public class ClienteBO {
 	}
 
 	public String excluir(Cliente cliente) {
-		boolean excluiu = dao.excluir(cliente.getId());
 		String msg = "";
+		boolean excluiu = dao.excluir(cliente.getId());
 		if (excluiu) {
-			msg = " Excluido com sucesso! ";
+			msg += " Excluido com sucesso! ";
 		}else {
-			msg = " Este cliente não pode ser excluido pois está viculado a uma Ordem de Serviço!. ";
+			msg += " Este cliente não pode ser excluido pois está viculado a uma Ordem de Serviço!. ";
 		}
 		return msg;
 	}

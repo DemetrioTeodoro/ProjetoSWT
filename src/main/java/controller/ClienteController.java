@@ -82,7 +82,7 @@ public class ClienteController {
 		return bo.listarClientes(seletor);
 	}
 
-	public String atualizar(int id, String cep, String bairro, String cidade, String rua, String numero, String nome,
+	public String atualizar(int id, int idEndereco, String cep, String bairro, String cidade, String rua, String numero, String nome,
 			String cpf, String telefone, String email, String estado) {
 		
 		String msg = "";
@@ -112,7 +112,7 @@ public class ClienteController {
 			boolean ehCpf = false;
 
 
-			Endereco e = new Endereco(rua, numero, bairro, cidade, estado, cep);
+			Endereco e = new Endereco(idEndereco, rua, numero, bairro, cidade, estado, cep);
 			Cliente cliente = new Cliente();
 			cliente.setId(id);
 			cliente.setInscricao(cpf);

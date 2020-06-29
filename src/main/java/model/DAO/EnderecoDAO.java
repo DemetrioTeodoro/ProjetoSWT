@@ -12,10 +12,10 @@ import model.entity.Endereco;
 public class EnderecoDAO implements BaseDAO<Endereco> {
 
 	public Endereco salvar(Endereco endereco) {
-		Connection conexao = Banco.getConnection();
 		String sql = " INSERT INTO ENDERECO (rua, numero, bairro, cidade, estado, cep ) "
 				+ " VALUES ( ?, ?, ?, ?, ?, ?)";
 
+		Connection conexao = Banco.getConnection();
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 		try {
 			stmt.setString(1, endereco.getRua());
@@ -42,8 +42,14 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 	}
 
 	public boolean atualizar(Endereco endereco) {
-		Connection conexao = Banco.getConnection();
 		String sql = " UPDATE ENDERECO SET cep=?, estado=?, cidade=?, rua=?, bairro=?, numero=? WHERE id = ?";
+
+		if (verficarEnderecoVinculadoOS(endereco.getId())) {
+			salvar(endereco);
+			return false;
+		}
+		
+		Connection conexao = Banco.getConnection();
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 		int registrosAlterados = 0;
 
@@ -147,5 +153,28 @@ public class EnderecoDAO implements BaseDAO<Endereco> {
 			Banco.closeConnection(conexao);
 		}
 		return enderecos;
+	}
+	
+	public boolean verficarEnderecoVinculadoOS(int idEndereco) {
+
+		String sql = " SELECT id FROM ORDEM_SERVICO OS " + " WHERE OS.id_endereco = " + idEndereco;
+
+		Connection conexao = Banco.getConnection();
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		boolean enderecoVinculado = false;
+
+		try {
+			ResultSet rs = stmt.executeQuery();
+			enderecoVinculado = rs.next();
+		} catch (SQLException e) {
+			System.out.println(
+					"Erro ao verificar se Endereco está vinculado a alguma Ordem de Serviço. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
+
+		return enderecoVinculado;
 	}
 }

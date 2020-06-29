@@ -122,7 +122,7 @@ public class TelaEditProfissional extends JFrame {
 		getContentPane().add(txtNome);
 		txtNome.setColumns(10);
 
-		final JRadioButton rdbAtivar = new JRadioButton("Ativar");
+		rdbAtivar = new JRadioButton("Ativar");
 		rdbAtivar.setBounds(361, 41, 109, 23);
 		rdbAtivar.setSelected(true);
 		getContentPane().add(rdbAtivar);
@@ -148,7 +148,7 @@ public class TelaEditProfissional extends JFrame {
 		txtCidade.setColumns(10);
 
 		Estados siglasEstados = new Estados();
-		final JComboBox<String> cbEstado = new JComboBox(siglasEstados.consultarEstados().toArray());
+		cbEstado = new JComboBox(siglasEstados.consultarEstados().toArray());
 		cbEstado.setBounds(432, 191, 63, 20);
 		cbEstado.setSelectedIndex(-1);
 		getContentPane().add(cbEstado);
@@ -165,7 +165,7 @@ public class TelaEditProfissional extends JFrame {
 
 		CategoriaController catControl = new CategoriaController();
 
-		final JComboBox<Categoria> cbCategoria = new JComboBox(catControl.listarCategorias().toArray());
+		cbCategoria = new JComboBox(catControl.listarCategorias().toArray());
 		cbCategoria.setBounds(214, 399, 131, 20);
 		cbCategoria.setSelectedIndex(-1);
 		getContentPane().add(cbCategoria);
@@ -341,16 +341,22 @@ public class TelaEditProfissional extends JFrame {
 		JButton btnBuscarCep = new JButton("Buscar");
 		btnBuscarCep.setBounds(196, 126, 102, 23);
 		btnBuscarCep.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)  {
 				String cep = txtCep.getText().trim().replace("-", "");
 				if (cep != null && !cep.trim().isEmpty()) {
+					try {
 					endereco = profissionalController.buscarEnderecoPorCep(txtCep.getText());
-					txtCidade.setText(endereco.getCidade().replace("Ã³", "ó").replace("Ã§", "ç"));
-					txtBairro.setText(endereco.getBairro());
+					txtCidade.setText(endereco.getCidade().replace("Ã³", "ó").replace("Ã§", "ç").replace("Ã­", "í"));
+					txtBairro.setText(endereco.getBairro().replace("Ã³", "ó").replace("Ã§", "ç").replace("Ã­", "í"));
 					txtRua.setText(endereco.getRua());
 					cbEstado.setSelectedItem(endereco.getEstado());
+					}catch (Exception eCEP) {
+						System.out.println("CEP INVÁLIDO!. Erro: "+eCEP.getMessage());
+						JOptionPane.showMessageDialog(null, "CEP inválido!");
+						txtCep.setText("");
+					}
 				} else {
-					String msg = " Digite o cep. ";
+					String msg = " Digite o CEP. ";
 					JOptionPane.showMessageDialog(null, msg);
 				}
 			}
@@ -374,6 +380,7 @@ public class TelaEditProfissional extends JFrame {
 		this.categorias = profissional.getCategorias();
 		this.txtArea.setText(categorias.toString());
 		this.cbEstado.setSelectedItem(profissional.getEndereco().getEstado());
+		this. rdbAtivar.setSelected(profissional.isAtivo());
 	}
 
 	private void limpar() {
@@ -388,6 +395,9 @@ public class TelaEditProfissional extends JFrame {
 		this.txtEmail.setText("");
 		this.txtTelefone.setText("");
 		this.txtArea.setText("");
+		this.cbEstado.setSelectedIndex(-1);
+		this.cbCategoria.setSelectedIndex(-1);
+		this.rdbAtivar.setSelected(false);
 		this.profissional = null;
 
 	}

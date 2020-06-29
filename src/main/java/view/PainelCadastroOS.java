@@ -328,13 +328,19 @@ public class PainelCadastroOS extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String cep = txtCep.getText().trim().replace("-", "");
 				if (cep != null && !cep.trim().isEmpty()) {
+					try {
 					endereco = ordemServicoController.buscarEnderecoPorCep(txtCep.getText());
 					txtCidade.setText(endereco.getCidade().replace("Ã³", "ó").replace("Ã§", "ç").replace("Ã­", "í"));
 					txtBairro.setText(endereco.getBairro().replace("Ã³", "ó").replace("Ã§", "ç").replace("Ã­", "í"));
 					txtRua.setText(endereco.getRua());
 					cbEstados.setSelectedItem(endereco.getEstado());
+					}catch (Exception eCEP) {
+						System.out.println("CEP INVÁLIDO!. Erro: "+eCEP.getMessage());
+						JOptionPane.showMessageDialog(null, "CEP inválido!");
+						txtCep.setText("");
+					}
 				} else {
-					String msg = " Digite o cep. ";
+					String msg = " Digite o CEP. ";
 					JOptionPane.showMessageDialog(null, msg);
 				}
 			}

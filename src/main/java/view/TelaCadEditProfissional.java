@@ -293,6 +293,7 @@ public class TelaCadEditProfissional extends JFrame {
 					}catch (Exception eCEP) {
 						System.out.println("CEP INVÁLIDO!. Erro: "+eCEP.getMessage());
 						JOptionPane.showMessageDialog(null, "CEP inválido!");
+						txtCep.setText("");
 					}
 				} else {
 					String msg = " Digite o CEP. ";

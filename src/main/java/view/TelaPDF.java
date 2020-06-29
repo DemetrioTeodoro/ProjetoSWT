@@ -96,7 +96,7 @@ public class TelaPDF extends JFrame {
 
 		lblEnderecoDoc = new JLabel("");
 		lblEnderecoDoc.setVerticalAlignment(SwingConstants.TOP);
-		lblEnderecoDoc.setBounds(290, 267, 287, 100);
+		lblEnderecoDoc.setBounds(94, 290, 526, 77);
 		panel.add(lblEnderecoDoc);
 
 		JLabel lblDescricao = new JLabel("Descri\u00E7\u00E3o:");

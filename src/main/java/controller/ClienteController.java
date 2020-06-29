@@ -133,4 +133,8 @@ public class ClienteController {
 		}
 	}
 
+	public String excluir(Cliente cliente) {
+		return bo.excluir(cliente);
+	}
+
 }

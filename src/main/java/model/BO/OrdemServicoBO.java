@@ -54,8 +54,8 @@ public class OrdemServicoBO {
 		return msg;
 	}
 
-	public String excluir(int id) {
-		boolean excluido =  ordemServicoDAO.excluir(id);
+	public String excluir(OrdemServico os) {
+		boolean excluido =  ordemServicoDAO.excluir(os);
 		if (excluido) {
 			msg = " Ordem de Serviço excluida! ";
 		} else if (excluido == false) {

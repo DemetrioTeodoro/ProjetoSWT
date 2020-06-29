@@ -58,4 +58,15 @@ public class ClienteBO {
 		}
 	}
 
+	public String excluir(Cliente cliente) {
+		boolean excluiu = dao.excluir(cliente.getId());
+		String msg = "";
+		if (excluiu) {
+			msg = " Excluido com sucesso! ";
+		}else {
+			msg = " Este cliente não pode ser excluido pois está viculado a uma Ordem de Serviço!. ";
+		}
+		return msg;
+	}
+
 }

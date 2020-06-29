@@ -144,8 +144,8 @@ public class OrdemServicoController {
 		return ordemServicoBO.atualizar(os);
 	}
 
-	public String excluir(int id) {
-		return ordemServicoBO.excluir(id);
+	public String excluir(OrdemServico os) {
+		return ordemServicoBO.excluir(os);
 	}
 
 	public boolean jaTemNumeroOS(String numOS) {

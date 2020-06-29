@@ -129,7 +129,7 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		return registrosAlterados > 0;
 	}
 
-	public boolean excluir(int id) {
+	public boolean excluir(OrdemServico ordemServico) {
 
 		String sql = " DELETE FROM ORDEM_SERVICO WHERE id = ?";
 
@@ -137,12 +137,14 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		PreparedStatement preparedStatement = Banco.getPreparedStatement(conexao, sql);
 		boolean excluiu = false;
 		try {
-			preparedStatement.setInt(1, id);
+			preparedStatement.setInt(1, ordemServico.getId());
 			int codigoRetornoUpdate = preparedStatement.executeUpdate();
 
 			excluiu = (codigoRetornoUpdate == Banco.CODIGO_RETORNO_SUCESSO_EXCLUSAO);
+			//excluirOrdemServicoProfissionais(ordemServico.getId(), ordemServico.getProfissionais());
+			//excluirOrdemServicoCategoria(ordemServico.getId(), ordemServico.getCategorias());
 		} catch (SQLException ex) {
-			System.out.println(" Erro ao excluir Ordem de Serviço. Id: " + id + " .Causa: " + ex.getMessage());
+			System.out.println(" Erro ao excluir Ordem de Serviço. Id: " + ordemServico + " .Causa: " + ex.getMessage());
 		} finally {
 			Banco.closePreparedStatement(preparedStatement);
 			Banco.closeConnection(conexao);
@@ -350,7 +352,54 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 
 		}
 	}
+	
+	private void excluirOrdemServicoProfissionais(int idOrdemServico, ArrayList<Profissional> profissionais) {
 
+		for (int i = 0; i < profissionais.size(); i++) {
+
+			String sql = "DELETE ORDEM_SERVICO_PROFISSIONAL (id_ordem_servico, id_categoria)" + "WHERE id_ordem_servico = ?";
+
+			Connection conexao = Banco.getConnection();
+
+			PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			try {
+				stmt.setInt(1, idOrdemServico);
+				stmt.setInt(2, profissionais.get(i).getId());
+				stmt.execute();
+			} catch (Exception e) {
+				System.out
+						.println(" Erro ao deletar vinculo Ordem de Serviço com Profissional. Causa: " + e.getMessage());
+			} finally {
+				Banco.closePreparedStatement(stmt);
+				Banco.closeConnection(conexao);
+			}
+
+		}
+	}
+	
+	private void excluirOrdemServicoCategoria(int idOrdemServico, ArrayList<Categoria> categorias) {
+
+		for (int i = 0; i < categorias.size(); i++) {
+
+			String sql = "DELETE ORDEM_SERVICO_CATEGORIA (id_ordem_servico, id_categoria)" + "WHERE id_ordem_servico = ?";
+
+			Connection conexao = Banco.getConnection();
+
+			PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			try {
+				stmt.setInt(1, idOrdemServico);
+				stmt.setInt(2, categorias.get(i).getId());
+				stmt.execute();
+			} catch (Exception e) {
+				System.out.println(" Erro ao deletar vinculo Ordem de Serviço com Categoria. Causa: " + e.getMessage());
+			} finally {
+				Banco.closePreparedStatement(stmt);
+				Banco.closeConnection(conexao);
+			}
+
+		}
+	}
+	
 	public boolean verficarOSVinculadaEndereco(int idEndereco) {
 
 		String sql = " SELECT id FROM ORDEM_SERVICO OS " + " WHERE OS.id_endereco = " + idEndereco;
@@ -480,5 +529,11 @@ public class OrdemServicoDAO implements BaseDAO<OrdemServico> {
 		}
 
 		return jaTemNumeroOS;
+	}
+
+	@Override
+	public boolean excluir(int id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

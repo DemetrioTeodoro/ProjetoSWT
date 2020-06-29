@@ -436,8 +436,9 @@ public class TelaEditarOS extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				OrdemServico os = (OrdemServico) cbOrdemServico.getSelectedItem();
 				String msg = "";
-				msg = ordemServicoController.excluir(os.getId());
+				msg = ordemServicoController.excluir(os);
 				
+				JOptionPane.showMessageDialog(null, msg);
 			}
 		});
 		btnExcluir.setBounds(572, 46, 97, 25);

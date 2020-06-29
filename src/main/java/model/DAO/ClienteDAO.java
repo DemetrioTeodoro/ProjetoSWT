@@ -89,6 +89,13 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 
 	public boolean excluir(int id) {
 		String sql = " DELETE FROM CLIENTE WHERE id = ?";
+		
+		boolean possuiVinculo = verficarClienteVinculadoOS(id);
+		
+		if (possuiVinculo) {
+			possuiVinculo = false;
+			return possuiVinculo;
+		}
 
 		Connection conexao = Banco.getConnection();
 		PreparedStatement preparedStatement = Banco.getPreparedStatement(conexao, sql);
@@ -267,6 +274,29 @@ public class ClienteDAO implements BaseDAO<Cliente> {
 		} catch (SQLException e) {
 			System.out.println(
 					"Erro ao verificar se Endereço está vinculado a algum Cliente. Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(stmt);
+			Banco.closeConnection(conexao);
+		}
+
+		return enderecoVinculado;
+	}
+	
+	public boolean verficarClienteVinculadoOS(int idCliente) {
+
+		String sql = " SELECT id FROM ORDEM_SERVICO OS " + " WHERE OS.id_cliente = " + idCliente;
+
+		Connection conexao = Banco.getConnection();
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
+
+		boolean enderecoVinculado = false;
+
+		try {
+			ResultSet rs = stmt.executeQuery();
+			enderecoVinculado = rs.next();
+		} catch (SQLException e) {
+			System.out.println(
+					"Erro ao verificar se Cliente está vinculado a alguma Ordem de Serviço. Causa: " + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(stmt);
 			Banco.closeConnection(conexao);

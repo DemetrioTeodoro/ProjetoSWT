@@ -4,7 +4,8 @@ CREATE
     SQL SECURITY DEFINER
 VIEW `view_profissional_qde_os` AS
     SELECT DISTINCT
-        `p`.`nome` AS `NOME`,
+        `p`.`id` AS `ID_PROFISSIONAL`,
+        `p`.`nome` AS `NOME_PROFISSIONAL`,
         COUNT(`op`.`id_profissional`) AS `QDE_OS`
     FROM
         (`profissional` `p`

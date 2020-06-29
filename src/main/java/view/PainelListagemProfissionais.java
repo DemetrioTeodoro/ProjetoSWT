@@ -9,6 +9,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -74,7 +76,7 @@ public class PainelListagemProfissionais extends JPanel {
 		
 		JLabel lblCidade = new JLabel("Cidade :");
 		
-		JLabel lblQdeOS = new JLabel("Quantidade de Ordem de Servi\u00E7os Executadas:");
+		JLabel lblQdeOS = new JLabel("Quantidade de ordens de serviço vinculadas:");
 		
 		ArrayList<String>cidades = controller.buscarCidades();
 		JComboBox cbCidade = new JComboBox(cidades.toArray());
@@ -94,8 +96,13 @@ public class PainelListagemProfissionais extends JPanel {
 				seletor.setQdeOS(txtQdeOS.getText());
 				profissionais = controller.listarProfissionaisPorSeletor(seletor);
 				atualizarTabelaProfissionais();
+				if(profissionais.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Nenhum resultado para esta consulta.");
+				}
 				cbCategoria.setSelectedIndex(-1);
 				cbCidade.setSelectedIndex(-1);
+				txtNome.setText("");
+				txtQdeOS.setText("");
 			}
 		});
 		
@@ -213,11 +220,16 @@ public class PainelListagemProfissionais extends JPanel {
 		}
 	}
 
-	private String buscarQdeOS(int id) {
+	private String buscarQdeOS(int idprofissional) {
 		int qde_os = 0;
-		qde_os = controller.buscarQdeOS(id);
-		 String qde= ""+qde_os;
-		 
+		 String qde= "";
+		try {
+		qde_os = controller.buscarQdeOS(idprofissional);
+		qde= ""+qde_os;
+		}catch (Exception e) {
+			System.out.println("Qde_OS = 0"+ e.getMessage());
+			qde = "0";
+		}
 		 return qde;
 	}
 

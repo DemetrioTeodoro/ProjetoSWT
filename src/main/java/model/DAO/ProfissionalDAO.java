@@ -132,9 +132,9 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 	private void desVincularProfissionalCategoria(int idProfissional) {
 
 		Connection conexao = Banco.getConnection();
-		
+
 		String sql = " DELETE FROM  PROFISSIONAL_CATEGORIA 	WHERE id_profissional = ?";
-		PreparedStatement stmt = Banco.getPreparedStatement(conexao,sql);
+		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
 		try {
 			stmt.setInt(1, idProfissional);
@@ -380,13 +380,14 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 				+ " ON P.id = PC.id_profissional " + " INNER JOIN CATEGORIA C " + " ON PC.id_categoria = C.id "
 				+ " LEFT JOIN ORDEM_SERVICO_PROFISSIONAL OP " + " ON P.id = OP.id_profissional "
 				+ " INNER JOIN  ORDEM_SERVICO AS O " + " ON O.id = OP.id_ordem_servico " + " INNER JOIN  ENDERECO AS E "
-				+ " ON E.id = P.id_endereco " + " RIGHT JOIN VIEW_PROFISSIONAL_QDE_OS POS " + " ON P.ID = POS.ID ";
+				+ " ON E.id = P.id_endereco " + " RIGHT JOIN VIEW_PROFISSIONAL_QDE_OS POS "
+				+ " ON P.ID = POS.ID_PROFISSIONAL ";
 
-		if (seletor.temFiltro()) {
+		if (seletor.temFiltro() && seletor.getQdeOS()!=0) {
 			sql = criarFiltros(sql, seletor);
 		}
 
-		sql += " GROUP BY P.ID ";
+		sql += " GROUP BY P.id ORDER BY P.nome";
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
@@ -435,11 +436,10 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			if (!primeiro) {
 				sql += " AND ";
 			}
-
-			sql += " E.cidade = '" + seletor.getCidade() + "'";
+			sql += "  E.cidade = '" + seletor.getCidade() + "' ";
 			primeiro = false;
 		}
-		if (seletor.getQdeOS() != null) {
+		if (seletor.getQdeOS() != null && seletor.getQdeOS() != 0) {
 			if (!primeiro) {
 				sql += " AND ";
 			}
@@ -451,19 +451,19 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 		return sql;
 	}
 
-	// BUSCAR POR SELETOR TODOS PROFISSIONAIS
+	// BUSCAR POR SELETOR TODOS PROFISSIONAIS POR SELETOR (SITUAÇÃO QDE_OS =0)
 	public ArrayList<Profissional> listarPorSeletorTodos(ProfissionalSeletor seletor) {
 		Connection conexao = Banco.getConnection();
 		String sql = " SELECT DISTINCT * FROM PROFISSIONAL P " + " INNER JOIN PROFISSIONAL_CATEGORIA PC "
 				+ " ON P.id = PC.id_profissional " + " INNER JOIN CATEGORIA C " + " ON PC.id_categoria = C.id "
-				+ " INNER JOIN  ENDERECO AS E " + " ON E.id = P.id_endereco "
-				+ " RIGHT JOIN VIEW_PROFISSIONAL_QDE_OS POS " + " ON P.ID = POS.ID ";
+				+ " INNER JOIN  ENDERECO AS E " + " ON E.id = P.id_endereco ";
+//				+ " RIGHT JOIN VIEW_PROFISSIONAL_QDE_OS POS " + " ON P.ID = POS.ID_PROFISSIONAL ";
 
-		if (seletor.temFiltro()) {
+		if (seletor.temFiltroQdeZero()) {
 			sql = criarFiltros2(sql, seletor);
 		}
 
-		sql += " GROUP BY P.ID ";
+		sql += " GROUP BY P.id ORDER BY P.nome";
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
@@ -513,25 +513,18 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 				sql += " AND ";
 			}
 
-			sql += " E.cidade '" + seletor.getCidade() + "'";
-			primeiro = false;
-		}
-		if (seletor.getQdeOS() != null) {
-			if (!primeiro) {
-				sql += " AND ";
-			}
-
-			sql += " POS.qde_os = " + seletor.getQdeOS();
+			sql += "  E.cidade = '" + seletor.getCidade() + "' ";
 			primeiro = false;
 		}
 		return sql;
+
 	}
 
 	// MÉTODO PARA BUSCAR QDE DE OS PELO ID DO PROFISSIONAL PARA POPULAR A TABELA
 	// LISTAGEM DE PROFISSIONAL
 	public int buscarQdeOS(int id) {
 		Connection conexao = Banco.getConnection();
-		String sql = " SELECT qde_os FROM VIEW_PROFISSIONAL_QDE_OS WHERE id = " + id;
+		String sql = " SELECT qde_os FROM VIEW_PROFISSIONAL_QDE_OS WHERE id_profissional = " + id;
 		PreparedStatement stmt = Banco.getPreparedStatement(conexao, sql);
 
 		int qdeOS = 0;
@@ -544,7 +537,7 @@ public class ProfissionalDAO implements BaseDAO<Profissional> {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao buscar qde de OS x profissiona (" + id + ")");
+			System.out.println("Erro ao buscar qde de OS x profissional (" + id + ")");
 			System.out.println("Erro: " + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(stmt);
